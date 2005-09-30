@@ -1,0 +1,17 @@
+Starting phptelemeter 0.21, an optional parameter was added to the config file:
+modulepath=/path/to/phptelemeter
+
+Starting phptelemeter 0.20, a new configuration parameter was added to the configuration file:
+parser=telemeter4tools
+OR
+parser=telemeter_web
+
+
+OLD NEWS:
+---------
+Starting phptelemeter 0.13, two new options are added to the configuration file:
+
+file_output=false
+file_prefix=/tmp/phptelemeter_
+
+Starting phptelemeter 0.10, the configuration file format was changed to allow for multiple users.

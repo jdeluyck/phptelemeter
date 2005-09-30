@@ -1,0 +1,99 @@
+phptelemeter v0.23-pre1 - Copyright (c) 2005 by Jan De Luyck
+
+What is it?
+~~~~~~~~~~~
+- phptelemeter is a script that can read the webpages for the
+  webbased 'quota' monitor for the Belgian ISP 'Telenet'.
+  These pages contain both the actual status (which is refreshed
+  nightly), and a 30-day shifting window history. This history
+  is what makes up the used quota.
+- Alternatively (and recommended) it can parse the Telemeter4Tools
+  status pages, which are designed not to break on each update by
+  Telenet ;)
+
+What can it do?
+~~~~~~~~~~~~~~~
+- This script was designed from the ground up to be usable both
+  by humans and by machines. The output code can be in human-readable
+  format, or in a no-nonsense script parsable format.
+
+Requirements
+~~~~~~~~~~~~
+- It requires PHP >= 4.2.0, and the PHP4 CURL extension, compiled with
+  SSL support!
+- For Telemeter4Tools it requires the nusoap SOAP library, and the xmlparser
+  XML library. Both are included in the package.
+
+Howto
+~~~~~
+- First off, to actually run this script you must tell it where the
+  php binary is. Edit phptelemeter.php and modify the first line
+  to #!/path/to/php4 -q. On Debian Sid, this is /usr/bin/php4.
+
+- To create the initial configuration file, just run the script.
+  It will notice the absence of ~/.phptelemeterrc, and create a
+  dummy version. Next, configure this file (usually you'll just
+  want to change username and password to the information for
+  your account), and rerun phptelemeter - you'll get the output
+  you want instantly.
+
+Command line options
+~~~~~~~~~~~~~~~~~~~~
+- There are several options (you can view them with --help):
+  * --help - show help
+  * --daily - show the 30day overview (overrides config)
+  * --remaining - show the remaining quota (overrides config)
+  * --debug - shows some debugging stuff
+  * --human - sets the output in human-readable mode (overrides config)
+  * --parser - sets the output in parser-readable mode (overrides config)
+  * --file-output - sets the output to file mode instead of screen (stdout)
+  	(overrides config)
+
+  When the --parser output is used, --remaining is automatically added to the
+  output.
+
+  When --debug is used, --file-output is automatically disabled.
+
+Configuration file layout
+~~~~~~~~~~~~~~~~~~~~~~~~~
+[general]
+style=human							# the output style, being "human" or "parser"
+daily=true							# Show 30-day stats (true/false)
+show_remaining=true						# Show how much you have remaining (true/false)
+file_output=false						# Sets if file output should be used instead of screen (stdout)
+file_prefix=/tmp/phptelemeter_					# The path prefix to use for the output files
+parser=telemeter4tools						# The parsing module to use. Currently telemeter4tools and
+								#  telemeter_web are included.
+modulepath=/path/to/phptelemeter				# The path to where the modules directory is. Optional.
+[account-1]
+username=youruser						# The username of account-1
+password=yourpassword						# The password of account-1
+...
+[account-9]
+username=youruser						# The username of account-9
+password=yourpassword						# The password of account-9
+
+Where to get it
+~~~~~~~~~~~~~~~
+- There's only one place: http://www.sf.net/projects/telemon/.
+
+Credits
+~~~~~~~
+- The PHP team for creating php ;p
+- The CURL team for creating curl, which made my job easy
+- Robbie (creator of pytelemeter), for the hints on how to output the data.
+- My friends for just being there ;p
+- Telenet, for creating the Telemeter4Tools
+- NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
+- Eric Pollman for his XML Library (http://eric.pollmann.net/work/public_domain/)
+- Cajmere on be.comp.os.linux for a valid point about not finding the modules
+  when it's installed systemwide
+
+Bugs
+~~~~
+- What? Bugs? Nooo... can't be. I'm infallible. Or smthing. ;p
+  Just file them with the Bugtracker on the Sourceforge page.
+
+New features
+~~~~~~~~~~~~
+- Got a great idea? File it with feature requests at Sourceforge.
