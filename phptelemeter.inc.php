@@ -154,10 +154,12 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"[account-1]\n" .
 			"username=myuser\n" .
 			"password=mypassword\n" .
+			";description=My first account\n" .
 			";\n" .
 			";[account-2]\n" .
 			";username=myuser\n" .
 			";password=mypassword\n" .
+			";description=My second account\n" .
 			";\n" .
 			"[die]\n"
 		);
