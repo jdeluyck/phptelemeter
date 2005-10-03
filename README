@@ -1,4 +1,4 @@
-phptelemeter v0.23-pre1 - Copyright (c) 2005 by Jan De Luyck
+phptelemeter v0.23 - Copyright (c) 2005 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -19,7 +19,7 @@ What can it do?
 
 Requirements
 ~~~~~~~~~~~~
-- It requires PHP >= 4.2.0, and the PHP4 CURL extension, compiled with
+- It requires PHP >= 4.3.0, and the PHP4 CURL extension, compiled with
   SSL support!
 - For Telemeter4Tools it requires the nusoap SOAP library, and the xmlparser
   XML library. Both are included in the package.
@@ -37,6 +37,9 @@ Howto
   your account), and rerun phptelemeter - you'll get the output
   you want instantly.
 
+  Alternatively, you can also run phptelemeter with --new-config, which
+  will create a new dummy config file in your current directory.
+
 Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
@@ -48,7 +51,7 @@ Command line options
   * --parser - sets the output in parser-readable mode (overrides config)
   * --file-output - sets the output to file mode instead of screen (stdout)
   	(overrides config)
-
+  * --new-config - generates a new dummy config file on the spot
   When the --parser output is used, --remaining is automatically added to the
   output.
 
@@ -59,23 +62,23 @@ Configuration file layout
 [general]
 style=human							# the output style, being "human" or "parser"
 daily=true							# Show 30-day stats (true/false)
-show_remaining=true						# Show how much you have remaining (true/false)
-file_output=false						# Sets if file output should be used instead of screen (stdout)
-file_prefix=/tmp/phptelemeter_					# The path prefix to use for the output files
-parser=telemeter4tools						# The parsing module to use. Currently telemeter4tools and
-								#  telemeter_web are included.
-modulepath=/path/to/phptelemeter				# The path to where the modules directory is. Optional.
+show_remaining=true					# Show how much you have remaining (true/false)
+file_output=false					# Sets if file output should be used instead of screen (stdout)
+file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
+parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools and
+									#  telemeter_web are included.
+modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
 [account-1]
-username=youruser						# The username of account-1
-password=yourpassword						# The password of account-1
+username=youruser					# The username of account-1
+password=yourpassword				# The password of account-1
 ...
 [account-9]
-username=youruser						# The username of account-9
-password=yourpassword						# The password of account-9
+username=youruser					# The username of account-9
+password=yourpassword				# The password of account-9
 
 Where to get it
 ~~~~~~~~~~~~~~~
-- There's only one place: http://www.sf.net/projects/telemon/.
+- There's only one place: http://www.sf.net/projects/phptelemeter/.
 
 Credits
 ~~~~~~~

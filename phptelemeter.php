@@ -37,6 +37,13 @@ checkModules($neededModules);
 Parse args and configuration file.
 */
 
+
+// we need this to enable help to work without a config file
+$configuration = parseArgs($argv, null);
+
+/* find the config file */
+$configFile = findConfigFile($configFiles, $configuration);
+
 $configuration = readConfig($configFile);
 $configuration = parseArgs($argv, $configuration);
 $configuration = checkConfig($configuration);

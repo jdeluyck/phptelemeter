@@ -25,18 +25,19 @@ http://www.gnu.org/licenses/gpl.txt
 
 /* we require version 4.3.0 for some functions */
 if (version_compare("4.3.0", phpversion(), "<=") == 0)
-	doError("PHP version too low","Please upgrade PHP to atleast 4.2.0", true);
+	doError("PHP version too low","Please upgrade PHP to atleast 4.3.0", true);
 
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.23pre1");
+define("_version", "0.23");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
+define("_configFileName", "phptelemeterrc");
 
 $HOME = getenv("HOME");
 
-$configFile = $HOME . "/.phptelemeterrc";
+$configFiles = array($HOME . "/." . _configFileName, "/etc/" . _configFileName);
 $configuration = array();
 
 $neededModules = array("curl");
@@ -44,6 +45,30 @@ $neededModules = array("curl");
 /* -------------------------------- */
 /* Functions, functions, functions! */
 /* -------------------------------- */
+function findConfigFile($configFiles, $configuration)
+{
+	$found = false;
+
+	foreach ($configFiles as $aConfigFile)
+	{
+		if (file_exists($aConfigFile))
+		{
+			$found = true;
+			$returnValue = $aConfigFile;
+			break;
+		}
+	}
+
+	// by default return the file in $HOME, which is on index 0
+	if ($found == false)
+		$returnValue = $configFiles[0];
+
+	if ($configuration["general"]["debug"] == true)
+		echo "CONFIG: $returnValue\n";
+
+	return ($returnValue);
+}
+
 function checkModules($neededModules)
 {
 	foreach ($neededModules as $moduleName)
@@ -79,7 +104,22 @@ function readConfig($configFile)
 
 	if (! file_exists($configFile))
 	{
-		$config = fopen ($configFile, "w");
+		writeDummyConfig($configFile,true);
+
+		$configuration = parse_ini_file($configFile, true);
+		$configuration["new"] = "temporary trigger value";
+	}
+	else
+		$configuration = parse_ini_file($configFile, true);
+
+	return $configuration;
+}
+
+function writeDummyConfig($configFile, $writeNewConfig=false)
+{
+	$config = @fopen ($configFile, "w");
+	if ($config)
+	{
 		fwrite ($config,
 			"; This is a sample configuration file for phptelemeter\n" .
 			"; Comments start with ';'\n" .
@@ -123,17 +163,14 @@ function readConfig($configFile)
 		);
 		fclose($config);
 
-		doError("no configuration file found.", "A dummy config file has been created in $configFile\nPlease fill in the details and rerun phptelemeter.\n", false);
-
-		$configuration = parse_ini_file($configFile, true);
-		$configuration["new"] = "temporary trigger value";
+		if ($writeNewConfig == true)
+			doError("no configuration file found.", "A dummy config file has been created in \n$configFile.\nPlease fill in the details and rerun phptelemeter.\n", false);
+		else
+			doError("new config file written.", "A new dummy configuration file has been written to $configFile.\n", false);
 	}
 	else
-		$configuration = parse_ini_file($configFile, true);
-
-	return $configuration;
+		doError("no write permissions", "No configuration file was found, and I was unable to create the dummy\nconfiguration file in $configFile.\nPlease check the permissions and rerun phptelemeter.\n", true);
 }
-
 function checkConfig($configuration)
 {
 	global $configFile;
@@ -245,6 +282,12 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
+			case "--new-config":
+			{
+				writeDummyConfig($getcwd . _configFileName);
+				quit();
+			}
+
 			default:
 			{
 				echo "phptelemeter - v" . _version . "\n";
@@ -256,6 +299,7 @@ function parseArgs($argv, $configuration)
 				echo "--remaining\tShows your max traffic allotment for today. This flag\n";
 				echo "\t\tis always active for --parser output.\n";
 				echo "--file-output\tActivates file output instead of screen output.\n";
+				echo "--new-config\tMakes a new dummy config file in the current directory.\n";
 				echo "\n";
 				echo "Options specified here override the configuration file.\n\n";
 				quit();
