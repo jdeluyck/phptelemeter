@@ -106,9 +106,9 @@ class telemeterParser
 			doError("SOAP Fault", $result, true);
 		else
 		{
-		    // Check for errors
-    		$error = $client->getError();
-    		if ($error)
+			// Check for errors
+	    		$error = $client->getError();
+    			if ($error)
 				doError("SOAP Error", $error, true);
 			else
 			{
