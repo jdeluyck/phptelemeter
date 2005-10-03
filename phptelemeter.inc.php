@@ -155,6 +155,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"username=myuser\n" .
 			"password=mypassword\n" .
 			";description=My first account\n" .
+			";(the description in optional)\n" .
 			";\n" .
 			";[account-2]\n" .
 			";username=myuser\n" .
@@ -218,6 +219,10 @@ function checkConfig($configuration)
 			{
 				$configuration["accounts"][]["username"] = $configuration[$accName]["username"];
 				$configuration["accounts"][count($configuration["accounts"]) - 1]["password"] = $configuration[$accName]["password"];
+				if (array_key_exists("description", $configuration[$accName]))
+					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] =  $configuration[$accName]["description"];
+				else
+					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] =  $configuration[$accName]["username"];
 			}
 			unset($configuration[$accName]);
 		}

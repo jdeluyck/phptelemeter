@@ -80,10 +80,12 @@ modulepath=/path/to/phptelemeter	# The path to where the modules directory is. O
 [account-1]
 username=youruser					# The username of account-1
 password=yourpassword				# The password of account-1
+description=your description			# Description of account-1, if it is set it'll be used instead of the account name in the output
 ...
 [account-9]
 username=youruser					# The username of account-9
 password=yourpassword				# The password of account-9
+description=your description
 
 Where to get it
 ~~~~~~~~~~~~~~~

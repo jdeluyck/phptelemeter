@@ -71,7 +71,7 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	ob_start();
 
 	if ($configuration["general"]["style"] == "human")
-		echo "Fetching information for account " . $configuration["accounts"][$i]["username"] . "...";
+		echo "Fetching information for account " . $configuration["accounts"][$i]["description"] . "...";
 
 	/* run the telemeterParser getData() routine */
 	$data = $parser->getData($configuration["accounts"][$i]["username"],$configuration["accounts"][$i]["password"]);
