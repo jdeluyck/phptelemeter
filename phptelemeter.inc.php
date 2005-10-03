@@ -37,7 +37,7 @@ define("_configFileName", "phptelemeterrc");
 
 $HOME = getenv("HOME");
 
-$configFiles = array($HOME . "/." . _configFileName, "/etc/" . _configFileName);
+$configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
 
 $neededModules = array("curl");
@@ -59,9 +59,9 @@ function findConfigFile($configFiles, $configuration)
 		}
 	}
 
-	// by default return the file in $HOME, which is on index 0
+	// by default return the file in $HOME, which is on the last spot
 	if ($found == false)
-		$returnValue = $configFiles[0];
+		$returnValue = $aConfigFile;
 
 	if ($configuration["general"]["debug"] == true)
 		echo "CONFIG: $returnValue\n";

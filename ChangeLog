@@ -5,6 +5,7 @@ What's new? Not much, but it's listed here.
 - Since the telemeter4tools will automatically be 'restored' once Telenet fixes their SOAP url
   it's not an issue to delay this release.
 - Added support for systemwide phptelemeterrc file (in /etc/)
+- Added --new-config parameter to make a dummy config file in the current directory.
 
 0.23-pre1
 ~~~~~~~~~

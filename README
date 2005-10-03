@@ -57,6 +57,15 @@ Command line options
 
   When --debug is used, --file-output is automatically disabled.
 
+Configuration file location
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- The configuration file is searched in two locations, in the following order
+  (whichever is found first is used)
+  * /etc/phptelemeterrc
+  * ~/.phptelemeterrc
+- If no configuration file is found, the script will try to create a dummy in
+  ~/.phptelemeterrc.
+
 Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
