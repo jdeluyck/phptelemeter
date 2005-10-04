@@ -3,12 +3,12 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter4tools");
-define("_phptelemeter_parser_version", "3");
+define("_phptelemeter_parser_version", "4");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
 
-telemeter4tools.inc.php - file which contains the Telemeter4tools parser module.
+parser_telemeter4tools.inc.php - file which contains the Telemeter4tools parser module.
 
 Copyright (C) 2005 Jan De Luyck  <jan -at- kcore -dot- org>
 
@@ -34,6 +34,7 @@ require_once("modules/libs/xmlparser.inc.php");
 class telemeterParser
 {
 	var $url = "https://telemeter4tools.telenet.be/TelemeterService?wsdl";
+	var $soapurl = "https://telemeter4tools.telenet.be/TelemeterService";
 	var $errors_critical;
 	var $errors_normal;
 	var $debug = false;

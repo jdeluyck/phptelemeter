@@ -54,12 +54,14 @@ set_include_path($configuration["general"]["modulepath"]);
 
 if ($configuration["general"]["debug"] == true) dumpConfig($configuration);
 
-/* load the necessary module */
+/* load the necessary modules */
 loadParser($configuration);
-
 $parser = new telemeterParser();
 $parser->debug = $configuration["general"]["debug"];
 
+loadPublisher($configuration);
+$publisher = new telemeterPublisher();
+$publisher->debug = $configuration["general"]["debug"];
 
 if ($configuration["general"]["style"] == "human" && $configuration["general"]["file_output"] == false)
 	echo "phptelemeter - version " . _version . "\n";
@@ -95,5 +97,6 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 }
 /* signing off. */
 $parser->destroy();
+$publisher->destroy();
 quit();
 ?>

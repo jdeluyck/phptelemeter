@@ -30,7 +30,7 @@ if (version_compare("4.3.0", phpversion(), "<=") == 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.23");
+define("_version", "0.24");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
@@ -146,6 +146,10 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; needs to be present in the phptelemeter/modules directory!\n" .
 			"parser=telemeter4tools\n" .
 			";\n" .
+			"; This can be set to either plaintext or html, and the file\n" .
+			"; needs to be present in the phptelemeter/modules directory!\n" .
+			"publisher=plaintext\n" .
+			";\n" .
 			"; You can set this path if phptelemeter has trouble finding\n" .
 			"; it's modules. Point it to the directory that contains the\n" .
 			"; modules directory.\n" .
@@ -155,7 +159,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"username=myuser\n" .
 			"password=mypassword\n" .
 			";description=My first account\n" .
-			";(the description in optional)\n" .
+			"; (the description is optional)\n" .
 			";\n" .
 			";[account-2]\n" .
 			";username=myuser\n" .
@@ -189,14 +193,16 @@ function checkConfig($configuration)
 		doError("configuration not correct.", "Edit $configFile and remove the '[die]' line!", true);
 
 	/* verify general configuration */
-	if (! array_key_exists("general", $configuration) ||
-		! array_key_exists("style", $configuration["general"])    ||
-		! array_key_exists("daily", $configuration["general"])    ||
-		! array_key_exists("show_remaining", $configuration["general"])		||
-		! array_key_exists("file_prefix", $configuration["general"])		||
-		! array_key_exists("file_output", $configuration["general"])		||
-		! array_key_exists("parser", $configuration["general"]))
-		doError("configuration not correct.", "A configuration file was found, but it did not contain a valid\n[general] section with style, daily, show_remaining, file_output, \nfile_prefix or parser fields.\nPlease correct and rerun phptelemeter.", true);
+	if (! array_key_exists("general", $configuration)					||
+		! array_key_exists("style", $configuration["general"])			||
+		! array_key_exists("daily", $configuration["general"])			||
+		! array_key_exists("show_remaining", $configuration["general"])	||
+		! array_key_exists("file_prefix", $configuration["general"])	||
+		! array_key_exists("file_output", $configuration["general"])	||
+		! array_key_exists("parser", $configuration["general"])			||
+		! array_key_exists("publisher", $configuration["general"])
+	)
+		doError("configuration not correct.", "A configuration file was found, but it did not contain a valid\n[general] section with style, daily, show_remaining, file_output, \nfile_prefix, parser or publisher fields.\nPlease correct and rerun phptelemeter.", true);
 
 	/* look for the modulepath */
 	if (! array_key_exists("modulepath", $configuration["general"]))
@@ -442,6 +448,23 @@ function loadParser($configuration)
 
 	if ($configuration["general"]["debug"] == true)
 		echo "PARSER: Loaded parser " . _phptelemeter_parser . ", version " . _phptelemeter_parser_version . "\n";
+
+}
+
+function loadPublisher($configuration)
+{
+	$publisher = "modules/publisher_" . $configuration["general"]["publisher"] . ".inc.php";
+
+	if ($configuration["general"]["debug"] == true)
+		echo "PUBLISHER: Trying to load " . $publisher . "\n";
+
+	require_once($publisher);
+
+	if (! defined("_phptelemeter_publisher"))
+		doError("Invalid publisher", "The publisher " . $configuration["general"]["publisher"] . " is not valid!", true);
+
+	if ($configuration["general"]["debug"] == true)
+		echo "PUBLISHER: Loaded publisher " . _phptelemeter_publisher . ", version " . _phptelemeter_publisher_version . "\n";
 
 }
 

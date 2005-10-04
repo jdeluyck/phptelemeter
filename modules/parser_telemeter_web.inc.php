@@ -8,7 +8,7 @@ define("_phptelemeter_parser_version", "6");
 
 phpTelemeter - a php script to read out and display the telemeter stats.
 
-telemeter_web.inc.php - file which contains the Telemeter web page parser module.
+parser_telemeter_web.inc.php - file which contains the Telemeter web page parser module.
 
 Copyright (C) 2005 Jan De Luyck  <jan -at- kcore -dot- org>
 
