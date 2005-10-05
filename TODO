@@ -1,5 +1,1 @@
 * Check compatibility with win32 platforms
-* fix telemeter4tools parser whenever telenet fixes it...
-
-- implement soap check
-- implement output modules

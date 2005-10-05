@@ -57,6 +57,11 @@ class telemeterPublisher
 		return ("");
 	}
 
+	function mainFooter()
+	{
+		return ("");
+	}
+
 	/* EXTERNAL */
 	function accountHeader($accountName)
 	{

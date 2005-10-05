@@ -40,8 +40,6 @@ $HOME = getenv("HOME");
 $configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
 
-//$neededModules = array("curl");
-
 /* -------------------------------- */
 /* Functions, functions, functions! */
 /* -------------------------------- */
@@ -125,10 +123,9 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; This is a sample configuration file for phptelemeter\n" .
 			"; Comments start with ';'\n" .
 			";\n" .
-			"; The options style, daily, show_remaining and file_output can be overridden\n" .
+			"; The options daily, show_remaining and file_output can be overridden\n" .
 			"; on the command line\n" .
-			"; using --human|--parser for human-readable or parser-readable style,\n" .
-			"; specify --daily to output the daily statistics,\n" .
+			"; useing --daily to output the daily statistics,\n" .
 			"; use --show_remaining to show the remaining quota,\n" .
 			"; and use --file-output to activate file output.\n" .
 			";\n" .
@@ -136,7 +133,6 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; [account-1] through [account-" . _maxAccounts . "]. Atleast one account is REQUIRED!.\n" .
 			";\n" .
 			"[general]\n" .
-			"style=human\n" .
 			"daily=false\n" .
 			"show_remaining=false\n" .
 			";\n" .
@@ -147,7 +143,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; needs to be present in the phptelemeter/modules directory!\n" .
 			"parser=telemeter4tools\n" .
 			";\n" .
-			"; This can be set to either plaintext or html, and the file\n" .
+			"; This can be set to either plaintext, machine or html, and the file\n" .
 			"; needs to be present in the phptelemeter/modules directory!\n" .
 			"publisher=plaintext\n" .
 			";\n" .
@@ -193,7 +189,6 @@ function checkConfig($configuration, $configFile)
 
 	/* verify general configuration */
 	if (! array_key_exists("general", $configuration)					||
-		// ! array_key_exists("style", $configuration["general"])			||
 		! array_key_exists("daily", $configuration["general"])			||
 		! array_key_exists("show_remaining", $configuration["general"])	||
 		! array_key_exists("file_prefix", $configuration["general"])	||
@@ -201,7 +196,11 @@ function checkConfig($configuration, $configFile)
 		! array_key_exists("parser", $configuration["general"])			||
 		! array_key_exists("publisher", $configuration["general"])
 	)
-		doError("configuration not correct.", "A configuration file was found, but it did not contain a valid\n[general] section with style, daily, show_remaining, file_output, \nfile_prefix, parser or publisher fields.\nPlease correct and rerun phptelemeter.", true);
+		doError("configuration not correct.", "A configuration file was found, but it did not contain a valid\n[general] section with daily, show_remaining, file_output, \nfile_prefix, parser or publisher fields.\nPlease correct and rerun phptelemeter.", true);
+
+	/* check for obsolete keys */
+	if (array_key_exists("style", $configuration["general"]))
+		doError("obsolete key found.", "An obsolete key was found in your configuration.\nPlease refer to the NEWS file for important changes to the \nconfiguration file.", false);
 
 	/* look for the modulepath */
 	if (! array_key_exists("modulepath", $configuration["general"]))
@@ -264,18 +263,6 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
-			/*case "--human":
-			{
-				$configuration["general"]["style"] = "human";
-				break;
-			}
-
-			case "--parser":
-			{
-				$configuration["general"]["style"] = "parser";
-				break;
-			}
-*/
 			case "--debug":
 			{
 				$configuration["general"]["debug"] = true;
@@ -303,11 +290,8 @@ function parseArgs($argv, $configuration)
 			default:
 			{
 				echo "phptelemeter - v" . _version . "\n";
-				//echo "phptelemeter [--daily] [--human|--parser] [--debug] [--remaining]\n";
 				echo "phptelemeter [--daily] [--debug] [--remaining] [--file-output] [--new-config]\n";
 				echo "--daily\t\tShows statistics for last 30 days\n";
-				//echo "--human\t\tShows statistics in a way readable to humans (default)\n";
-				//echo "--parser\tShows statistics in a way easier parsed\n";
 				echo "--debug\t\tShows some debugging info\n";
 				echo "--remaining\tShows your max traffic allotment for today. This flag\n";
 				echo "\t\tis always active for --parser output.\n";

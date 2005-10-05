@@ -34,7 +34,6 @@ require("phptelemeter.inc.php");
 Parse args and configuration file.
 */
 
-
 // we need this to enable help to work without a config file
 $configuration = parseArgs($argv, null);
 
@@ -76,6 +75,9 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	// start buffering
 	ob_start();
 
+	if ($configuration["general"]["file_output"] == true)
+		echo $publisher->mainHeader();
+
 	echo $publisher->accountHeader($configuration["accounts"][$i]["description"]);
 
 	/* run the telemeterParser getData() routine */
@@ -90,6 +92,8 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 
 	if ($configuration["general"]["file_output"] == true)
 	{
+		echo $publisher->mainFooter();
+
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		outputData($configuration, $buffer, $configuration["accounts"][$i]["username"]);
@@ -97,6 +101,11 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	else
 		ob_end_flush();
 }
+
+if ($configuration["general"]["file_output"] == false)
+	echo $publisher->mainFooter();
+
+
 /* signing off. */
 $parser->destroy();
 $publisher->destroy();

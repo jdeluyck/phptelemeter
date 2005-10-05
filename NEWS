@@ -1,10 +1,17 @@
+Starting phptelemeter 0.24, the config parameter style has been replaced by the new
+publisher parameter. You can set it to either plaintext, html or machine:
+
+publisher=plaintext
+or
+publiser=machine
+or
+publisher=html
+
+OLD NEWS:
+~~~~~~~~~
 Starting phptelemeter 0.21, an optional parameter was added to the config file:
 modulepath=/path/to/phptelemeter
 
-
-
-OLD NEWS:
----------
 Starting phptelemeter 0.20, a new configuration parameter was added to the configuration file:
 parser=telemeter4tools
 OR

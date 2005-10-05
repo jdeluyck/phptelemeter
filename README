@@ -1,4 +1,4 @@
-phptelemeter v0.23 - Copyright (c) 2005 by Jan De Luyck
+phptelemeter v0.24 - Copyright (c) 2005 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -15,7 +15,7 @@ What can it do?
 ~~~~~~~~~~~~~~~
 - This script was designed from the ground up to be usable both
   by humans and by machines. The output code can be in human-readable
-  format, or in a no-nonsense script parsable format.
+  format, in a no-nonsense script parsable format or in HTML format.
 
 Requirements
 ~~~~~~~~~~~~
@@ -47,8 +47,6 @@ Command line options
   * --daily - show the 30day overview (overrides config)
   * --remaining - show the remaining quota (overrides config)
   * --debug - shows some debugging stuff
-  * --human - sets the output in human-readable mode (overrides config)
-  * --parser - sets the output in parser-readable mode (overrides config)
   * --file-output - sets the output to file mode instead of screen (stdout)
   	(overrides config)
   * --new-config - generates a new dummy config file on the spot
@@ -69,23 +67,25 @@ Configuration file location
 Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
-style=human							# the output style, being "human" or "parser"
 daily=true							# Show 30-day stats (true/false)
 show_remaining=true					# Show how much you have remaining (true/false)
 file_output=false					# Sets if file output should be used instead of screen (stdout)
 file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
 parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools and
 									#  telemeter_web are included.
+publisher=plaintext					# The publisher module to use. Currently plaintext, machine and
+									#  html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
 [account-1]
 username=youruser					# The username of account-1
 password=yourpassword				# The password of account-1
-description=your description			# Description of account-1, if it is set it'll be used instead of the account name in the output
+description=your description		# Description of account-1, if it is set it'll be used instead
+									#  of the account name in the output
 ...
 [account-9]
 username=youruser					# The username of account-9
 password=yourpassword				# The password of account-9
-description=your description
+description=your description		# Description of account-9
 
 Where to get it
 ~~~~~~~~~~~~~~~
@@ -102,6 +102,7 @@ Credits
 - Eric Pollman for his XML Library (http://eric.pollmann.net/work/public_domain/)
 - Cajmere on be.comp.os.linux for a valid point about not finding the modules
   when it's installed systemwide
+- YvesDM on be.comp.os.linux for the hint of output publishers and account descriptions.
 
 Bugs
 ~~~~

@@ -8,10 +8,10 @@ What's new? Not much, but it's listed here.
   * publisher_machine
 - Removed all useage of global();
 - Moved php module lists to the correct modules
--
--
+- Added publisher_html
+- Added workaround for telemeter endpoint b0rkage - telemeter4tools lives again!
 
-0.23
+0.23 (never released)
 ~~~~
 - Since the telemeter4tools will automatically be 'restored' once Telenet fixes their SOAP url
   it's not an issue to delay this release.

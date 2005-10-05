@@ -34,7 +34,7 @@ require_once("modules/libs/xmlparser.inc.php");
 class telemeterParser
 {
 	var $url = "https://telemeter4tools.telenet.be/TelemeterService?wsdl";
-	var $soapurl = "https://telemeter4tools.telenet.be/TelemeterService";
+	var $endpointUrl = "https://telemeter4tools.telenet.be/TelemeterService";
 	var $errors_critical;
 	var $errors_normal;
 	var $debug = false;
@@ -110,6 +110,9 @@ class telemeterParser
 		$error = $client->getError();
 		if ($error)
 			doError("SOAP Error", $error, true);
+
+		/* hopefully temporary hack for telemeter4tools until telenet fixes it's url*/
+		$client->setEndPoint($this->endpointUrl);
 
 		$result = $client->call('getUsage', array($userName, $password));
 

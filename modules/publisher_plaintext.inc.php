@@ -49,13 +49,17 @@ class telemeterPublisher
 	/* exit function for us. */
 	function destroy()
 	{
-		/* hmmm. nothing? */
 	}
 
 	/* EXTERNAL */
 	function mainHeader()
 	{
 		return ("phptelemeter - version " . _version . "\n");
+	}
+
+	function mainFooter()
+	{
+		return ("");
 	}
 
 	/* EXTERNAL */
@@ -116,7 +120,7 @@ class telemeterPublisher
 
 			$returnStr .= sprintf($totalVolumeString, abs($totalLeft));
 			$returnStr .= sprintf($totalUploadString, abs($uploadLeft));
-			$returnStr .= sprintf("\n");
+			$returnStr .= "\n";
 		}
 
 		if ($showDaily == true)
