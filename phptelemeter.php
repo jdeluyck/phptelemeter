@@ -22,6 +22,7 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
+error_reporting(E_ERROR | E_WARNING);
 define("_phptelemeter", 1);
 
 require("phptelemeter.inc.php");

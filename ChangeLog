@@ -1,5 +1,11 @@
 What's new? Not much, but it's listed here.
 
+0.25
+~~~~
+- Bugfix release: wrong variable was passed in the getNeededModules() code.
+- PHP's error reporting level will be set to E_ERROR | E_WARNING at start
+  of the script.
+
 0.24
 ~~~~
 - Implemented output publishers and moved existing output framework to that

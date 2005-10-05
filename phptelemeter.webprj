@@ -38,6 +38,7 @@
     <item url="modules/publisher_machine.inc.php" />
     <treestatus>
       <openfolder url="modules" />
+      <openfolder url="modules/libs" />
     </treestatus>
   </project>
 </webproject>
