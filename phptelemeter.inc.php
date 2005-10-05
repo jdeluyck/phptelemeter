@@ -193,7 +193,7 @@ function checkConfig($configuration, $configFile)
 
 	/* verify general configuration */
 	if (! array_key_exists("general", $configuration)					||
-		! array_key_exists("style", $configuration["general"])			||
+		// ! array_key_exists("style", $configuration["general"])			||
 		! array_key_exists("daily", $configuration["general"])			||
 		! array_key_exists("show_remaining", $configuration["general"])	||
 		! array_key_exists("file_prefix", $configuration["general"])	||
@@ -264,7 +264,7 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
-			case "--human":
+			/*case "--human":
 			{
 				$configuration["general"]["style"] = "human";
 				break;
@@ -275,7 +275,7 @@ function parseArgs($argv, $configuration)
 				$configuration["general"]["style"] = "parser";
 				break;
 			}
-
+*/
 			case "--debug":
 			{
 				$configuration["general"]["debug"] = true;
@@ -303,10 +303,11 @@ function parseArgs($argv, $configuration)
 			default:
 			{
 				echo "phptelemeter - v" . _version . "\n";
-				echo "phptelemeter [--daily] [--human|--parser] [--debug] [--remaining]\n";
+				//echo "phptelemeter [--daily] [--human|--parser] [--debug] [--remaining]\n";
+				echo "phptelemeter [--daily] [--debug] [--remaining] [--file-output] [--new-config]\n";
 				echo "--daily\t\tShows statistics for last 30 days\n";
-				echo "--human\t\tShows statistics in a way readable to humans (default)\n";
-				echo "--parser\tShows statistics in a way easier parsed\n";
+				//echo "--human\t\tShows statistics in a way readable to humans (default)\n";
+				//echo "--parser\tShows statistics in a way easier parsed\n";
 				echo "--debug\t\tShows some debugging info\n";
 				echo "--remaining\tShows your max traffic allotment for today. This flag\n";
 				echo "\t\tis always active for --parser output.\n";
