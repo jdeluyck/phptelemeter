@@ -39,7 +39,7 @@ class telemeterPublisher
 
 	function getNeededModules()
 	{
-		return ($this->getNeededModules);
+		return ($this->neededModules);
 	}
 
 	function telemeterPublisher()

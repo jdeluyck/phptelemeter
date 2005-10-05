@@ -44,7 +44,7 @@ class telemeterParser
 
 	function getNeededModules()
 	{
-		return ($this->getNeededModules);
+		return ($this->neededModules);
 	}
 
 	function telemeterParser()
