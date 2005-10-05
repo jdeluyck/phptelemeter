@@ -30,9 +30,6 @@ require("phptelemeter.inc.php");
 /* Main script starts here */
 /* ----------------------- */
 
-/* check for needed modules */
-checkModules($neededModules);
-
 /*
 Parse args and configuration file.
 */
@@ -46,7 +43,7 @@ $configFile = findConfigFile($configFiles, $configuration);
 
 $configuration = readConfig($configFile);
 $configuration = parseArgs($argv, $configuration);
-$configuration = checkConfig($configuration);
+$configuration = checkConfig($configuration, $configFile);
 
 /* set the include path */
 //echo $configuration["general"]["modulepath"];
@@ -55,16 +52,23 @@ set_include_path($configuration["general"]["modulepath"]);
 if ($configuration["general"]["debug"] == true) dumpConfig($configuration);
 
 /* load the necessary modules */
+
+/* load and configure the parser */
 loadParser($configuration);
 $parser = new telemeterParser();
-$parser->debug = $configuration["general"]["debug"];
+checkModules($parser->getNeededModules());
 
+/* load and configure the publisher */
 loadPublisher($configuration);
 $publisher = new telemeterPublisher();
-$publisher->debug = $configuration["general"]["debug"];
+checkModules($publisher->getNeededModules());
 
-if ($configuration["general"]["style"] == "human" && $configuration["general"]["file_output"] == false)
-	echo "phptelemeter - version " . _version . "\n";
+$parser->setDebug($configuration["general"]["debug"]);
+$publisher->setDebug($configuration["general"]["debug"]);
+
+/* put the header on the screen */
+if ($configuration["general"]["file_output"] == false)
+	echo $publisher->mainHeader();
 
 /* loop through all our users */
 for ($i = 0; $i < count($configuration["accounts"]); $i++)
@@ -72,8 +76,7 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	// start buffering
 	ob_start();
 
-	if ($configuration["general"]["style"] == "human")
-		echo "Fetching information for account " . $configuration["accounts"][$i]["description"] . "...";
+	echo $publisher->accountHeader($configuration["accounts"][$i]["description"]);
 
 	/* run the telemeterParser getData() routine */
 	$data = $parser->getData($configuration["accounts"][$i]["username"],$configuration["accounts"][$i]["password"]);
@@ -81,10 +84,9 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	if ($data === false)
 		continue;
 
-	if ($configuration["general"]["style"] == "human")
-		echo "done!\n\n";
+	echo $publisher->accountFooter();
 
-	displayData($data["general"], $data["daily"]);
+	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["daily"]);
 
 	if ($configuration["general"]["file_output"] == true)
 	{

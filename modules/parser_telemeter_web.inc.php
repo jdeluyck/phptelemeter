@@ -29,19 +29,30 @@ http://www.gnu.org/licenses/gpl.txt
 
 class telemeterParser
 {
-	var $_userAgent;
+	var $_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
+	var $_postFields = "goto=http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR";
 	var $_cookieFile;
-	var $_postFields;
 	var $url;
 	var $errors;
 	var $debug = false;
+	var $neededModules = array("curl");
+
+	function setDebug($debug)
+	{
+		$this->debug = $debug;
+	}
+
+	function getNeededModules()
+	{
+		return ($this->getNeededModules);
+	}
 
 	function telemeterParser()
 	{
+		//$this->_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
+		//$this->_postFields = "goto=http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR";
 		/* do some var initialisation */
-		$this->_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 		$this->_cookieFile = tempnam("/tmp/", "phptelemeter");
-		$this->_postFields = "goto=http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR";
 
 		$this->url["login"] = "https://www.telenet.be/sys/sso/signon.jsp";
 		$this->url["generalStats"] = "https://www.telenet.be/sys/sso/jump.jsp?https://services.telenet.be/isps/MainServlet?ACTION=TELEMTR&SSOSID=\$SSOSID\$";
@@ -88,7 +99,7 @@ class telemeterParser
 	/* Does some CURLing (no, not that strange sport on ice that l... I disgress. */
 	function doCurl($URL, $postFields)
 	{
-		global $configuration;
+		//global $configuration;
 
 		if ($this->debug == true) echo "CURL: $URL\n";
 

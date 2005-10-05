@@ -40,7 +40,7 @@ $HOME = getenv("HOME");
 $configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
 
-$neededModules = array("curl");
+//$neededModules = array("curl");
 
 /* -------------------------------- */
 /* Functions, functions, functions! */
@@ -71,6 +71,9 @@ function findConfigFile($configFiles, $configuration)
 
 function checkModules($neededModules)
 {
+	if (! is_array($neededModules))
+		return 0;
+
 	foreach ($neededModules as $moduleName)
 	{
 		if (! extension_loaded($moduleName))
@@ -100,8 +103,6 @@ function quit()
 //function parseConfig()
 function readConfig($configFile)
 {
-	global $maxAccounts;
-
 	if (! file_exists($configFile))
 	{
 		writeDummyConfig($configFile,true);
@@ -178,10 +179,8 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 	else
 		doError("no write permissions", "No configuration file was found, and I was unable to create the dummy\nconfiguration file in $configFile.\nPlease check the permissions and rerun phptelemeter.\n", true);
 }
-function checkConfig($configuration)
+function checkConfig($configuration, $configFile)
 {
-	global $configFile;
-
 	/* ERROR CHECKING */
 
 	/* check for the "new" section, if it's present the config has just been generated and we just bail out here. */
@@ -339,99 +338,6 @@ function outputData($configuration, $buffer, $userid)
 	}
 	else
 		doError("error writing " . $fileName, "The output could not be written to the file.\nPlease check if you have write permissions!", true);
-}
-
-/* The 'put the data on the screen in a neat fashion' function, also known as Magic! */
-function displayData($generalMatches, $dailyMatches)
-{
-	global $configuration;
-
-	// general data, always shown
-
-	$totalMax = $generalMatches[0];
-	$uploadMax = $generalMatches[1];
-	$totalUse = $generalMatches[2];
-	$uploadUse = $generalMatches[3];
-	$totalLeft = $totalMax - $totalUse;
-	$uploadLeft = $uploadMax - $uploadUse;
-	$totalPercent = (100 / $totalMax) * $totalUse;
-	$uploadPercent = (100 / $uploadMax) * $uploadUse;
-
-	if ($configuration["general"]["style"] == "human")
-	{
-		$totalHashes = $totalPercent / 5;
-		$uploadHashes = $uploadPercent / 5;
-
-		echo "Telemeter statistics on " . date("d/m/Y") . "\n";
-		echo "----------------------------------\n";
-
-		printf("Volume used: [%-20s] - %5d MiB (%2d%%)\n", str_repeat("#", $totalHashes),$totalUse, $totalPercent);
-		printf("Upload used: [%-20s] - %5d MiB (%2d%%)\n", str_repeat("#", $uploadHashes),$uploadUse, $uploadPercent);
-
-		if ($configuration["general"]["show_remaining"] == true)
-		{
-			if ($totalLeft <= 0)
-			{
-				$totalVolumeString = "\nYou have exceeded your total volume by %d MiB.";
-				$totalUploadString = "";
-			}
-			elseif ($uploadLeft <= 0)
-			{
-				$totalVolumeString = "";
-				$totalUploadString = "\nYou have exceeded your upload volume by %d MiB.";
-			}
-			else
-			{
-				$totalVolumeString = "\nYou can download %d MiB without exceeding your total volume.";
-				$totalUploadString = "\nYou can upload %d MiB without exceeding your upload volume.";
-			}
-
-			printf($totalVolumeString, abs($totalLeft));
-			printf($totalUploadString, abs($uploadLeft));
-			printf("\n");
-		}
-	}
-	else
-	{
-		echo("#DownlMax,DownlUsed,DownlPercent,DownlLeft\n");
-		printf("%d,%d,%d,%d\n", $totalMax, $totalUse, $totalPercent, $totalLeft);
-		echo("#UplMax,UplUsed,UplPercent,UplLeft\n");
-		printf("%d,%d,%d,%d\n", $uploadMax, $uploadUse, $uploadPercent, $uploadLeft);
-	}
-
-	echo "\n";
-
-	if ($configuration["general"]["daily"] == true)
-	{
-		if ($configuration["general"]["style"] == "human")
-		{
-			echo "\n";
-			echo "Statistics for last 30 days\n";
-			echo "---------------------------\n";
-			echo "\n";
-			echo str_repeat("-", 40) . "\n";
-			printf("| %-8s | %s | %s |\n", "Date", "Volume used", "Upload used");
-			echo str_repeat("-", 40) . "\n";
-		}
-		else
-			echo("#Date,DownlUsed,UplUsed\n");
-
-		for ($i = 0; $i < count($dailyMatches); $i++)
-		{
-			$date = $dailyMatches[$i++];
-			$total = $dailyMatches[$i++];
-			$upload = $dailyMatches[$i];
-
-			if ($configuration["general"]["style"] == "human")
-				printf("| %8s | %7d MiB | %7d MiB |\n", $date, $total, $upload);
-			else
-				printf("%s,%d,%d\n",$date, $total, $upload);
-		}
-
-		if ($configuration["general"]["style"] == "human")
-			echo str_repeat("-", 40) . "\n\n";
-
-	}
 }
 
 function loadParser($configuration)

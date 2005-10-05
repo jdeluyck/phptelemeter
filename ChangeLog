@@ -1,5 +1,16 @@
 What's new? Not much, but it's listed here.
 
+0.24
+~~~~
+- Implemented output publishers and moved existing output framework to that
+  which adds:
+  * publisher_plaintext
+  * publisher_machine
+- Removed all useage of global();
+- Moved php module lists to the correct modules
+-
+-
+
 0.23
 ~~~~
 - Since the telemeter4tools will automatically be 'restored' once Telenet fixes their SOAP url

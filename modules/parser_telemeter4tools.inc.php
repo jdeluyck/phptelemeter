@@ -38,6 +38,17 @@ class telemeterParser
 	var $errors_critical;
 	var $errors_normal;
 	var $debug = false;
+	var $neededModules = "";
+
+	function setDebug($debug)
+	{
+		$this->debug = $debug;
+	}
+
+	function getNeededModules()
+	{
+		return ($this->getNeededModules);
+	}
 
 	function telemeterParser()
 	{
