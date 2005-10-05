@@ -30,7 +30,7 @@ if (version_compare("4.3.0", phpversion(), "<=") == 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.24");
+define("_version", "0.25");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
