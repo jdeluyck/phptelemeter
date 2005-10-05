@@ -112,7 +112,7 @@ class telemeterParser
 			doError("SOAP Error", $error, true);
 
 		/* hopefully temporary hack for telemeter4tools until telenet fixes it's url*/
-		//$client->setEndPoint($this->endpointUrl);
+		$client->setEndPoint($this->endpointUrl);
 
 		$result = $client->call('getUsage', array($userName, $password));
 
