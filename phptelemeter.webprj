@@ -35,7 +35,7 @@
     <item url="modules/publisher_plaintext.inc.php" uploadstatus="1" />
     <item url="modules/publisher_html.inc.php" uploadstatus="1" />
     <item url="phptelemeter.webprj" uploadstatus="1" />
-    <item url="modules/publisher_machine.inc.php" />
+    <item url="modules/publisher_machine.inc.php" uploadstatus="1" />
     <treestatus>
       <openfolder url="modules" />
       <openfolder url="modules/libs" />

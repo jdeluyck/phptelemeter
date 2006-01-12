@@ -6,7 +6,7 @@ if (! defined("_phptelemeter")) exit();
 
 phpTelemeter - a php script to read out and display the telemeter stats.
 
-Copyright (C) 2005 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2006 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ if (version_compare("4.3.0", phpversion(), "<=") == 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.25");
+define("_version", "0.26");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");

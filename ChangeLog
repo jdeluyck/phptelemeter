@@ -1,5 +1,10 @@
 What's new? Not much, but it's listed here.
 
+0.26
+~~~~
+- Changed telemeter4tools parser to use the new SOAP url
+- Changed the strings in phptelemeter to reflect the new telemeter
+
 0.25
 ~~~~
 - Bugfix release: wrong variable was passed in the getNeededModules() code.

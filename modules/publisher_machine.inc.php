@@ -10,7 +10,7 @@ phpTelemeter - a php script to read out and display the telemeter stats.
 
 publisher_machine.inc.php - file which contains the machine-readable publisher
 
-Copyright (C) 2005 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2006 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

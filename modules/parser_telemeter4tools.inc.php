@@ -3,14 +3,14 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter4tools");
-define("_phptelemeter_parser_version", "4");
+define("_phptelemeter_parser_version", "5");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
 
 parser_telemeter4tools.inc.php - file which contains the Telemeter4tools parser module.
 
-Copyright (C) 2005 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2006 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,8 +33,11 @@ require_once("modules/libs/xmlparser.inc.php");
 
 class telemeterParser
 {
-	var $url = "https://telemeter4tools.telenet.be/TelemeterService?wsdl";
+	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?wsdl";
+
+	var $useEndpointUrl = false;
 	var $endpointUrl = "https://telemeter4tools.telenet.be/TelemeterService";
+
 	var $errors_critical;
 	var $errors_normal;
 	var $debug = false;
@@ -111,8 +114,9 @@ class telemeterParser
 		if ($error)
 			doError("SOAP Error", $error, true);
 
-		/* hopefully temporary hack for telemeter4tools until telenet fixes it's url*/
-		$client->setEndPoint($this->endpointUrl);
+		/* Do we need to override the endpoint url returned by the wdsl? */
+		if ($this->useEndpointUrl == true) 
+			$client->setEndPoint($this->endpointUrl);
 
 		$result = $client->call('getUsage', array($userName, $password));
 
