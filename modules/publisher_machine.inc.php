@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "machine");
-define("_phptelemeter_publisher_version", "1");
+define("_phptelemeter_publisher_version", "2");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -82,17 +82,17 @@ class telemeterPublisher
 
 		// general data, always shown
 
-		$totalMax = $generalMatches[0];
+		$downloadMax = $generalMatches[0];
 		$uploadMax = $generalMatches[1];
-		$totalUse = $generalMatches[2];
+		$downloadUse = $generalMatches[2];
 		$uploadUse = $generalMatches[3];
-		$totalLeft = $totalMax - $totalUse;
+		$downloadLeft = $downloadMax - $downloadUse;
 		$uploadLeft = $uploadMax - $uploadUse;
-		$totalPercent = (100 / $totalMax) * $totalUse;
+		$downloadPercent = (100 / $downloadMax) * $downloadUse;
 		$uploadPercent = (100 / $uploadMax) * $uploadUse;
 
 		$returnStr = "#DownlMax,DownlUsed,DownlPercent,DownlLeft\n";
-		$returnStr .= sprintf("%d,%d,%d,%d\n", $totalMax, $totalUse, $totalPercent, $totalLeft);
+		$returnStr .= sprintf("%d,%d,%d,%d\n", $downloadMax, $downloadUse, $downloadPercent, $downloadLeft);
 		$returnStr .= "#UplMax,UplUsed,UplPercent,UplLeft\n";
 		$returnStr .= sprintf("%d,%d,%d,%d\n", $uploadMax, $uploadUse, $uploadPercent, $uploadLeft);
 
@@ -105,10 +105,10 @@ class telemeterPublisher
 			for ($i = 0; $i < count($dailyMatches); $i++)
 			{
 				$date = $dailyMatches[$i++];
-				$total = $dailyMatches[$i++];
+				$download = $dailyMatches[$i++];
 				$upload = $dailyMatches[$i];
 
-				$returnStr .= sprintf("%s,%d,%d\n",$date, $total, $upload);
+				$returnStr .= sprintf("%s,%d,%d\n",$date, $download, $upload);
 			}
 		}
 
