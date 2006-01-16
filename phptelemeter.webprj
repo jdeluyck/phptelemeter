@@ -40,5 +40,6 @@
       <openfolder url="modules" />
       <openfolder url="modules/libs" />
     </treestatus>
+    <annotations/>
   </project>
 </webproject>
