@@ -49,7 +49,11 @@ $configuration = checkConfig($configuration, $configFile);
 //echo $configuration["general"]["modulepath"];
 set_include_path($configuration["general"]["modulepath"]);
 
-if ($configuration["general"]["debug"] == true) dumpConfig($configuration);
+if ($configuration["general"]["debug"] == true) 
+{
+	error_reporting(E_ALL);
+	dumpConfig($configuration);
+}
 
 /* load the necessary modules */
 

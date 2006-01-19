@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter_web");
-define("_phptelemeter_parser_version", "6");
+define("_phptelemeter_parser_version", "7");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -37,6 +37,8 @@ class telemeterParser
 	var $debug = false;
 	var $neededModules = array("curl");
 
+	var $months;
+
 	function setDebug($debug)
 	{
 		$this->debug = $debug;
@@ -49,21 +51,21 @@ class telemeterParser
 
 	function telemeterParser()
 	{
-		//$this->_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
-		//$this->_postFields = "goto=http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR";
 		/* do some var initialisation */
 		$this->_cookieFile = tempnam("/tmp/", "phptelemeter");
 
 		$this->url["login"] = "https://www.telenet.be/sys/sso/signon.jsp";
-		$this->url["generalStats"] = "https://www.telenet.be/sys/sso/jump.jsp?https://services.telenet.be/isps/MainServlet?ACTION=TELEMTR&SSOSID=\$SSOSID\$";
-
-		$this->url["dailyStats"] = "https://services.telenet.be/isps/be/telenet/ebiz/ium/Histogram.jsp";
+		$this->url["stats"] = "https://services.telenet.be/lngtlm/detail.html";
 		$this->url["logout"] = "https://www.telenet.be/sys/sso/signoff.jsp";
 
 		$this->errors = array("sso.login.authfail.PasswordNOK" => "Incorrect password",
 							"sso.login.authfail.LoginDoesNotExist" => "Incorrect username.",
 							"sso.login.invaliduid" => "Invalid username",
 							"sso.jump.nocookie" => "No cookie detected");
+
+		$this->months["nl"] = array("januari" => 1, "februari" => 2, "maart" => 3, "april" => 4, "mei" => 5, "juni" => 6, "juli"    => 7, "augustus" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
+		$this->months["en"] = array("january" => 1, "february" => 2, "march" => 3, "april" => 4, "may" => 5, "june" => 6, "july"    => 7, "august"   => 8, "september" => 9, "october" => 10, "november" => 11, "december" => 12);
+		$this->months["fr"] = array("janvier" => 1, "février"  => 2, "mars"  => 3, "avril" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "août"     => 8, "septembre" => 9, "octobre" => 10, "novembre" => 11, "décembre" => 12);
 	}
 
 	/* exit function for us. Destroys the cookiefile */
@@ -137,6 +139,97 @@ class telemeterParser
 		$log = $this->doCurl($this->url["login"], $this->createAuthPostFields($userName, $password));
 		$this->checkForError($log);
 
+		/* get the data */		
+		$data = $this->doCurl($this->url["stats"], FALSE);
+		$this->checkForError($generalData);
+
+		/* logout */
+		$this->doCurl($this->url["logout"], FALSE);
+
+		/* clean out the data a bit */
+		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));
+		$data2 = explode("\n", $data);
+
+		for ($i = 0; $i < count($data2); $i++)
+		{
+			$data2[$i] = trim($data2[$i]);
+			if (strlen($data2[$i]) != 0)
+				$data3[] = $data2[$i];
+		}
+
+		/* download - total */
+		$remaining = str_replace(".", "", substr($data3[30],0,-3));
+		$used      = str_replace(".", "", substr($data3[29],0,-3));
+
+		$generalMatches[0] = $remaining + $used;
+		$generalMatches[2] = $used;
+
+		/* upload - total */
+		$remaining = str_replace(".", "", substr($data3[153],0,-3));
+		$used      = str_replace(".", "", substr($data3[152],0,-3));
+
+ 		$generalMatches[1] = $remaining + $used;
+		$generalMatches[3] = $used;
+
+		/* determine the date range */
+		$dateRange = explode(" ", $data3[2]);
+		
+		// change the month
+		if (array_key_exists($dateRange[3], $this->months["nl"]))
+			$lang = "nl";
+		elseif (array_key_exists($dateRange[3], $this->months["fr"]))
+			$lang = "fr";
+		else
+			$lang = "en";
+
+		$dateRange[3] = $this->months[$lang][$dateRange[3]];
+		$dateRange[7] = $this->months[$lang][$dateRange[7]];
+
+		$start = mktime(0, 0, 0, $dateRange[3], $dateRange[2], $dateRange[4]);
+		$end = mktime(0, 0, 0, $dateRange[7], $dateRange[6], $dateRange[8]);
+
+		$days = intval(($end - $start) / 86400) + 1;
+
+		if ($this->debug == true)
+		{
+			echo "start: ", $start, " ", date("Y-m-d", $start), "\n";
+			echo "end: ", $end, " ", date("Y-m-d", $end), "\n";
+			echo "days: ", $days, " \n";
+		}
+
+		/* now do the magic for getting the values of the days */
+		$downloadPos = 35;
+		$uploadPos = 158;
+
+		for ($i = 1; $i <= $days; $i++)
+		{
+	
+			if ($data3[$downloadPos] == "&gt;")
+			{
+				$downloadPos++;
+				$uploadPos++;
+			}
+			
+			$dailyMatches[] = date("d-m-Y", $start + (($i - 1) * 86400));
+			$dailyMatches[] = $data3[++$downloadPos] + $data3[++$downloadPos];
+			$dailyMatches[] = $data3[++$uploadPos] + $data3[++$uploadPos];
+
+			/* increase pos by one, we don't care for the dates */
+			$downloadPos++;
+			$uploadPos++;
+		}			
+
+		$returnValue["general"] = $generalMatches;
+		$returnValue["daily"] = $dailyMatches;
+
+		if ($this->debug == true)
+			print_r($returnValue);
+
+		return ($returnValue);
+
+
+	if (1 == 0)
+	{
 		/* main statistics */
 		$generalData = $this->doCurl($this->url["generalStats"], FALSE);
 		$this->checkForError($generalData);
@@ -162,9 +255,6 @@ class telemeterParser
 		preg_match_all("{\t{6,7}(\d\d/\d\d/\d\d|\d+)}", $dailyData, $dailyMatches);
 		$dailyMatches = $dailyMatches[1];
 
-		/* logout */
-		$this->doCurl($this->url["logout"], FALSE);
-
 		/* reformat to MB */
 		$generalMatches[0] = $generalMatches[0] * 1024;
 		$generalMatches[1] = $generalMatches[1] * 1024;
@@ -177,14 +267,7 @@ class telemeterParser
 			$generalMatches[2] += $dailyMatches[$i++];
 			$generalMatches[3] += $dailyMatches[$i];
 		}
-
-		$returnValue["general"] = $generalMatches;
-		$returnValue["daily"] = $dailyMatches;
-
-		if ($this->debug == true)
-			print_r($returnValue);
-
-		return ($returnValue);
+	}	
 	}
 }
 

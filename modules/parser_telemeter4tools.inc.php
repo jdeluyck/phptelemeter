@@ -35,8 +35,8 @@ class telemeterParser
 {
 	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?wsdl";
 
-	var $useEndpointUrl = false;
-	var $endpointUrl = "https://telemeter4tools.telenet.be/TelemeterService";
+	var $useEndpointUrl = true;
+	var $endpointUrl = "https://telemeter4tools.services.telenet.be/TelemeterService";
 
 	var $errors_critical;
 	var $errors_normal;
@@ -115,7 +115,7 @@ class telemeterParser
 			doError("SOAP Error", $error, true);
 
 		/* Do we need to override the endpoint url returned by the wdsl? */
-		if ($this->useEndpointUrl == true) 
+		if ($this->useEndpointUrl == true)
 			$client->setEndPoint($this->endpointUrl);
 
 		$result = $client->call('getUsage', array($userName, $password));

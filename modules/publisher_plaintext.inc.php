@@ -102,7 +102,7 @@ class telemeterPublisher
 
 		if ($showRemaining == true)
 		{
-			if ($DownloadLeft <= 0)
+			if ($downloadLeft <= 0)
 			{
 				$totalDownloadString = "\nYou have exceeded your download volume by %d MiB.";
 				$totalUploadString = "";
@@ -114,7 +114,7 @@ class telemeterPublisher
 			}
 			else
 			{
-				$totalDownloadString = "\nYou can download %d MiB without exceeding your total volume.";
+				$totalDownloadString = "\nYou can download %d MiB without exceeding your download volume.";
 				$totalUploadString = "\nYou can upload %d MiB without exceeding your upload volume.";
 			}
 
