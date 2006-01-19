@@ -4,8 +4,8 @@ What is it?
 ~~~~~~~~~~~
 - phptelemeter is a script that can read the webpages for the
   webbased 'quota' monitor for the Belgian ISP 'Telenet'.
-  These pages contain both the actual status (which is refreshed
-  nightly), and a 30-day shifting window history. This history
+  These pages contain both the actual status,  and the status since
+  the last 'reset', which happens on the date of your invoice. This
   is what makes up the used quota.
 - Alternatively (and recommended) it can parse the Telemeter4Tools
   status pages, which are designed not to break on each update by

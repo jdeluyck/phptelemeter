@@ -5,6 +5,8 @@ What's new? Not much, but it's listed here.
 - Changed telemeter4tools parser to use the new SOAP url
 - Changed the publishers to reflect the new telemeter
 - Updated the NuSoap library
+- Updated the telemeter_web parser to be usable on the new pages.
+- Added more debugging code.
 
 0.25
 ~~~~
