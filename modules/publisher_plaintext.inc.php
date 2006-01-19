@@ -126,8 +126,8 @@ class telemeterPublisher
 		if ($showDaily == true)
 		{
 			$returnStr .= "\n";
-			$returnStr .= "Statistics for last 30 days\n";
-			$returnStr .= "---------------------------\n";
+			$returnStr .= "Statistics from " . $dailyMatches[0] . " to " . $dailyMatches[count ($dailyMatches) - 3] . "\n";
+			$returnStr .= "------------------------------------\n";
 			$returnStr .= "\n";
 			$returnStr .= str_repeat("-", 42) . "\n";
 			$returnStr .= sprintf("| %-8s | %s | %s |\n", "Date", "Download used", "Upload used");

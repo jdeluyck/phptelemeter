@@ -113,7 +113,7 @@ class telemeterPublisher
 
 		if ($showRemaining == true)
 		{
-			if ($totalLeft <= 0)
+			if ($downloadLeft <= 0)
 			{
 				$totaldownloadString = "\n<br>You have exceeded your download volume by %d MiB.";
 				$totalUploadString = "";
@@ -136,7 +136,7 @@ class telemeterPublisher
 
 		if ($showDaily == true)
 		{
-			$returnStr .= "<h2>Statistics for last 30 days</h2>\n";
+			$returnStr .= "<h2>Statistics from " . $dailyMatches[0] . " to " . $dailyMatches[count ($dailyMatches) - 3] . "</h2>";
 			$returnStr .= "
 			<table border='1'>
 			<tr>

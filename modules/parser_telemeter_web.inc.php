@@ -210,7 +210,7 @@ class telemeterParser
 				$uploadPos++;
 			}
 			
-			$dailyMatches[] = date("d-m-Y", $start + (($i - 1) * 86400));
+			$dailyMatches[] = date("d-m-y", $start + (($i - 1) * 86400));
 			$dailyMatches[] = $data3[++$downloadPos] + $data3[++$downloadPos];
 			$dailyMatches[] = $data3[++$uploadPos] + $data3[++$uploadPos];
 
