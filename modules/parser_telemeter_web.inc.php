@@ -159,16 +159,27 @@ class telemeterParser
 				$data3[] = $data[$i];
 		}
 
+		if ($this->debug == true)
+			var_dump($data3);
+
 		/* download - total */
-		$remaining = str_replace(".", "", substr($data3[30],0,-3));
-		$used      = str_replace(".", "", substr($data3[29],0,-3));
+		$start = 28;
+		if (strtolower($data3[$start++]) != "totaal")
+			$start++;
+
+		$used      = str_replace(".", "", substr($data3[$start++],0,-3));
+		$remaining = str_replace(".", "", substr($data3[$start],0,-3));
 
 		$generalMatches[0] = $remaining + $used;
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$remaining = str_replace(".", "", substr($data3[153],0,-3));
-		$used      = str_replace(".", "", substr($data3[152],0,-3));
+		$start = 151;
+		if (strtolower($data3[$start++]) != "totaal")
+			$start++;
+
+		$used      = str_replace(".", "", substr($data3[$start++],0,-3));
+		$remaining = str_replace(".", "", substr($data3[$start],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
