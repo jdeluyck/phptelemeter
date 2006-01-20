@@ -155,7 +155,7 @@ class telemeterParser
 		for ($i = 0; $i < count($data); $i++)
 		{
 			$data[$i] = trim($data[$i]);
-			if (strlen($data[$i]) != 0)
+			if (strlen($data[$i]) != 0 && stristr($data[$i], "gratis") === false)
 				$data3[] = $data[$i];
 		}
 
@@ -163,25 +163,17 @@ class telemeterParser
 			var_dump($data3);
 
 		/* download - total */
-		$correction = 0;
+		$downCorrection = 0;
 
-		$start = 28;
-		if (strtolower($data3[$start++]) != "totaal")
-			$correction++;
-
-		$used      = str_replace(".", "", substr($data3[$start++ + $correction],0,-3));
-		$remaining = str_replace(".", "", substr($data3[$start + $correction],0,-3));
+		$used      = str_replace(".", "", substr($data3[29],0,-3));
+		$remaining = str_replace(".", "", substr($data3[30],0,-3));
 
 		$generalMatches[0] = $remaining + $used;
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$start = 151;
-		if (strtolower($data3[$start++]) != "totaal")
-			$correction++;
-
-		$used      = str_replace(".", "", substr($data3[$start++ + $correction],0,-3));
-		$remaining = str_replace(".", "", substr($data3[$start + $correction],0,-3));
+		$used      = str_replace(".", "", substr($data3[152],0,-3));
+		$remaining = str_replace(".", "", substr($data3[153],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
@@ -206,8 +198,8 @@ class telemeterParser
 		}
 
 		/* now do the magic for getting the values of the days */
-		$downloadPos = 35 + $correction;
-		$uploadPos = 158 + $correction;
+		$downloadPos = 35;
+		$uploadPos = 158;
 
 		for ($i = 1; $i <= $days; $i++)
 		{

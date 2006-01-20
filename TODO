@@ -1,2 +1,3 @@
 * Check compatibility with win32 platforms
 * auto fallback mechanism
+* add option to not display the graphs
