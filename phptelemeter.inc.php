@@ -359,4 +359,21 @@ function loadPublisher($configuration)
 
 }
 
+function calculateUsage($data)
+{
+	$returnValue["download"]["max"]     = $data[0];
+	$returnValue["download"]["use"]     = $data[2];
+	$returnValue["download"]["left"]    = $returnValue["download"]["max"] - $returnValue["download"]["use"];
+	$returnValue["download"]["percent"] = (100 / $returnValue["download"]["max"]) * $returnValue["download"]["use"];
+	$returnValue["download"]["hashes"]  = $returnValue["download"]["percent"] / 5;
+
+	$returnValue["upload"]["max"]     = $data[1];
+	$returnValue["upload"]["use"]     = $data[3];
+	$returnValue["upload"]["left"]    = $returnValue["upload"]["max"] - $returnValue["upload"]["use"];
+	$returnValue["upload"]["percent"] = (100 / $returnValue["upload"]["max"]) * $returnValue["upload"]["use"];
+	$returnValue["upload"]["hashes"]  = $returnValue["upload"]["percent"] / 5;
+
+	return ($returnValue);
+}
+
 ?>

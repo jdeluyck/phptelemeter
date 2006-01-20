@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "html");
-define("_phptelemeter_publisher_version", "2");
+define("_phptelemeter_publisher_version", "3");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -89,36 +89,25 @@ class telemeterPublisher
 	/* EXTERNAL! */
 	function publishData($data, $showRemaining, $showDaily)
 	{
-		$generalMatches = $data["general"];
-		$dailyMatches   = $data["daily"];
+		$generalData = $data["general"];
+		$dailyData   = $data["daily"];
 
 		// general data, always shown
-
-		$downloadMax = $generalMatches[0];
-		$uploadMax = $generalMatches[1];
-		$downloadUse = $generalMatches[2];
-		$uploadUse = $generalMatches[3];
-		$downloadLeft = $downloadMax - $downloadUse;
-		$uploadLeft = $uploadMax - $uploadUse;
-		$downloadPercent = (100 / $downloadMax) * $downloadUse;
-		$uploadPercent = (100 / $uploadMax) * $uploadUse;
-
-		$downloadHashes = $downloadPercent / 5;
-		$uploadHashes = $uploadPercent / 5;
+		$usage = calculateUsage($generalData);
 
 		$returnStr = "<h2>Telemeter statistics on " . date("d/m/Y") . "</h2>\n";
 
-		$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $downloadHashes) . str_repeat("&nbsp", 20 - $uploadHashes),$downloadUse, $downloadPercent);
-		$returnStr .= sprintf("&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $uploadHashes) . str_repeat("&nbsp", 20 - $uploadHashes),$uploadUse, $uploadPercent);
+		$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"]);
+		$returnStr .= sprintf("&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"]);
 
 		if ($showRemaining == true)
 		{
-			if ($downloadLeft <= 0)
+			if ($usage["download"]["left"] <= 0)
 			{
 				$totaldownloadString = "\n<br>You have exceeded your download volume by %d MiB.";
 				$totalUploadString = "";
 			}
-			elseif ($uploadLeft <= 0)
+			elseif ($usage["upload"]["left"] <= 0)
 			{
 				$totaldownloadString = "";
 				$totalUploadString = "\n<br>You have exceeded your upload volume by %d MiB.";
@@ -129,14 +118,14 @@ class telemeterPublisher
 				$totalUploadString = "\n<br>You can upload %d MiB without exceeding your upload volume.";
 			}
 
-			$returnStr .= sprintf($totaldownloadString, abs($downloadLeft));
-			$returnStr .= sprintf($totalUploadString, abs($uploadLeft));
+			$returnStr .= sprintf($totaldownloadString, abs($usage["download"]["left"]));
+			$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
 			$returnStr .= "<br>";
 		}
 
 		if ($showDaily == true)
 		{
-			$returnStr .= "<h2>Statistics from " . $dailyMatches[0] . " to " . $dailyMatches[count ($dailyMatches) - 3] . "</h2>";
+			$returnStr .= "<h2>Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - 3] . "</h2>";
 			$returnStr .= "
 			<table border='1'>
 			<tr>
@@ -145,11 +134,11 @@ class telemeterPublisher
 				<th>Upload used</th>
 			</tr>";
 
-			for ($i = 0; $i < count($dailyMatches); $i++)
+			for ($i = 0; $i < count($dailyData); $i++)
 			{
-				$date = $dailyMatches[$i++];
-				$download = $dailyMatches[$i++];
-				$upload = $dailyMatches[$i];
+				$date = $dailyData[$i++];
+				$download = $dailyData[$i++];
+				$upload = $dailyData[$i];
 
 				$returnStr .= sprintf("<tr>\n<td> %8s </td>\n<td> %7d MiB </td>\n<td> %7d MiB </td>\n</tr>\n", $date, $download, $upload);
 			}

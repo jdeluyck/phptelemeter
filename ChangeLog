@@ -1,5 +1,10 @@
 What's new? Not much, but it's listed here.
 
+0.26-pre3
+~~~~~~~~~
+- Moved the calculation of the values to the main program instead of the
+  parsers
+
 0.26-pre2
 ~~~~~~~~~
 - Fixed a bug in the multi-account handling of the telemeter_web parser,

@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "machine");
-define("_phptelemeter_publisher_version", "2");
+define("_phptelemeter_publisher_version", "3");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -65,36 +65,29 @@ class telemeterPublisher
 	/* EXTERNAL */
 	function accountHeader($accountName)
 	{
-		return($accountName . "\n");
+		return("\n#AccountName\n" . $accountName . "\n");
 	}
 
 	/* EXTERNAL */
 	function accountFooter()
 	{
-		return("");
+		return("\n");
 	}
 
 	/* EXTERNAL! */
 	function publishData($data, $showRemaining, $showDaily)
 	{
-		$generalMatches = $data["general"];
-		$dailyMatches   = $data["daily"];
+		$generalData = $data["general"];
+		$dailyData   = $data["daily"];
 
 		// general data, always shown
 
-		$downloadMax = $generalMatches[0];
-		$uploadMax = $generalMatches[1];
-		$downloadUse = $generalMatches[2];
-		$uploadUse = $generalMatches[3];
-		$downloadLeft = $downloadMax - $downloadUse;
-		$uploadLeft = $uploadMax - $uploadUse;
-		$downloadPercent = (100 / $downloadMax) * $downloadUse;
-		$uploadPercent = (100 / $uploadMax) * $uploadUse;
+		$usage = calculateUsage($generalData);
 
 		$returnStr = "#DownlMax,DownlUsed,DownlPercent,DownlLeft\n";
-		$returnStr .= sprintf("%d,%d,%d,%d\n", $downloadMax, $downloadUse, $downloadPercent, $downloadLeft);
+		$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["download"]["max"], $usage["download"]["use"], $usage["download"]["percent"], $usage["download"]["left"]);
 		$returnStr .= "#UplMax,UplUsed,UplPercent,UplLeft\n";
-		$returnStr .= sprintf("%d,%d,%d,%d\n", $uploadMax, $uploadUse, $uploadPercent, $uploadLeft);
+		$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["upload"]["max"], $usage["upload"]["use"], $usage["upload"]["percent"], $usage["upload"]["left"]);
 
 		$returnStr .= "\n";
 
@@ -102,11 +95,11 @@ class telemeterPublisher
 		{
 			$returnStr .= "#Date,DownlUsed,UplUsed\n";
 
-			for ($i = 0; $i < count($dailyMatches); $i++)
+			for ($i = 0; $i < count($dailyData); $i++)
 			{
-				$date = $dailyMatches[$i++];
-				$download = $dailyMatches[$i++];
-				$upload = $dailyMatches[$i];
+				$date = $dailyData[$i++];
+				$download = $dailyData[$i++];
+				$upload = $dailyData[$i];
 
 				$returnStr .= sprintf("%s,%d,%d\n",$date, $download, $upload);
 			}
