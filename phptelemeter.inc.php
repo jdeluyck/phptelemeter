@@ -30,7 +30,7 @@ if (version_compare("4.3.0", phpversion(), "<=") == 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.26-pre2");
+define("_version", "0.26-pre3");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
@@ -293,8 +293,7 @@ function parseArgs($argv, $configuration)
 				echo "phptelemeter [--daily] [--debug] [--remaining] [--file-output] [--new-config]\n";
 				echo "--daily\t\tShows statistics for last 30 days\n";
 				echo "--debug\t\tShows some debugging info\n";
-				echo "--remaining\tShows your max traffic allotment for today. This flag\n";
-				echo "\t\tis always active for --parser output.\n";
+				echo "--remaining\tShows your max traffic allotment for today.\n"
 				echo "--file-output\tActivates file output instead of screen output.\n";
 				echo "--new-config\tMakes a new dummy config file in the current directory.\n";
 				echo "\n";
