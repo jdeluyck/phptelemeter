@@ -1,5 +1,10 @@
 What's new? Not much, but it's listed here.
 
+0.26-pre2
+~~~~~~~~~
+- Fixed a bug in the multi-account handling of the telemeter_web parser,
+  thanks to YvesDM for reporting this.
+
 0.26-pre1
 ~~~~~~~~~
 - Changed telemeter4tools parser to use the new SOAP url

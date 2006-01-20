@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter_web");
-define("_phptelemeter_parser_version", "7");
+define("_phptelemeter_parser_version", "8");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -63,9 +63,10 @@ class telemeterParser
 							"sso.login.invaliduid" => "Invalid username",
 							"sso.jump.nocookie" => "No cookie detected");
 
-		$this->months["nl"] = array("januari" => 1, "februari" => 2, "maart" => 3, "april" => 4, "mei" => 5, "juni" => 6, "juli"    => 7, "augustus" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
-		$this->months["en"] = array("january" => 1, "february" => 2, "march" => 3, "april" => 4, "may" => 5, "june" => 6, "july"    => 7, "august"   => 8, "september" => 9, "october" => 10, "november" => 11, "december" => 12);
-		$this->months["fr"] = array("janvier" => 1, "février"  => 2, "mars"  => 3, "avril" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "août"     => 8, "septembre" => 9, "octobre" => 10, "novembre" => 11, "décembre" => 12);
+		//$this->months["nl"] = array("januari" => 1, "februari" => 2, "maart" => 3, "april" => 4, "mei" => 5, "juni" => 6, "juli"    => 7, "augustus" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
+		//$this->months["en"] = array("january" => 1, "february" => 2, "march" => 3, "april" => 4, "may" => 5, "june" => 6, "july"    => 7, "august"   => 8, "september" => 9, "october" => 10, "november" => 11, "december" => 12);
+		//$this->months["fr"] = array("janvier" => 1, "février"  => 2, "mars"  => 3, "avril" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "août"     => 8, "septembre" => 9, "octobre" => 10, "novembre" => 11, "décembre" => 12);
+		$this->months = array("januari" => 1, "februari" => 2, "maart" => 3, "april" => 4, "mei" => 5, "juni" => 6, "juli"    => 7, "augustus" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
 	}
 
 	/* exit function for us. Destroys the cookiefile */
@@ -141,20 +142,21 @@ class telemeterParser
 
 		/* get the data */		
 		$data = $this->doCurl($this->url["stats"], FALSE);
-		$this->checkForError($generalData);
+		$this->checkForError($data);
 
 		/* logout */
-		$this->doCurl($this->url["logout"], FALSE);
+		$log = $this->doCurl($this->url["logout"], FALSE);
+		$this->checkForError($log);
 
 		/* clean out the data a bit */
 		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));
-		$data2 = explode("\n", $data);
+		$data = explode("\n", $data);
 
-		for ($i = 0; $i < count($data2); $i++)
+		for ($i = 0; $i < count($data); $i++)
 		{
-			$data2[$i] = trim($data2[$i]);
-			if (strlen($data2[$i]) != 0)
-				$data3[] = $data2[$i];
+			$data[$i] = trim($data[$i]);
+			if (strlen($data[$i]) != 0)
+				$data3[] = $data[$i];
 		}
 
 		/* download - total */
@@ -175,15 +177,15 @@ class telemeterParser
 		$dateRange = explode(" ", $data3[2]);
 		
 		// change the month
-		if (array_key_exists($dateRange[3], $this->months["nl"]))
+		/*if (array_key_exists($dateRange[3], $this->months["nl"]))
 			$lang = "nl";
 		elseif (array_key_exists($dateRange[3], $this->months["fr"]))
 			$lang = "fr";
 		else
 			$lang = "en";
-
-		$dateRange[3] = $this->months[$lang][$dateRange[3]];
-		$dateRange[7] = $this->months[$lang][$dateRange[7]];
+		*/
+		$dateRange[3] = $this->months[$dateRange[3]];
+		$dateRange[7] = $this->months[$dateRange[7]];
 
 		$start = mktime(0, 0, 0, $dateRange[3], $dateRange[2], $dateRange[4]);
 		$end = mktime(0, 0, 0, $dateRange[7], $dateRange[6], $dateRange[8]);
@@ -225,49 +227,10 @@ class telemeterParser
 		if ($this->debug == true)
 			print_r($returnValue);
 
+		// we need to unlink the cookiefile here, otherwise we get 'ghost' data.
+		@unlink ($this->_cookieFile);
+
 		return ($returnValue);
-
-
-	if (1 == 0)
-	{
-		/* main statistics */
-		$generalData = $this->doCurl($this->url["generalStats"], FALSE);
-		$this->checkForError($generalData);
-
-		/* Now, try to find the GB indicators. */
-		$wordList = preg_split("/[\s]+/", trim(strip_tags($generalData)));
-
-		for ($j = 0; $j < count($wordList); $j++)
-		{
-			if (strpos($wordList[$j], "GB") !== false)
-				$temp[] = $wordList[$j-1];
-		}
-
-		$generalMatches = array_merge($temp, $generalMatches[1]);
-
-		$generalMatches[1] = str_replace(",",".",$generalMatches[1]);
-
-		/* daily view data */
-		$dailyData = $this->doCurl($this->url["dailyStats"], FALSE);
-		$this->checkForError($dailyData);
-
-		/* parse the dailyData. */
-		preg_match_all("{\t{6,7}(\d\d/\d\d/\d\d|\d+)}", $dailyData, $dailyMatches);
-		$dailyMatches = $dailyMatches[1];
-
-		/* reformat to MB */
-		$generalMatches[0] = $generalMatches[0] * 1024;
-		$generalMatches[1] = $generalMatches[1] * 1024;
-
-		/* calculate the used amounts */
-		$generalMatches[2] = $generalMatches[3] = 0;
-		for ($i = 0; $i < count($dailyMatches); $i++)
-		{
-			$i++;
-			$generalMatches[2] += $dailyMatches[$i++];
-			$generalMatches[3] += $dailyMatches[$i];
-		}
-	}	
 	}
 }
 
