@@ -163,12 +163,14 @@ class telemeterParser
 			var_dump($data3);
 
 		/* download - total */
+		$correction = 0;
+
 		$start = 28;
 		if (strtolower($data3[$start++]) != "totaal")
-			$start++;
+			$correction++;
 
-		$used      = str_replace(".", "", substr($data3[$start++],0,-3));
-		$remaining = str_replace(".", "", substr($data3[$start],0,-3));
+		$used      = str_replace(".", "", substr($data3[$start++ + $correction],0,-3));
+		$remaining = str_replace(".", "", substr($data3[$start + $correction],0,-3));
 
 		$generalMatches[0] = $remaining + $used;
 		$generalMatches[2] = $used;
@@ -176,10 +178,10 @@ class telemeterParser
 		/* upload - total */
 		$start = 151;
 		if (strtolower($data3[$start++]) != "totaal")
-			$start++;
+			$correction++;
 
-		$used      = str_replace(".", "", substr($data3[$start++],0,-3));
-		$remaining = str_replace(".", "", substr($data3[$start],0,-3));
+		$used      = str_replace(".", "", substr($data3[$start++ + $correction],0,-3));
+		$remaining = str_replace(".", "", substr($data3[$start + $correction],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
@@ -188,13 +190,6 @@ class telemeterParser
 		$dateRange = explode(" ", $data3[2]);
 		
 		// change the month
-		/*if (array_key_exists($dateRange[3], $this->months["nl"]))
-			$lang = "nl";
-		elseif (array_key_exists($dateRange[3], $this->months["fr"]))
-			$lang = "fr";
-		else
-			$lang = "en";
-		*/
 		$dateRange[3] = $this->months[$dateRange[3]];
 		$dateRange[7] = $this->months[$dateRange[7]];
 
@@ -211,8 +206,8 @@ class telemeterParser
 		}
 
 		/* now do the magic for getting the values of the days */
-		$downloadPos = 35;
-		$uploadPos = 158;
+		$downloadPos = 35 + $correction;
+		$uploadPos = 158 + $correction;
 
 		for ($i = 1; $i <= $days; $i++)
 		{
