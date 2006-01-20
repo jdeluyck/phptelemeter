@@ -67,24 +67,24 @@ Configuration file location
 Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
-daily=true							# Show 30-day stats (true/false)
-show_remaining=true					# Show how much you have remaining (true/false)
-file_output=false					# Sets if file output should be used instead of screen (stdout)
+daily=true				# Show 30-day stats (true/false)
+show_remaining=true			# Show how much you have remaining (true/false)
+file_output=false			# Sets if file output should be used instead of screen (stdout)
 file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
-parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools and
-									#  telemeter_web are included.
-publisher=plaintext					# The publisher module to use. Currently plaintext, machine and
-									#  html are included.
+parser=telemeter4tools			# The parsing module to use. Currently telemeter4tools and
+					#  telemeter_web are included.
+publisher=plaintext			# The publisher module to use. Currently plaintext, machine and
+					#  html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
 [account-1]
-username=youruser					# The username of account-1
-password=yourpassword				# The password of account-1
+username=youruser			# The username of account-1
+password=yourpassword			# The password of account-1
 description=your description		# Description of account-1, if it is set it'll be used instead
-									#  of the account name in the output
+					#  of the account name in the output
 ...
 [account-9]
-username=youruser					# The username of account-9
-password=yourpassword				# The password of account-9
+username=youruser			# The username of account-9
+password=yourpassword			# The password of account-9
 description=your description		# Description of account-9
 
 Where to get it
@@ -107,8 +107,10 @@ Credits
 Bugs
 ~~~~
 - What? Bugs? Nooo... can't be. I'm infallible. Or smthing. ;p
-  Just file them with the Bugtracker on the Sourceforge page.
+  Just file them with the Bugtracker on the Sourceforge page, at
+  http://sourceforge.net/tracker/?group_id=149435&atid=774600
 
 New features
 ~~~~~~~~~~~~
 - Got a great idea? File it with feature requests at Sourceforge.
+  http://sourceforge.net/tracker/?group_id=149435&atid=774603
