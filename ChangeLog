@@ -2,6 +2,12 @@ What's new? Not much, but it's listed here.
 
 0.26-pre3
 ~~~~~~~~~
+- Added option show_graph (and command line --graph) to show (or not)
+  the transfer graphs
+- Moved some common code to functions
+
+0.26-pre3
+~~~~~~~~~
 - Moved the calculation of the values to the main program instead of the
   parsers
 - Fixed problems with the telemeter_web parser and 'big' accounts.

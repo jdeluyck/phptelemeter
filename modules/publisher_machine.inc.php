@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "machine");
-define("_phptelemeter_publisher_version", "3");
+define("_phptelemeter_publisher_version", "4");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -75,7 +75,7 @@ class telemeterPublisher
 	}
 
 	/* EXTERNAL! */
-	function publishData($data, $showRemaining, $showDaily)
+	function publishData($data, $showRemaining, $showDaily, $showGraph)
 	{
 		$generalData = $data["general"];
 		$dailyData   = $data["daily"];

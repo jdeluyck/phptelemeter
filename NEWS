@@ -1,3 +1,10 @@
+Starting phptelemeter 0.26, the config parameter "show_graph" was added.
+
+Please put in your config file under the [general] section:
+show_graph=true (or false)
+
+OLD NEWS:
+~~~~~~~~~
 Starting phptelemeter 0.24, the config parameter style has been replaced by the new
 publisher parameter. You can set it to either plaintext, html or machine:
 
@@ -7,8 +14,6 @@ publiser=machine
 or
 publisher=html
 
-OLD NEWS:
-~~~~~~~~~
 Starting phptelemeter 0.21, an optional parameter was added to the config file:
 modulepath=/path/to/phptelemeter
 

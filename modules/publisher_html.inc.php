@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "html");
-define("_phptelemeter_publisher_version", "3");
+define("_phptelemeter_publisher_version", "4");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -87,7 +87,7 @@ class telemeterPublisher
 	}
 
 	/* EXTERNAL! */
-	function publishData($data, $showRemaining, $showDaily)
+	function publishData($data, $showRemaining, $showDaily, $showGraph)
 	{
 		$generalData = $data["general"];
 		$dailyData   = $data["daily"];
@@ -97,8 +97,11 @@ class telemeterPublisher
 
 		$returnStr = "<h2>Telemeter statistics on " . date("d/m/Y") . "</h2>\n";
 
-		$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"]);
-		$returnStr .= sprintf("&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"]);
+		if ($showGraph == true)
+		{
+			$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"]);
+			$returnStr .= sprintf("&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"]);
+		}
 
 		if ($showRemaining == true)
 		{

@@ -30,7 +30,7 @@ if (version_compare("4.3.0", phpversion(), "<=") == 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.26-pre3");
+define("_version", "0.26-pre4");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
@@ -39,6 +39,10 @@ $HOME = getenv("HOME");
 
 $configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
+
+/* keys in the general section */
+$configKeys["required"] = array("daily", "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher");
+$configKeys["obsolete"] = array("style");
 
 /* -------------------------------- */
 /* Functions, functions, functions! */
@@ -126,8 +130,11 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; The options daily, show_remaining and file_output can be overridden\n" .
 			"; on the command line\n" .
 			"; useing --daily to output the daily statistics,\n" .
-			"; use --show_remaining to show the remaining quota,\n" .
+			"; use --remaining to show the remaining quota,\n" .
+			"; use --graph to show the usage graph,\n" . 
 			"; and use --file-output to activate file output.\n" .
+			";\n" .
+			"; An explanation for all parameters can be found in the README file.\n" .
 			";\n" .
 			"; You can specify multiple accounts by making stanza's named\n" .
 			"; [account-1] through [account-" . _maxAccounts . "]. Atleast one account is REQUIRED!.\n" .
@@ -135,6 +142,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"[general]\n" .
 			"daily=false\n" .
 			"show_remaining=false\n" .
+			"show_graph=true\n" . 
 			";\n" .
 			"file_prefix=/tmp/phptelemeter_\n" .
 			"file_output=false\n" .
@@ -175,7 +183,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 	else
 		doError("no write permissions", "No configuration file was found, and I was unable to create the dummy\nconfiguration file in $configFile.\nPlease check the permissions and rerun phptelemeter.\n", true);
 }
-function checkConfig($configuration, $configFile)
+function checkConfig($configuration, $configFile, $configKeys)
 {
 	/* ERROR CHECKING */
 
@@ -184,23 +192,12 @@ function checkConfig($configuration, $configFile)
 		quit();
 
 	/* protection against no-i-wont-edit-the-config users */
-	if (array_key_exists("die", $configuration))
-		doError("configuration not correct.", "Edit $configFile and remove the '[die]' line!", true);
+	checkConfigurationForKeys($configuration, array("die"), true, "configuration not correct.", "Edit $configFile and remove the \n%MSG%line!", true);
 
 	/* verify general configuration */
-	if (! array_key_exists("general", $configuration)					||
-		! array_key_exists("daily", $configuration["general"])			||
-		! array_key_exists("show_remaining", $configuration["general"])	||
-		! array_key_exists("file_prefix", $configuration["general"])	||
-		! array_key_exists("file_output", $configuration["general"])	||
-		! array_key_exists("parser", $configuration["general"])			||
-		! array_key_exists("publisher", $configuration["general"])
-	)
-		doError("configuration not correct.", "A configuration file was found, but it did not contain a valid\n[general] section with daily, show_remaining, file_output, \nfile_prefix, parser or publisher fields.\nPlease correct and rerun phptelemeter.", true);
-
-	/* check for obsolete keys */
-	if (array_key_exists("style", $configuration["general"]))
-		doError("obsolete key found.", "An obsolete key was found in your configuration.\nPlease refer to the NEWS file for important changes to the \nconfiguration file.", false);
+	checkConfigurationForKeys($configuration, array("general"), false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["required"], false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["obsolete"], true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
 
 	/* look for the modulepath */
 	if (! array_key_exists("modulepath", $configuration["general"]))
@@ -242,6 +239,25 @@ function checkConfig($configuration, $configFile)
 	return ($configuration);
 }
 
+/* checks if certain keys exist in the configuration section given,
+   displays an error message and optionally quits
+   NOTE: requires %MSG% in the $errorMsg string to insert the actual generated message*/
+function checkConfigurationForKeys($configurationSection, $keys, $keyThere, $errorTitle, $errorMsg, $quit)
+{
+	$msg = "";
+	for($i = 0; $i < count($keys); $i++)
+	{
+		if (array_key_exists($keys[$i], $configurationSection) === $keyThere)
+			$msg .= "- " . $keys[$i]. "\n";
+	}
+
+	if (strlen($msg) > 0)
+	{
+		$errorMsg = str_replace("%MSG%", $msg, $errorMsg);
+		doError($errorTitle, $errorMsg, $quit);
+	}
+} 
+
 /* Debugging: does a var_dump of the configfile */
 function dumpConfig($configuration)
 {
@@ -275,6 +291,12 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
+			case "--graph":
+			{
+				$configuration["general"]["show_graph"] = true;
+				break;
+			}
+
 			case "--file-output":
 			{
 				$configuration["general"]["file_output"] = true;
@@ -294,6 +316,7 @@ function parseArgs($argv, $configuration)
 				echo "--daily\t\tShows statistics for last 30 days\n";
 				echo "--debug\t\tShows some debugging info\n";
 				echo "--remaining\tShows your max traffic allotment for today.\n";
+				echo "--graph\t\tShows the usage graphs.\n";
 				echo "--file-output\tActivates file output instead of screen output.\n";
 				echo "--new-config\tMakes a new dummy config file in the current directory.\n";
 				echo "\n";

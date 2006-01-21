@@ -1,4 +1,4 @@
-phptelemeter v0.26-pre3 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v0.26-pre4 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -45,6 +45,7 @@ Command line options
 - There are several options (you can view them with --help):
   * --help - show help
   * --daily - show the 30day overview (overrides config)
+  * --graph - show the usage graph (overrides config)
   * --remaining - show the remaining quota (overrides config)
   * --debug - shows some debugging stuff
   * --file-output - sets the output to file mode instead of screen (stdout)
@@ -67,24 +68,25 @@ Configuration file location
 Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
-daily=true				# Show 30-day stats (true/false)
-show_remaining=true			# Show how much you have remaining (true/false)
-file_output=false			# Sets if file output should be used instead of screen (stdout)
+daily=true							# Show 30-day stats (true/false)
+show_remaining=true					# Show how much you have remaining (true/false)
+show_graph=true						# Show the transfer graph (true/false)
+file_output=false					# Sets if file output should be used instead of screen (stdout)
 file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
-parser=telemeter4tools			# The parsing module to use. Currently telemeter4tools and
-					#  telemeter_web are included.
-publisher=plaintext			# The publisher module to use. Currently plaintext, machine and
-					#  html are included.
+parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools and
+									#  telemeter_web are included.
+publisher=plaintext					# The publisher module to use. Currently plaintext, machine and
+									#  html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
 [account-1]
-username=youruser			# The username of account-1
-password=yourpassword			# The password of account-1
+username=youruser					# The username of account-1
+password=yourpassword				# The password of account-1
 description=your description		# Description of account-1, if it is set it'll be used instead
-					#  of the account name in the output
+									#  of the account name in the output
 ...
 [account-9]
-username=youruser			# The username of account-9
-password=yourpassword			# The password of account-9
+username=youruser					# The username of account-9
+password=yourpassword				# The password of account-9
 description=your description		# Description of account-9
 
 Where to get it
@@ -97,12 +99,15 @@ Credits
 - The CURL team for creating curl, which made my job easy
 - Robbie (creator of pytelemeter), for the hints on how to output the data.
 - My friends for just being there ;p
+- Haploc for the idea on multiple-account support
 - Telenet, for creating the Telemeter4Tools
 - NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
 - Eric Pollman for his XML Library (http://eric.pollmann.net/work/public_domain/)
 - Cajmere on be.comp.os.linux for a valid point about not finding the modules
   when it's installed systemwide
-- YvesDM on be.comp.os.linux for the hint of output publishers and account descriptions.
+- YvesDM on be.comp.os.linux for:
+   * the hint of output publishers and account descriptions.
+   * some serious help in bugfixing with 'Turbo' accounts
 
 Bugs
 ~~~~

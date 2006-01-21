@@ -43,17 +43,19 @@ $configFile = findConfigFile($configFiles, $configuration);
 
 $configuration = readConfig($configFile);
 $configuration = parseArgs($argv, $configuration);
-$configuration = checkConfig($configuration, $configFile);
-
-/* set the include path */
-//echo $configuration["general"]["modulepath"];
-set_include_path($configuration["general"]["modulepath"]);
 
 if ($configuration["general"]["debug"] == true) 
 {
 	error_reporting(E_ALL);
 	dumpConfig($configuration);
 }
+
+$configuration = checkConfig($configuration, $configFile, $configKeys);
+
+/* set the include path */
+//echo $configuration["general"]["modulepath"];
+set_include_path($configuration["general"]["modulepath"]);
+
 
 /* load the necessary modules */
 
@@ -93,7 +95,7 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 
 	echo $publisher->accountFooter();
 
-	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["daily"]);
+	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["daily"], $configuration["general"]["show_graph"]);
 
 	if ($configuration["general"]["file_output"] == true)
 	{
