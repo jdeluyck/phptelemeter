@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter_web");
-define("_phptelemeter_parser_version", "9");
+define("_phptelemeter_parser_version", "10");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
