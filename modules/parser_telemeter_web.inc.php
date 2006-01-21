@@ -99,8 +99,6 @@ class telemeterParser
 	/* Does some CURLing (no, not that strange sport on ice that l... I disgress. */
 	function doCurl($URL, $postFields)
 	{
-		//global $configuration;
-
 		if ($this->debug == true) echo "CURL: $URL\n";
 
 		$ch = curl_init($URL);
