@@ -4,6 +4,9 @@ What's new? Not much, but it's listed here.
 ~~~~~~~~~
 - Moved the calculation of the values to the main program instead of the
   parsers
+- Fixed a problem with the telemeter_web parser when there were lines 
+  mentioning 'free' traffic on the telemeter site - Thanks YvesDM!
+- 
 
 0.26-pre2
 ~~~~~~~~~

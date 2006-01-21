@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter_web");
-define("_phptelemeter_parser_version", "8");
+define("_phptelemeter_parser_version", "9");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -211,8 +211,8 @@ class telemeterParser
 			}
 			
 			$dailyMatches[] = date("d-m-y", $start + (($i - 1) * 86400));
-			$dailyMatches[] = $data3[++$downloadPos] + $data3[++$downloadPos];
-			$dailyMatches[] = $data3[++$uploadPos] + $data3[++$uploadPos];
+			$dailyMatches[] = str_replace(".", "", $data3[++$downloadPos] + $data3[++$downloadPos]);
+			$dailyMatches[] = str_replace(".", "", $data3[++$uploadPos] + $data3[++$uploadPos]);
 
 			/* increase pos by one, we don't care for the dates */
 			$downloadPos++;
