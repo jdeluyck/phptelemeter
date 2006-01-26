@@ -1,7 +1,14 @@
-Starting phptelemeter 0.26, the config parameter "show_graph" was added.
+Starting phptelemeter 0.26:
 
-Please put in your config file under the [general] section:
-show_graph=true (or false)
+* The config parameter "show_graph" was added.
+
+  Please put in your config file under the [general] section:
+  show_graph=true (or false)
+
+* The command line options are now case sensitive
+
+*
+
 
 OLD NEWS:
 ~~~~~~~~~

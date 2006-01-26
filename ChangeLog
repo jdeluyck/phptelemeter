@@ -6,6 +6,9 @@ What's new? Not much, but it's listed here.
 - Finally was able to fix the telemeter4tools parser, since the URL is
   back online.
 - Fixed some small discrepancy in the telemeter_web parsing rules.
+- Added short-form command line options, and made command-line options case
+  sensitive.
+-
 
 0.26-pre4
 ~~~~~~~~~

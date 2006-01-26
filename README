@@ -43,16 +43,14 @@ Howto
 Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
-  * --help - show help
-  * --daily - show the 30day overview (overrides config)
-  * --graph - show the usage graph (overrides config)
-  * --remaining - show the remaining quota (overrides config)
-  * --debug - shows some debugging stuff
-  * --file-output - sets the output to file mode instead of screen (stdout)
+  * -d, --daily - show the 30day overview (overrides config)
+  * -g, --graph - show the usage graph (overrides config)
+  * -r, --remaining - show the remaining quota (overrides config)
+  * -D, --debug - shows some debugging stuff
+  * -f, --file-output - sets the output to file mode instead of screen (stdout)
   	(overrides config)
-  * --new-config - generates a new dummy config file on the spot
-  When the --parser output is used, --remaining is automatically added to the
-  output.
+  * -n, --new-config - generates a new dummy config file on the spot
+  * -V, --version - shows the version and exits
 
   When --debug is used, --file-output is automatically disabled.
 

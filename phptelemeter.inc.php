@@ -271,54 +271,68 @@ function parseArgs($argv, $configuration)
 
 	foreach ($argv as $flag)
 	{
-		switch (strtolower($flag))
+		switch ($flag)
 		{
 			case "--daily":
+			case "-d":
 			{
 				$configuration["general"]["daily"] = true;
 				break;
 			}
 
 			case "--debug":
+			case "-D":
 			{
 				$configuration["general"]["debug"] = true;
 				break;
 			}
 
 			case "--remaining":
+			case "-r":
 			{
 				$configuration["general"]["show_remaining"] = true;
 				break;
 			}
 
 			case "--graph":
+			case "-g":
 			{
 				$configuration["general"]["show_graph"] = true;
 				break;
 			}
 
 			case "--file-output":
+			case "-f":
 			{
 				$configuration["general"]["file_output"] = true;
 				break;
 			}
 
 			case "--new-config":
+			case "-n":
 			{
 				writeDummyConfig($getcwd . _configFileName);
+				quit();
+			}
+
+			case "--version":
+			case "-V":
+			{
+				echo "phptelemeter - v" . _version . "\n";
 				quit();
 			}
 
 			default:
 			{
 				echo "phptelemeter - v" . _version . "\n";
-				echo "phptelemeter [--daily] [--debug] [--remaining] [--file-output] [--new-config]\n";
-				echo "--daily\t\tShows statistics for last 30 days\n";
-				echo "--debug\t\tShows some debugging info\n";
-				echo "--remaining\tShows your max traffic allotment for today.\n";
-				echo "--graph\t\tShows the usage graphs.\n";
-				echo "--file-output\tActivates file output instead of screen output.\n";
-				echo "--new-config\tMakes a new dummy config file in the current directory.\n";
+				echo "phptelemeter [options] \n";
+				echo "-d,\t--daily\t\tShows statistics for last 30 days\n";
+				echo "-D,\t--debug\t\tShows some debugging info\n";
+				echo "-r,\t--remaining\tShows your max traffic allotment for today.\n";
+				echo "-g,\t--graph\t\tShows the usage graphs.\n";
+				echo "-f,\t--file-output\tActivates file output instead of screen output.\n";
+				echo "-n,\t--new-config\tMakes a new dummy config file in the current directory.\n";
+				echo "-V,\t--version\tShows the version and exits.\n";
 				echo "\n";
 				echo "Options specified here override the configuration file.\n\n";
 				quit();
