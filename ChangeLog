@@ -8,7 +8,6 @@ What's new? Not much, but it's listed here.
 - Fixed some small discrepancy in the telemeter_web parsing rules.
 - Added short-form command line options, and made command-line options case
   sensitive.
--
 
 0.26-pre4
 ~~~~~~~~~
@@ -24,7 +23,6 @@ What's new? Not much, but it's listed here.
 - Fixed problems with the telemeter_web parser when there was
   mentioning 'free' traffic on the telemeter site
   (Last two thanks to extensive testing by YvesDM)
--
 
 0.26-pre2
 ~~~~~~~~~

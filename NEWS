@@ -7,9 +7,6 @@ Starting phptelemeter 0.26:
 
 * The command line options are now case sensitive
 
-*
-
-
 OLD NEWS:
 ~~~~~~~~~
 Starting phptelemeter 0.24, the config parameter style has been replaced by the new
