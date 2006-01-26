@@ -1,5 +1,12 @@
 What's new? Not much, but it's listed here.
 
+0.26
+~~~~
+- Documentation updates
+- Finally was able to fix the telemeter4tools parser, since the URL is
+  back online.
+- Fixed some small discrepancy in the telemeter_web parsing rules.
+
 0.26-pre4
 ~~~~~~~~~
 - Added option show_graph (and command line --graph) to show (or not)
@@ -11,10 +18,10 @@ What's new? Not much, but it's listed here.
 - Moved the calculation of the values to the main program instead of the
   parsers
 - Fixed problems with the telemeter_web parser and 'big' accounts.
-- Fixed problems with the telemeter_web parser when there was  
-  mentioning 'free' traffic on the telemeter site  
+- Fixed problems with the telemeter_web parser when there was
+  mentioning 'free' traffic on the telemeter site
   (Last two thanks to extensive testing by YvesDM)
-- 
+-
 
 0.26-pre2
 ~~~~~~~~~

@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter4tools");
-define("_phptelemeter_parser_version", "5");
+define("_phptelemeter_parser_version", "6");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -33,7 +33,7 @@ require_once("modules/libs/xmlparser.inc.php");
 
 class telemeterParser
 {
-	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?wsdl";
+	var $url = "https://telemeter4tools.telenet.be/TelemeterService?wsdl";
 
 	var $useEndpointUrl = true;
 	var $endpointUrl = "https://telemeter4tools.services.telenet.be/TelemeterService";
@@ -135,21 +135,23 @@ class telemeterParser
 				$parser = new XMLParser($result, 'raw', 1);
 				$result = $parser->getTree();
 
+				if ($this->debug == true) var_dump($result);
+
 				/* look at the status */
-				if ($this->checkStatus($result["TELEMETER"]["USAGE-INFO"]["STATUS"]["VALUE"]) === false)
+				if ($this->checkStatus($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:STATUS"]["VALUE"]) === false)
 				{
 					/* split off the global usage data */
-					$general[0] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["LIMITS"]["MAX-TOTAL"]["VALUE"];
-					$general[1] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["LIMITS"]["MAX-UP"]["VALUE"];
-					$general[2] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["TOTAL"]["VALUE"];
-					$general[3] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
+					$general[0] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-DOWN"]["VALUE"];
+					$general[1] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-UP"]["VALUE"];
+					$general[2] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:DOWN"]["VALUE"];
+					$general[3] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
 
 					/* split off the daily data */
-					foreach ($result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["USAGE"] as $key => $value)
+					foreach ($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:USAGE"] as $key => $value)
 					{
-						$daily[] = substr($value["ATTRIBUTES"]["FROM"],6,2) . "/" . substr($value["ATTRIBUTES"]["FROM"],4,2) . "/" . substr($value["ATTRIBUTES"]["FROM"],2,2);
-						$daily[] = $value["TOTAL"]["VALUE"];
-						$daily[] = $value["UP"]["VALUE"];
+						$daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
+						$daily[] = $value["NS1:DOWN"]["VALUE"];
+						$daily[] = $value["NS1:UP"]["VALUE"];
 
 						$i++;
 					}

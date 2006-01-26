@@ -41,5 +41,10 @@
       <openfolder url="modules/libs" />
     </treestatus>
     <annotations/>
+    <item url="docs/" />
+    <item url="docs/Telemeter4Tools_Overzicht.pdf" />
+    <item url="docs/Telemeter_Interface_Description.pdf" />
+    <item url="modules/log" />
+    <item url="phptelemeter.session" />
   </project>
 </webproject>

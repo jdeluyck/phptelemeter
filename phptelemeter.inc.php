@@ -30,7 +30,7 @@ if (version_compare("4.3.0", phpversion(), "<=") == 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.26-pre4");
+define("_version", "0.26");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
@@ -131,7 +131,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; on the command line\n" .
 			"; useing --daily to output the daily statistics,\n" .
 			"; use --remaining to show the remaining quota,\n" .
-			"; use --graph to show the usage graph,\n" . 
+			"; use --graph to show the usage graph,\n" .
 			"; and use --file-output to activate file output.\n" .
 			";\n" .
 			"; An explanation for all parameters can be found in the README file.\n" .
@@ -142,7 +142,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"[general]\n" .
 			"daily=false\n" .
 			"show_remaining=false\n" .
-			"show_graph=true\n" . 
+			"show_graph=true\n" .
 			";\n" .
 			"file_prefix=/tmp/phptelemeter_\n" .
 			"file_output=false\n" .
@@ -256,7 +256,7 @@ function checkConfigurationForKeys($configurationSection, $keys, $keyThere, $err
 		$errorMsg = str_replace("%MSG%", $msg, $errorMsg);
 		doError($errorTitle, $errorMsg, $quit);
 	}
-} 
+}
 
 /* Debugging: does a var_dump of the configfile */
 function dumpConfig($configuration)
@@ -398,4 +398,8 @@ function calculateUsage($data)
 	return ($returnValue);
 }
 
+function removeDots($someData)
+{
+	return (str_replace(".", "", $someData));
+}
 ?>

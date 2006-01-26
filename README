@@ -1,4 +1,4 @@
-phptelemeter v0.26-pre4 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v0.26 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -9,7 +9,7 @@ What is it?
   is what makes up the used quota.
 - Alternatively (and recommended) it can parse the Telemeter4Tools
   status pages, which are designed not to break on each update by
-  Telenet ;)
+  Telenet.
 
 What can it do?
 ~~~~~~~~~~~~~~~
@@ -37,7 +37,7 @@ Howto
   your account), and rerun phptelemeter - you'll get the output
   you want instantly.
 
-  Alternatively, you can also run phptelemeter with --new-config, which
+- Alternatively, you can also run phptelemeter with --new-config, which
   will create a new dummy config file in your current directory.
 
 Command line options
@@ -88,6 +88,15 @@ description=your description		# Description of account-1, if it is set it'll be 
 username=youruser					# The username of account-9
 password=yourpassword				# The password of account-9
 description=your description		# Description of account-9
+
+Running on a webserver
+~~~~~~~~~~~~~~~~~~~~~~
+- Should you want to run phptelemeter from a webserver, you have to create
+  the configuration file with the --new-config parameter, and put it in the
+  /etc directory. Don't forget to set the publisher to html.
+
+- Furthermore, you should remove the first line from the phptelemeter.php file,
+  because otherwise you'll see it in the webpage output.
 
 Where to get it
 ~~~~~~~~~~~~~~~

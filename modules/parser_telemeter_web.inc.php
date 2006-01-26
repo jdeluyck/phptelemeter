@@ -135,7 +135,7 @@ class telemeterParser
 		$log = $this->doCurl($this->url["login"], $this->createAuthPostFields($userName, $password));
 		$this->checkForError($log);
 
-		/* get the data */		
+		/* get the data */
 		$data = $this->doCurl($this->url["stats"], FALSE);
 		$this->checkForError($data);
 
@@ -160,22 +160,22 @@ class telemeterParser
 		/* download - total */
 		$downCorrection = 0;
 
-		$used      = str_replace(".", "", substr($data3[29],0,-3));
-		$remaining = str_replace(".", "", substr($data3[30],0,-3));
+		$used      = removeDots(substr($data3[29],0,-3));
+		$remaining = removeDotS(substr($data3[30],0,-3));
 
 		$generalMatches[0] = $remaining + $used;
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$used      = str_replace(".", "", substr($data3[152],0,-3));
-		$remaining = str_replace(".", "", substr($data3[153],0,-3));
+		$used      = removeDots(substr($data3[152],0,-3));
+		$remaining = removeDots(substr($data3[153],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
 
 		/* determine the date range */
 		$dateRange = explode(" ", $data3[2]);
-		
+
 		// change the month
 		$dateRange[3] = $this->months[$dateRange[3]];
 		$dateRange[7] = $this->months[$dateRange[7]];
@@ -198,21 +198,21 @@ class telemeterParser
 
 		for ($i = 1; $i <= $days; $i++)
 		{
-	
+
 			if ($data3[$downloadPos] == "&gt;")
 			{
 				$downloadPos++;
 				$uploadPos++;
 			}
-			
-			$dailyMatches[] = date("d-m-y", $start + (($i - 1) * 86400));
-			$dailyMatches[] = str_replace(".", "", $data3[++$downloadPos]) + str_replace(".","", $data3[++$downloadPos]);
-			$dailyMatches[] = str_replace(".", "", $data3[++$uploadPos]) + str_replace(".","", $data3[++$uploadPos]);
+
+			$dailyMatches[] = date("d/m/y", $start + (($i - 1) * 86400));
+			$dailyMatches[] = removeDots($data3[++$downloadPos]) + removeDots($data3[++$downloadPos]);
+			$dailyMatches[] = removeDots($data3[++$uploadPos]) + removeDots($data3[++$uploadPos]);
 
 			/* increase pos by one, we don't care for the dates */
 			$downloadPos++;
 			$uploadPos++;
-		}			
+		}
 
 		$returnValue["general"] = $generalMatches;
 		$returnValue["daily"] = $dailyMatches;
