@@ -41,8 +41,8 @@ $configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["required"] = array("daily", "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher");
-$configKeys["obsolete"] = array("style");
+$configKeys["required"]     = array("daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher");
+$configKeys["obsolete"]     = array("style");
 
 /* -------------------------------- */
 /* Functions, functions, functions! */
@@ -195,7 +195,7 @@ function checkConfig($configuration, $configFile, $configKeys)
 	checkConfigurationForKeys($configuration, array("die"), true, "configuration not correct.", "Edit $configFile and remove the \n%MSG%line!", true);
 
 	/* verify general configuration */
-	checkConfigurationForKeys($configuration, array("general"), false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration           , array("general")       , false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease correct and rerun phptelemeter.", true);
 	checkConfigurationForKeys($configuration["general"], $configKeys["required"], false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please correct and rerun phptelemeter.", true);
 	checkConfigurationForKeys($configuration["general"], $configKeys["obsolete"], true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
 

@@ -44,7 +44,7 @@ $configFile = findConfigFile($configFiles, $configuration);
 $configuration = readConfig($configFile);
 $configuration = parseArgs($argv, $configuration);
 
-if ($configuration["general"]["debug"] == true) 
+if ($configuration["general"]["debug"] == true)
 {
 	error_reporting(E_ALL);
 	dumpConfig($configuration);
