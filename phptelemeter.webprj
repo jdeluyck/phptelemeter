@@ -1,6 +1,6 @@
 <!DOCTYPE webproject>
 <webproject>
-  <project usePreviewPrefix="0" type="Local" previewPrefix="" name="phptelemeter" encoding="iso 8859-15" >
+  <project usePreviewPrefix="0" previewPrefix="" type="Local" name="phptelemeter" encoding="iso 8859-15" >
     <upload/>
     <author/>
     <email/>
@@ -41,10 +41,7 @@
       <openfolder url="modules/libs" />
     </treestatus>
     <annotations/>
-    <item url="docs/" />
-    <item url="docs/Telemeter4Tools_Overzicht.pdf" />
-    <item url="docs/Telemeter_Interface_Description.pdf" />
-    <item url="modules/log" />
-    <item url="phptelemeter.session" />
+    <item url="modules/log" uploadstatus="1" />
+    <item url="phptelemeter.session" uploadstatus="1" />
   </project>
 </webproject>

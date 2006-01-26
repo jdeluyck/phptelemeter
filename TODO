@@ -1,2 +1,3 @@
 * Check compatibility with win32 platforms
 * auto fallback mechanism
+* show_reset_date implementation
