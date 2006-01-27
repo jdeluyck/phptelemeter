@@ -23,9 +23,12 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-/* we require version 4.3.0 for some functions */
-if (version_compare("4.3.0", phpversion(), "<=") == 0)
+/* we require version >= 4.3.0 and < 5.0.0 */
+if (version_compare("4.3.0", phpversion()) >= 0)
 	doError("PHP version too low","Please upgrade PHP to atleast 4.3.0", true);
+
+if (version_compare("5.0.0", phpversion()) < 0)
+	doError("PHP5 not supported", "Please use PHP4. PHP5 is not supported at this time.", true);
 
 /* -------------------------------- */
 /* General settings - do not touch! */
@@ -61,7 +64,7 @@ function findConfigFile($configFiles, $configuration)
 		}
 	}
 
-	// by default return the file in $HOME, which is on the last spot
+	/* by default return the file in $HOME, which is on the last spot */
 	if ($found == false)
 		$returnValue = $aConfigFile;
 
@@ -102,7 +105,6 @@ function quit()
 
 /* Parses the config file and does some checking on the contents */
 
-//function parseConfig()
 function readConfig($configFile)
 {
 	if (! file_exists($configFile))

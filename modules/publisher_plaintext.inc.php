@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext");
-define("_phptelemeter_publisher_version", "4");
+define("_phptelemeter_publisher_version", "5");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -80,7 +80,7 @@ class telemeterPublisher
 		$generalData = $data["general"];
 		$dailyData   = $data["daily"];
 
-		// general data, always shown
+		/* general data, always shown */
 		$usage = calculateUsage($generalData);
 
 		$returnStr = "Telemeter statistics on " . date("d/m/Y") . "\n";

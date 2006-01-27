@@ -36,7 +36,7 @@ class telemeterParser
 	var $url = "https://telemeter4tools.telenet.be/TelemeterService?wsdl";
 
 	var $useEndpointUrl = true;
-	var $endpointUrl = "https://telemeter4tools.services.telenet.be/TelemeterService";
+	var $endpointUrl = "https://telemeter4tools.telenet.be/TelemeterService";
 
 	var $errors_critical;
 	var $errors_normal;
@@ -109,7 +109,7 @@ class telemeterParser
 		$returnValue = false;
 
 		$client = new soapclient($this->url, true);
-		// Check for an error
+		/* Check for an error */
 		$error = $client->getError();
 		if ($error)
 			doError("SOAP Error", $error, true);
@@ -120,12 +120,12 @@ class telemeterParser
 
 		$result = $client->call('getUsage', array($userName, $password));
 
-		// Check for a fault
+		/* Check for a fault */
 		if ($client->fault)
 			doError("SOAP Fault", $result, true);
 		else
 		{
-			// Check for errors
+			/* Check for errors */
 	    		$error = $client->getError();
     			if ($error)
 				doError("SOAP Error", $error, true);

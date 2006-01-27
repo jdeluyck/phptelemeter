@@ -19,8 +19,8 @@ What can it do?
 
 Requirements
 ~~~~~~~~~~~~
-- It requires PHP >= 4.3.0, and the PHP4 CURL extension, compiled with
-  SSL support!
+- It requires PHP >= 4.3.0 and < 5.0, and the PHP4 CURL extension, compiled
+  with SSL support!
 - For Telemeter4Tools it requires the nusoap SOAP library, and the xmlparser
   XML library. Both are included in the package.
 

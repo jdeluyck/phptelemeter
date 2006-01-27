@@ -31,11 +31,9 @@ require("phptelemeter.inc.php");
 /* Main script starts here */
 /* ----------------------- */
 
-/*
-Parse args and configuration file.
-*/
+/* Parse args and configuration file. */
 
-// we need this to enable help to work without a config file
+/* we need this to enable help to work without a config file */
 $configuration = parseArgs($argv, null);
 
 /* find the config file */
@@ -53,7 +51,6 @@ if ($configuration["general"]["debug"] == true)
 $configuration = checkConfig($configuration, $configFile, $configKeys);
 
 /* set the include path */
-//echo $configuration["general"]["modulepath"];
 set_include_path($configuration["general"]["modulepath"]);
 
 
@@ -79,7 +76,7 @@ if ($configuration["general"]["file_output"] == false)
 /* loop through all our users */
 for ($i = 0; $i < count($configuration["accounts"]); $i++)
 {
-	// start buffering
+	/* start buffering */
 	ob_start();
 
 	if ($configuration["general"]["file_output"] == true)

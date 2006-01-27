@@ -4,6 +4,8 @@ What's new? Not much, but it's listed here.
 ~~~~
 - Renamed the daily confiuration file option to show_daily
 - Added new configuration file option show_reset_date
+- Added the GPL license
+- Made comment style more uniform throughout the code
 
 0.26
 ~~~~

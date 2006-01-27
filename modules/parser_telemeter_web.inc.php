@@ -176,7 +176,7 @@ class telemeterParser
 		/* determine the date range */
 		$dateRange = explode(" ", $data3[2]);
 
-		// change the month
+		/* change the month */
 		$dateRange[3] = $this->months[$dateRange[3]];
 		$dateRange[7] = $this->months[$dateRange[7]];
 
@@ -220,7 +220,7 @@ class telemeterParser
 		if ($this->debug == true)
 			print_r($returnValue);
 
-		// we need to unlink the cookiefile here, otherwise we get 'ghost' data.
+		/* we need to unlink the cookiefile here, otherwise we get 'ghost' data. */
 		@unlink ($this->_cookieFile);
 
 		return ($returnValue);
