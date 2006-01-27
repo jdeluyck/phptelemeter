@@ -95,7 +95,7 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 
 	echo $publisher->accountFooter();
 
-	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["daily"], $configuration["general"]["show_graph"]);
+	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["show_daily"], $configuration["general"]["show_graph"], $configuration["general"]["show_resetdate"]);
 
 	if ($configuration["general"]["file_output"] == true)
 	{

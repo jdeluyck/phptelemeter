@@ -1,34 +1,39 @@
-Starting phptelemeter 0.26:
+phptelemeter 0.27
+~~~~~~~~~~~~~~~~~
+- The daily parameter has been renamed to show_daily.
+- A new parameter show_resetdate has been added.
 
-* The config parameter "show_graph" was added.
+Please update your configuration file.
 
-  Please put in your config file under the [general] section:
-  show_graph=true (or false)
 
-* The command line options are now case sensitive
 
-OLD NEWS:
-~~~~~~~~~
-Starting phptelemeter 0.24, the config parameter style has been replaced by the new
-publisher parameter. You can set it to either plaintext, html or machine:
+------------
+| OLD NEWS |
+------------
+phptelemeter 0.26
+~~~~~~~~~~~~~~~~~
+- The config parameter "show_graph" was added.
+- The command line options are now case sensitive
 
-publisher=plaintext
-or
-publiser=machine
-or
-publisher=html
+phptelemeter 0.24
+~~~~~~~~~~~~~~~~~
+- the config parameter style has been replaced by the new publisher parameter.
 
-Starting phptelemeter 0.21, an optional parameter was added to the config file:
-modulepath=/path/to/phptelemeter
+phptelemeter 0.21
+~~~~~~~~~~~~~~~~~
+- An optional parameter was added to the config file:
+  modulepath=/path/to/phptelemeter
 
-Starting phptelemeter 0.20, a new configuration parameter was added to the configuration file:
-parser=telemeter4tools
-OR
-parser=telemeter_web
+phptelemeter 0.20
+~~~~~~~~~~~~~~~~~
+- a new configuration parameter 'parser' was added to the configuration file
 
-Starting phptelemeter 0.13, two new options are added to the configuration file:
+phptelemeter 0.13
+~~~~~~~~~~~~~~~~~
+- two new options are added to the configuration file:
+  file_output=false
+  file_prefix=/tmp/phptelemeter_
 
-file_output=false
-file_prefix=/tmp/phptelemeter_
-
-Starting phptelemeter 0.10, the configuration file format was changed to allow for multiple users.
+phptelemeter 0.10
+~~~~~~~~~~~~~~~~~
+- the configuration file format was changed to allow for multiple users.

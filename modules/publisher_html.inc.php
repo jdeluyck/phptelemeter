@@ -87,7 +87,7 @@ class telemeterPublisher
 	}
 
 	/* EXTERNAL! */
-	function publishData($data, $showRemaining, $showDaily, $showGraph)
+	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate)
 	{
 		$generalData = $data["general"];
 		$dailyData   = $data["daily"];
@@ -124,6 +124,16 @@ class telemeterPublisher
 			$returnStr .= sprintf($totaldownloadString, abs($usage["download"]["left"]));
 			$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
 			$returnStr .= "<br>";
+		}
+
+		if ($showResetDate)
+		{
+			$endDate = $dailyData[count ($dailyData) - 3];
+			$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
+
+			$returnStr .= "\n<br>";
+			$returnStr .= "Your quota will reset on " . $resetDate . ".<br>\n";
+
 		}
 
 		if ($showDaily == true)

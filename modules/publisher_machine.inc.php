@@ -75,7 +75,7 @@ class telemeterPublisher
 	}
 
 	/* EXTERNAL! */
-	function publishData($data, $showRemaining, $showDaily, $showGraph)
+	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate)
 	{
 		$generalData = $data["general"];
 		$dailyData   = $data["daily"];

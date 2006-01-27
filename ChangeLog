@@ -1,5 +1,10 @@
 What's new? Not much, but it's listed here.
 
+0.27
+~~~~
+- Renamed the daily confiuration file option to show_daily
+- Added new configuration file option show_reset_date
+
 0.26
 ~~~~
 - Documentation updates

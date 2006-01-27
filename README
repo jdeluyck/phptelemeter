@@ -1,4 +1,4 @@
-phptelemeter v0.26 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v0.27 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -15,7 +15,7 @@ What can it do?
 ~~~~~~~~~~~~~~~
 - This script was designed from the ground up to be usable both
   by humans and by machines. The output code can be in human-readable
-  format, in a no-nonsense script parsable format or in HTML format.
+  format, in a no-nonsense script parsable format (CSV) or in HTML format.
 
 Requirements
 ~~~~~~~~~~~~
@@ -43,16 +43,20 @@ Howto
 Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
-  * -d, --daily - show the 30day overview (overrides config)
-  * -g, --graph - show the usage graph (overrides config)
-  * -r, --remaining - show the remaining quota (overrides config)
-  * -D, --debug - shows some debugging stuff
-  * -f, --file-output - sets the output to file mode instead of screen (stdout)
-  	(overrides config)
+  * -d, --daily - show the 30day overview **
+  * -D, --debug - shows some debugging stuff **
+  * -f, --file-output - sets the output to file mode instead of screen (stdout) **
+  * -g, --graph - show the usage graph **
+  * -h, --help - show help message
   * -n, --new-config - generates a new dummy config file on the spot
+  * -r, --remaining - show the remaining quota **
   * -V, --version - shows the version and exits
+  * -z, --resetdate - shows the reset date **
 
-  When --debug is used, --file-output is automatically disabled.
+(Options market with '**' override the configuration file)
+
+- Notes on commandline use:
+  * When --debug is used, --file-output is automatically disabled.
 
 Configuration file location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,22 +70,27 @@ Configuration file location
 Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
-daily=true							# Show 30-day stats (true/false)
+show_daily=true						# Show 30-day stats (true/false)
 show_remaining=true					# Show how much you have remaining (true/false)
 show_graph=true						# Show the transfer graph (true/false)
+show_resetdate=false				# Shows the reset-date for your telemeter.
+
 file_output=false					# Sets if file output should be used instead of screen (stdout)
 file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
+
 parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools and
 									#  telemeter_web are included.
 publisher=plaintext					# The publisher module to use. Currently plaintext, machine and
 									#  html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
+
 [account-1]
 username=youruser					# The username of account-1
 password=yourpassword				# The password of account-1
 description=your description		# Description of account-1, if it is set it'll be used instead
 									#  of the account name in the output
 ...
+
 [account-9]
 username=youruser					# The username of account-9
 password=yourpassword				# The password of account-9
@@ -95,6 +104,12 @@ Running on a webserver
 
 - Furthermore, you should remove the first line from the phptelemeter.php file,
   because otherwise you'll see it in the webpage output.
+
+Running on windows
+~~~~~~~~~~~~~~~~~~
+- This script has _not_ been tested on windows. As such, I cannot guarantee it wil run.
+  Should you run it, and it works, please let me know. If it doesn't, feel free to file
+  any and all bugs.
 
 Where to get it
 ~~~~~~~~~~~~~~~

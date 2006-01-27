@@ -30,7 +30,7 @@ if (version_compare("4.3.0", phpversion(), "<=") == 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.26");
+define("_version", "0.27");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
@@ -41,8 +41,8 @@ $configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["required"]     = array("daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher");
-$configKeys["obsolete"]     = array("style");
+$configKeys["required"]     = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher");
+$configKeys["obsolete"]     = array("style", "daily");
 
 /* -------------------------------- */
 /* Functions, functions, functions! */
@@ -128,11 +128,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; Comments start with ';'\n" .
 			";\n" .
 			"; The options daily, show_remaining and file_output can be overridden\n" .
-			"; on the command line\n" .
-			"; useing --daily to output the daily statistics,\n" .
-			"; use --remaining to show the remaining quota,\n" .
-			"; use --graph to show the usage graph,\n" .
-			"; and use --file-output to activate file output.\n" .
+			"; on the command line. Use --help to see them all, or look in the README.\n" .
 			";\n" .
 			"; An explanation for all parameters can be found in the README file.\n" .
 			";\n" .
@@ -140,9 +136,10 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; [account-1] through [account-" . _maxAccounts . "]. Atleast one account is REQUIRED!.\n" .
 			";\n" .
 			"[general]\n" .
-			"daily=false\n" .
+			"show_daily=false\n" .
 			"show_remaining=false\n" .
 			"show_graph=true\n" .
+			"show_reset_date=false\n" .
 			";\n" .
 			"file_prefix=/tmp/phptelemeter_\n" .
 			"file_output=false\n" .
@@ -313,6 +310,7 @@ function parseArgs($argv, $configuration)
 			{
 				writeDummyConfig($getcwd . _configFileName);
 				quit();
+				break;
 			}
 
 			case "--version":
@@ -320,19 +318,31 @@ function parseArgs($argv, $configuration)
 			{
 				echo "phptelemeter - v" . _version . "\n";
 				quit();
+				break;
 			}
 
+			case "--resetdate":
+			case "-z":
+			{
+				$configuration["general"]["show_resetdate"] = true;
+				break;
+			}
+
+			case "--help":
+			case "-h":
 			default:
 			{
 				echo "phptelemeter - v" . _version . "\n";
 				echo "phptelemeter [options] \n";
 				echo "-d,\t--daily\t\tShows statistics for last 30 days\n";
 				echo "-D,\t--debug\t\tShows some debugging info\n";
-				echo "-r,\t--remaining\tShows your max traffic allotment for today.\n";
-				echo "-g,\t--graph\t\tShows the usage graphs.\n";
 				echo "-f,\t--file-output\tActivates file output instead of screen output.\n";
+				echo "-g,\t--graph\t\tShows the usage graphs.\n";
+				echo "-h,\t--help\t\tShows this help message.\n";
 				echo "-n,\t--new-config\tMakes a new dummy config file in the current directory.\n";
+				echo "-r,\t--remaining\tShows your max traffic allotment for today.\n";
 				echo "-V,\t--version\tShows the version and exits.\n";
+				echo "-z,\t--resetdate\tShows the quota reset date.\n";
 				echo "\n";
 				echo "Options specified here override the configuration file.\n\n";
 				quit();
