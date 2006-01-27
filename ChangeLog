@@ -1,5 +1,11 @@
 What's new? Not much, but it's listed here.
 
+1.00
+~~~~
+- Bugfix: parameter should be show_resetdate, not show_reset_date
+- Tagged as 1.0, testing reveiled no more bugs and it's about time
+  for a 'full' version ;)
+
 0.27
 ~~~~
 - Renamed the daily confiuration file option to show_daily

@@ -33,7 +33,7 @@ if (version_compare("5.0.0", phpversion()) < 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "0.27");
+define("_version", "1.00");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
@@ -141,7 +141,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"show_daily=false\n" .
 			"show_remaining=false\n" .
 			"show_graph=true\n" .
-			"show_reset_date=false\n" .
+			"show_resetdate=false\n" .
 			";\n" .
 			"file_prefix=/tmp/phptelemeter_\n" .
 			"file_output=false\n" .
