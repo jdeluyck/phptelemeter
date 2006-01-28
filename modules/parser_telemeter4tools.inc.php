@@ -33,10 +33,10 @@ require_once("modules/libs/xmlparser.inc.php");
 
 class telemeterParser
 {
-	var $url = "https://telemeter4tools.telenet.be/TelemeterService?wsdl";
+	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?WSDL";
 
-	var $useEndpointUrl = true;
-	var $endpointUrl = "https://telemeter4tools.telenet.be/TelemeterService";
+	var $useEndpointUrl = false;
+	var $endpointUrl = "";
 
 	var $errors_critical;
 	var $errors_normal;
