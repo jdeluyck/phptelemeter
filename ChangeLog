@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.01
+~~~~
+- Bugfix: I forgot to change the Telemeter4tools error ID's, fixed.
+
 1.00
 ~~~~
 - Bugfix: parameter should be show_resetdate, not show_reset_date

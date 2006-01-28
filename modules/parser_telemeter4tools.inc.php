@@ -57,17 +57,14 @@ class telemeterParser
 	{
 		/* do some var initialisation */
 		$this->errors_critical = array(
-			"ERRTM4TLS_00001" => "Unexpected system error.",
-			"ERRTM4TLS_00002" => "Invalid input"
+			"SYSERR_00001" => "Unexpected system error.",
+			"ERRTLMTLS_00001" => "Unexpected system error.",
+			"ERRTLMTLS_00002" => "Invalid input. Login or password is empty."
 		);
 
 		$this->errors_normal = array(
-			"ERRTM4TLS_00003" => "Login does not exist.",
-			"ERRTM4TLS_00004" => "Login is not active.",
-			"ERRTM4TLS_00005" => "Password incorrect",
-			"ERRTM4TLS_00006" => "Maximum number of logins exceeded - try again later.",
-
-			"SYSERR_00001" => "Unexpected system error."
+			"ERRTLMTLS_00003" => "Maximum of logins exceeded. Please try again later.",
+			"ERRTLMTLS_00004" => "Incorrect login or password."
 		);
 	}
 
