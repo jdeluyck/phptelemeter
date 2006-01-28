@@ -3,15 +3,21 @@
 
 SOURCE="/var/www/phptelemeter"
 TARGET="/tmp"
-FTPHOST="upload.sf.net"
-FTPDIR="incoming"
 
-REL=$(cat phptelemeter.inc.php | grep define\(\"_version | cut -d \" -f 4)
+FTPDIR="software/phptelemeter"
+FTPFILE="~/.ncftp/ftpaccess"
+
+# SF info
+SFFTPHOST="upload.sf.net"
+SFFTPDIR="incoming"
+
+REL=$(cat phptelemeter.inc.php | grep define\(\"_version\" | cut -d \" -f 4)
 
 RELNAME="phptelemeter-${REL}"
-
 RELPATH="${TARGET}/${RELNAME}"
 RELTAR="${RELPATH}.tar.gz"
+
+VERFILE="${TARGET}/VERSION"
 
 if [ -e ${RELPATH} ]; then
 	echo -n "${RELPATH} exists, delete? [Y/n] "
@@ -43,6 +49,20 @@ if [ -e ${RELTAR} ]; then
         esac
 fi
 
+if [ -e ${VERFILE} ]; then
+        echo -n "${VERFILE} exists, delete? [Y/n] "
+        read answer
+
+        case ${answer} in
+                [Yy] | '')
+                        rm -f ${VERFILE}
+                        ;;
+                *)
+                        echo "${VERFILE} exists, cannot continue."
+                        exit 1
+                        ;;
+        esac
+fi
 
 mkdir -p ${RELPATH}
 
@@ -52,18 +72,21 @@ mv ${RELPATH}/docs/gpl.txt ${RELPATH}
 # clean out
 rm -fr ${RELPATH}/*.session ${RELPATH}/*.webprj ${RELPATH}/CVS ${RELPATH}/modules/CVS ${RELPATH}/modules/libs/CVS ${RELPATH}/docs ${RELPATH}/mkrelease.sh
 
+echo ${REL} > ${VERFILE}
+
 #tar it up
 pushd /tmp 2>&1 >/dev/null
 tar cfz ${RELTAR} ${RELNAME}
 popd 2>&1 >/dev/null
 echo "Release is available in ${RELPATH}.tar.gz"
 
-echo -n "Do you want to upload it to ${FTP}? [Y/n] "
+echo -n "Do you want to upload the files? [Y/n] "
 read answer
 
 case ${answer} in
 	[Yy] | '')
-		ncftpput ${FTPHOST} ${FTPDIR} ${RELTAR}
+		ncftpput ${SFFTPHOST} ${SFFTPDIR} ${RELTAR}
+		ncftpput -f ${FTPFILE} ${FTPDIR} ${VERFILE}
 		
 		;;
 esac
