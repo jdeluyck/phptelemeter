@@ -33,10 +33,12 @@ if (version_compare("5.0.0", phpversion()) < 0)
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.01");
+define("_version", "1.20");
 define("_maxAccounts", 9);
 define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
+define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
+define("_phptelemeterURL", "http://www.kcore.org/?menumain=3&menusub=3");
 
 $HOME = getenv("HOME");
 
@@ -44,7 +46,7 @@ $configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["required"]     = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher");
+$configKeys["required"]     = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher", "check_version");
 $configKeys["obsolete"]     = array("style", "daily");
 
 /* -------------------------------- */
@@ -145,6 +147,8 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			";\n" .
 			"file_prefix=/tmp/phptelemeter_\n" .
 			"file_output=false\n" .
+			";\n" .
+			"check_version=false\n" .
 			";\n" .
 			"; This can either be telemeter4tools or telemeter_web, and the file\n" .
 			"; needs to be present in the phptelemeter/modules directory!\n" .
@@ -330,12 +334,20 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
+			case "--check-version":
+			case "-c":
+			{
+				$configuration["general"]["check_version"] = true;
+				break;
+			}
+
 			case "--help":
 			case "-h":
 			default:
 			{
 				echo "phptelemeter - v" . _version . "\n";
 				echo "phptelemeter [options] \n";
+				echo "-c\t--check-version\tChecks if your phptelemeter is the latest version\n";
 				echo "-d,\t--daily\t\tShows statistics for last 30 days\n";
 				echo "-D,\t--debug\t\tShows some debugging info\n";
 				echo "-f,\t--file-output\tActivates file output instead of screen output.\n";
@@ -427,5 +439,24 @@ function calculateUsage($data)
 function removeDots($someData)
 {
 	return (str_replace(".", "", $someData));
+}
+
+function checkVersion($doCheck)
+{
+	$returnValue = false;
+
+	if ($doCheck == true)
+	{
+		$upstreamVersion = trim(file_get_contents(_versionURL));
+
+		/* if we didn't get a version for whatever reason, say it's the same as ours */
+		if ($upstreamVersion === false)
+			$upstreamVersion = _version;
+
+		if (version_compare($upstreamVersion, _version) > 0)
+			$returnValue = $upstreamVersion;
+	}
+
+	return ($returnValue);
 }
 ?>

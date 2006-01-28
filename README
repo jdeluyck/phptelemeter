@@ -1,4 +1,4 @@
-phptelemeter v1.01 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v1.20 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -43,6 +43,7 @@ Howto
 Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
+  * -c, --check-version - checks the version online **
   * -d, --daily - show the 30day overview **
   * -D, --debug - shows some debugging stuff **
   * -f, --file-output - sets the output to file mode instead of screen (stdout) **
@@ -57,6 +58,16 @@ Command line options
 
 - Notes on commandline use:
   * When --debug is used, --file-output is automatically disabled.
+
+Notes on the version check
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+- For all you paranoid people: the only thing phptelemeter does is load an
+  URL when it's started. The url is:
+  http://www.kcore.org/software/phptelemeter/VERSION
+  which contains nothing but a version number, of the latest upstream version.
+
+- If you set check_version=false, it won't bother doing that and as such won't
+  do anything.
 
 Configuration file location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,6 +88,9 @@ show_resetdate=false				# Shows the reset-date for your telemeter.
 
 file_output=false					# Sets if file output should be used instead of screen (stdout)
 file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
+
+check_version=false					# Check the current version against the latest upstream version,
+									# and report if there's a new version available.
 
 parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools and
 									#  telemeter_web are included.

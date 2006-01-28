@@ -50,9 +50,11 @@ if ($configuration["general"]["debug"] == true)
 
 $configuration = checkConfig($configuration, $configFile, $configKeys);
 
+/* do a version check if it's asked */
+$newVersion = checkVersion($configuration["general"]["check_version"]);
+
 /* set the include path */
 set_include_path($configuration["general"]["modulepath"]);
-
 
 /* load the necessary modules */
 
@@ -71,7 +73,13 @@ $publisher->setDebug($configuration["general"]["debug"]);
 
 /* put the header on the screen */
 if ($configuration["general"]["file_output"] == false)
+{
 	echo $publisher->mainHeader();
+
+	/* if there's a new version, publish it */
+	if ($newVersion !== false)
+		echo $publisher->newVersion($newVersion);
+}
 
 /* loop through all our users */
 for ($i = 0; $i < count($configuration["accounts"]); $i++)

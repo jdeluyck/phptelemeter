@@ -1,7 +1,6 @@
-phptelemeter 0.27
+phptelemeter 1.20
 ~~~~~~~~~~~~~~~~~
-- The daily parameter has been renamed to show_daily.
-- A new parameter show_resetdate has been added.
+- A new parameter check_version was added.
 
 Please update your configuration file.
 
@@ -10,6 +9,11 @@ Please update your configuration file.
 ------------
 | OLD NEWS |
 ------------
+phptelemeter 0.27
+~~~~~~~~~~~~~~~~~
+- The daily parameter has been renamed to show_daily.
+- A new parameter show_resetdate has been added.
+
 phptelemeter 0.26
 ~~~~~~~~~~~~~~~~~
 - The config parameter "show_graph" was added.

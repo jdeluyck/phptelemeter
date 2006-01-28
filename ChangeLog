@@ -1,5 +1,13 @@
 What's new? Not much, but it's listed here.
 
+1.20
+~~~~
+- New feature: phptelemeter can now check if there's a new version
+  available. It only loads the url found in phptelemeter.inc.php,
+  so no worries. If you don't like it, just disable it and it won't
+  do anything.
+- Slight spelling corrections
+
 1.01
 ~~~~
 - Bugfix: I forgot to change the Telemeter4tools error ID's, fixed.

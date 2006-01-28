@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext");
-define("_phptelemeter_publisher_version", "5");
+define("_phptelemeter_publisher_version", "6");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -149,6 +149,12 @@ class telemeterPublisher
 
 		return ($returnStr);
 	}
+
+	function newVersion($versionNr)
+	{
+		return("\nThere's a new version available: v" . $versionNr . "\nYou can get it at " . _phptelemeterURL . "\n");
+	}
+
 }
 
 ?>
