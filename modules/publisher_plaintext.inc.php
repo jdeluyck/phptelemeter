@@ -122,7 +122,7 @@ class telemeterPublisher
 			$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
 
 			$returnStr .= "\n";
-			$returnStr .= "Your quota will reset on " . $resetDate . ".\n";
+			$returnStr .= "Your quota will be reset on " . $resetDate . ".\n";
 		}
 
 		if ($showDaily == true)
