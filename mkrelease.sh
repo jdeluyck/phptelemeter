@@ -3,6 +3,8 @@
 
 SOURCE="/var/www/phptelemeter"
 TARGET="/tmp"
+FTPHOST="upload.sf.net"
+FTPDIR="incoming"
 
 REL=$(cat phptelemeter.inc.php | grep define\(\"_version | cut -d \" -f 4)
 
@@ -55,3 +57,14 @@ pushd /tmp 2>&1 >/dev/null
 tar cfz ${RELTAR} ${RELNAME}
 popd 2>&1 >/dev/null
 echo "Release is available in ${RELPATH}.tar.gz"
+
+echo -n "Do you want to upload it to ${FTP}? [Y/n] "
+read answer
+
+case ${answer} in
+	[Yy] | '')
+		ncftpput ${FTPHOST} ${FTPDIR} ${RELTAR}
+		
+		;;
+esac
+
