@@ -22,19 +22,27 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-error_reporting(E_ERROR | E_WARNING);
+error_reporting(E_ERROR | E_WARNING | E_ALL);
 define("_phptelemeter", 1);
 
 require("phptelemeter.inc.php");
+
 
 /* ----------------------- */
 /* Main script starts here */
 /* ----------------------- */
 
+/* check php version */
+checkPhpVersion();
+
+
 /* Parse args and configuration file. */
 
 /* we need this to enable help to work without a config file */
 $configuration = parseArgs($argv, null);
+
+/* create defines according to the OS */
+checkOS($configuration, &$configFiles);
 
 /* find the config file */
 $configFile = findConfigFile($configFiles, $configuration);

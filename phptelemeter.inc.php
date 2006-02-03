@@ -23,26 +23,16 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-/* we require version >= 4.3.0 and < 5.0.0 */
-if (version_compare("4.3.0", phpversion()) >= 0)
-	doError("PHP version too low","Please upgrade PHP to atleast 4.3.0", true);
-
-if (version_compare("5.0.0", phpversion()) < 0)
-	doError("PHP5 not supported", "Please use PHP4. PHP5 is not supported at this time.", true);
 
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
 define("_version", "1.20");
 define("_maxAccounts", 9);
-define("_defaultModulePath", ".:/usr/share/phptelemeter:/usr/local/share/phptelemeter:" . dirname(__FILE__));
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
 define("_phptelemeterURL", "http://www.kcore.org/?menumain=3&menusub=3");
 
-$HOME = getenv("HOME");
-
-$configFiles = array("/etc/" . _configFileName, $HOME . "/." . _configFileName);
 $configuration = array();
 
 /* keys in the general section */
@@ -52,6 +42,57 @@ $configKeys["obsolete"]     = array("style", "daily");
 /* -------------------------------- */
 /* Functions, functions, functions! */
 /* -------------------------------- */
+/* define some constants, based on the OS - initial try for win32 compatability */
+function checkOS($configuration, &$configFiles)
+{
+	$os = strtoupper(substr(PHP_OS, 0, 3));
+
+	switch ($os)
+	{
+		case "WIN":
+		{
+			$home = getenv("USERPROFILE");
+			$temp = getenv("TEMP");
+			$modulePath = ";";
+			$systemDir = getenv("WINDIR");
+			break;
+		}
+
+		default:	/* we assume unixes */
+		{
+			$home = getenv("HOME");
+			$temp = "/tmp";
+			$modulePath = ":/usr/share/phptelemeter:/usr/local/share/phptelemeter:";
+			$systemDir = "/etc";
+		}
+	}
+
+	define("_os", $os);
+	define("_tempdir", $temp);
+	define("_defaultModulePath", "." . $modulePath . dirname(__FILE__));
+	define("_homedir", $home);
+
+	$configFiles = array($systemDir . "/" . _configFileName, _homedir . "/." . _configFileName);
+
+	if ($configuration["general"]["debug"] == true)
+	{
+		echo "OS     : " . _os . "\n";
+		echo "HOME   : " . _homedir . "\n";
+		echo "TEMP   : " . _tempdir . "\n";
+		echo "MODPATH: " . _defaultModulePath . "\n";
+	}
+}
+
+/* we require version >= 4.3.0 and < 5.0.0 */
+function checkPhpVersion()
+{
+	if (version_compare("4.3.0", phpversion()) >= 0)
+		doError("PHP version too low","Please upgrade PHP to atleast 4.3.0", true);
+
+	if (version_compare("5.0.0", phpversion()) < 0)
+		doError("PHP5 not supported", "Please use PHP4. PHP5 is not supported at this time.", true);
+}
+
 function findConfigFile($configFiles, $configuration)
 {
 	$found = false;

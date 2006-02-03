@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser", "telemeter_web");
-define("_phptelemeter_parser_version", "10");
+define("_phptelemeter_parser_version", "11");
 /*
 
 phpTelemeter - a php script to read out and display the telemeter stats.
@@ -52,7 +52,7 @@ class telemeterParser
 	function telemeterParser()
 	{
 		/* do some var initialisation */
-		$this->_cookieFile = tempnam("/tmp/", "phptelemeter");
+		$this->_cookieFile = tempnam(_tempdir, "phptelemeter");
 
 		$this->url["login"] = "https://www.telenet.be/sys/sso/signon.jsp";
 		$this->url["stats"] = "https://services.telenet.be/lngtlm/detail.html";
