@@ -73,8 +73,8 @@ Configuration file location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - The configuration file is searched in two locations, in the following order
   (whichever is found first is used)
-  * /etc/phptelemeterrc
-  * ~/.phptelemeterrc
+  * /etc/phptelemeterrc (or %WINDIR/phptelemeterrc)
+  * ~/.phptelemeterrc (or %PROFILEDIR/.phptelemeterrc)
 - If no configuration file is found, the script will try to create a dummy in
   ~/.phptelemeterrc.
 
@@ -97,6 +97,13 @@ parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools
 publisher=plaintext					# The publisher module to use. Currently plaintext, machine and
 									#  html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
+
+[proxy]
+proxy_host=							# Hostname of the proxy. Leave blank to disable
+proxy_port=8080						# port of the proxy
+proxy_auth=false					# set to true to enable proxy authentication
+proxy_username=						# Proxy username
+proxy_password=						# Proxy password
 
 [account-1]
 username=youruser					# The username of account-1
@@ -121,9 +128,10 @@ Running on a webserver
 
 Running on windows
 ~~~~~~~~~~~~~~~~~~
-- This script has _not_ been tested on windows. As such, I cannot guarantee it wil run.
-  Should you run it, and it works, please let me know. If it doesn't, feel free to file
-  any and all bugs.
+- This script has _not_ been tested on windows. In version 1.20 I implemented specific support
+  for the windows platfor, and i guess it _should_ work. Since I haven't tested this,
+  I cannot guarantee it wil run. Should you run it, and it works, please let me know.
+  If it doesn't, feel free to file any and all bugs.
 
 Where to get it
 ~~~~~~~~~~~~~~~

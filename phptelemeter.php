@@ -76,8 +76,12 @@ loadPublisher($configuration);
 $publisher = new telemeterPublisher();
 checkModules($publisher->getNeededModules());
 
+/* set the debugging flag if needed */
 $parser->setDebug($configuration["general"]["debug"]);
 $publisher->setDebug($configuration["general"]["debug"]);
+
+/* pipe through the proxy info */
+$parser->setProxy($configuration["proxy"]["proxy_host"],$configuration["proxy"]["proxy_port"],$configuration["proxy"]["proxy_authenticate"],$configuration["proxy"]["proxy_username"],$configuration["proxy"]["proxy_password"]);
 
 /* put the header on the screen */
 if ($configuration["general"]["file_output"] == false)

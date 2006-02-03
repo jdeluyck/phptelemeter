@@ -39,9 +39,24 @@ class telemeterParser
 
 	var $months;
 
+	var $proxyHost;
+	var $proxyPort;
+	var $proxyAuth;
+	var $proxyUsername;
+	var $proxyPassword;
+
 	function setDebug($debug)
 	{
 		$this->debug = $debug;
+	}
+
+	function setProxy($proxyHost, $proxyPort, $proxyAuth, $proxyUsername, $proxyPassword)
+	{
+		$this->proxyHost = $proxyHost;
+		$this->proxyPort = $proxyPort;
+		$this->proxyAuth = $proxyAuth;
+		$this->proxyUsername = $proxyUsername;
+		$this->proxyPassword = $proxyPassword;
 	}
 
 	function getNeededModules()
@@ -119,6 +134,23 @@ class telemeterParser
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 120);
 
+		/* check proxy */
+		if (strlen($this->proxyHost) != 0)
+		{
+			if ($this->debug == true)
+				echo "CURL: Enabling proxy: " .$this->proxyHost . ":" . $this->proxyPort . "\n";
+
+			curl_setopt($ch, CURLOPT_PROXY, $this->proxyHost . ":" . $this->proxyPort);
+
+			if ($this->proxyAuth == true)
+			{
+				if ($this->debug == true)
+					echo "CURL: Enabling proxy AUTH\n";
+
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxyUsername . ":" . $this->proxyPassword);
+			}
+		}
+
 		$output = curl_exec($ch);
 		if (curl_errno($ch) != 0)
 			doError("curl error occurred", curl_error($ch), true);
@@ -167,8 +199,8 @@ class telemeterParser
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$used      = removeDots(substr($data3[152],0,-3));
-		$remaining = removeDots(substr($data3[153],0,-3));
+		$used      = removeDots(substr($data3[143],0,-3));
+		$remaining = removeDots(substr($data3[144],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
@@ -194,7 +226,7 @@ class telemeterParser
 
 		/* now do the magic for getting the values of the days */
 		$downloadPos = 35;
-		$uploadPos = 158;
+		$uploadPos = 149;
 
 		for ($i = 1; $i <= $days; $i++)
 		{

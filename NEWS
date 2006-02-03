@@ -1,14 +1,19 @@
 phptelemeter 1.20
 ~~~~~~~~~~~~~~~~~
-- A new parameter check_version was added.
+- A new key check_version was added.
+- A new [proxy] section was added with keys:
+  * proxy_host
+  * proxy_port
+  * proxy_authenticate
+  * proxy_username
+  *proxy_password
 
-Please update your configuration file.
-
-
+Please update your configuration file, or generate a new one.
 
 ------------
 | OLD NEWS |
 ------------
+
 phptelemeter 0.27
 ~~~~~~~~~~~~~~~~~
 - The daily parameter has been renamed to show_daily.

@@ -36,8 +36,9 @@ define("_phptelemeterURL", "http://www.kcore.org/?menumain=3&menusub=3");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["required"]     = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher", "check_version");
-$configKeys["obsolete"]     = array("style", "daily");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher", "check_version");
+$configKeys["general"]["obsolete"] = array("style", "daily");
+$configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 
 /* -------------------------------- */
 /* Functions, functions, functions! */
@@ -53,7 +54,8 @@ function checkOS($configuration, &$configFiles)
 		{
 			$home = getenv("USERPROFILE");
 			$temp = getenv("TEMP");
-			$modulePath = ";";
+			$modulePath = "";
+			$pathSeperator = ";";
 			$systemDir = getenv("WINDIR");
 			break;
 		}
@@ -62,14 +64,15 @@ function checkOS($configuration, &$configFiles)
 		{
 			$home = getenv("HOME");
 			$temp = "/tmp";
-			$modulePath = ":/usr/share/phptelemeter:/usr/local/share/phptelemeter:";
+			$modulePath = "/usr/share/phptelemeter:/usr/local/share/phptelemeter";
+			$pathSeperator = ":";
 			$systemDir = "/etc";
 		}
 	}
 
 	define("_os", $os);
 	define("_tempdir", $temp);
-	define("_defaultModulePath", "." . $modulePath . dirname(__FILE__));
+	define("_defaultModulePath", "." . $pathSeperator . $modulePath . $pathSeperator . dirname(__FILE__) . $pathSeperator);
 	define("_homedir", $home);
 
 	$configFiles = array($systemDir . "/" . _configFileName, _homedir . "/." . _configFileName);
@@ -80,6 +83,9 @@ function checkOS($configuration, &$configFiles)
 		echo "HOME   : " . _homedir . "\n";
 		echo "TEMP   : " . _tempdir . "\n";
 		echo "MODPATH: " . _defaultModulePath . "\n";
+
+		echo "CONFIG FILES:\n";
+		var_dump($configFiles);
 	}
 }
 
@@ -204,6 +210,16 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; modules directory.\n" .
 			";modulepath=/usr/local/share/phptelemeter\n" .
 			";\n" .
+			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
+			"; If you set proxy_authenticate to true, you must fill the username\n" .
+			"; and password too.\n" .
+			"[proxy]\n" .
+			"proxy_host=\n" .
+			"proxy_port=8080\n" .
+			"proxy_authenticate=false\n" .
+			"proxy_username=\n" .
+			"proxy_password=\n" .
+			";\n" .
 			"[account-1]\n" .
 			"username=myuser\n" .
 			"password=mypassword\n" .
@@ -232,22 +248,23 @@ function checkConfig($configuration, $configFile, $configKeys)
 	/* ERROR CHECKING */
 
 	/* check for the "new" section, if it's present the config has just been generated and we just bail out here. */
-	if (array_key_exists("new", $configuration))
+	if (array_key_exists("new", &$configuration))
 		quit();
 
 	/* protection against no-i-wont-edit-the-config users */
 	checkConfigurationForKeys($configuration, array("die"), true, "configuration not correct.", "Edit $configFile and remove the \n%MSG%line!", true);
 
 	/* verify general configuration */
-	checkConfigurationForKeys($configuration           , array("general")       , false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease correct and rerun phptelemeter.", true);
-	checkConfigurationForKeys($configuration["general"], $configKeys["required"], false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please correct and rerun phptelemeter.", true);
-	checkConfigurationForKeys($configuration["general"], $configKeys["obsolete"], true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
+	checkConfigurationForKeys($configuration           , array("general", "proxy")         , false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["required"], false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["obsolete"], true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
+	checkConfigurationForKeys($configuration["proxy"]  , $configKeys["proxy"]["required"]  , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please correct and rerun phptelemeter.", true);
 
 	/* look for the modulepath */
 	if (! array_key_exists("modulepath", $configuration["general"]))
 		$configuration["general"]["modulepath"] = _defaultModulePath;
 	else
-		$configuration["general"]["modulepath"] = $configuration["general"]["modulepath"] . ":" . _defaultModulePath;
+		$configuration["general"]["modulepath"] = _defaultModulePath . $configuration["general"]["modulepath"];
 
 	/* check for account-x stanzas. We need _ATLEAST_ 1 account. */
 	for ($i = 1; $i <= _maxAccounts; $i++)

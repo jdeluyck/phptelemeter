@@ -6,9 +6,10 @@ What's new? Not much, but it's listed here.
   available. It only loads the url found in phptelemeter.inc.php,
   so no worries. If you don't like it, just disable it and it won't
   do anything.
+- New feature: proxy support, with new keys. Please check the README.
 - Slight spelling corrections
 - Implemented (untested) start of other platform compatibility
--
+- Correcte telemeter_web parser for changes in the Telemeter web page
 
 1.01
 ~~~~

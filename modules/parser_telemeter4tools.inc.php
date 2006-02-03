@@ -43,9 +43,24 @@ class telemeterParser
 	var $debug = false;
 	var $neededModules = "";
 
+	var $proxyHost;
+	var $proxyPort;
+	var $proxyAuth;
+	var $proxyUsername;
+	var $proxyPassword;
+
 	function setDebug($debug)
 	{
 		$this->debug = $debug;
+	}
+
+	function setProxy($proxyHost, $proxyPort, $proxyAuth, $proxyUsername, $proxyPassword)
+	{
+		$this->proxyHost = $proxyHost;
+		$this->proxyPort = $proxyPort;
+		$this->proxyAuth = $proxyAuth;
+		$this->proxyUsername = $proxyUsername;
+		$this->proxyPassword = $proxyPassword;
 	}
 
 	function getNeededModules()
@@ -105,7 +120,19 @@ class telemeterParser
 	{
 		$returnValue = false;
 
-		$client = new soapclient($this->url, true);
+		if (strlen($this->proxyHost) != 0)
+		{
+			if ($this->proxyAuth == true)
+				$client = new soapclient($this->url, true, $this->proxyHost, $this->proxyPort, $this->proxyUsername, $this->proxyPassword);
+			else
+				$client = new soapclient($this->url, true, $this->proxyHost, $this->proxyPort);
+		}
+		else
+			$client = new soapclient($this->url, true);
+
+		if ($this->debug == true)
+			echo $client->getDebug();
+
 		/* Check for an error */
 		$error = $client->getError();
 		if ($error)
@@ -116,6 +143,9 @@ class telemeterParser
 			$client->setEndPoint($this->endpointUrl);
 
 		$result = $client->call('getUsage', array($userName, $password));
+
+		if ($this->debug == true)
+			echo $client->getDebug();
 
 		/* Check for a fault */
 		if ($client->fault)
