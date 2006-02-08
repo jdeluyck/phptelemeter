@@ -33,7 +33,11 @@ http://www.nusphere.com
 */
 
 /* this version of nusoap has been modified to allow http proxies to work with
-https urls
+https urls, see patch at 
+http://sourceforge.net/tracker/index.php?func=detail&aid=1427254&group_id=149435&atid=774602
+
+Modifications done by Jan De Luyck
+*/
 
 /* load classes
 
