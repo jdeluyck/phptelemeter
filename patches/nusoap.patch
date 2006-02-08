@@ -1,0 +1,57 @@
+--- nusoap.php	2006-02-08 10:06:06.558635400 +0100
++++ nusoap.php.patched	2006-02-08 10:06:58.084802232 +0100
+@@ -2027,6 +2027,8 @@
+ 	var $password = '';
+ 	var $authtype = '';
+ 	var $digestRequest = array();
++	var $proxyhost = '';
++	var $proxyport = '';
+ 	var $certRequest = array();	// keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, verifypeer (optional), verifyhost (optional)
+ 								// cainfofile: certificate authority file, e.g. '$pathToPemFiles/rootca.pem'
+ 								// sslcertfile: SSL certificate file, e.g. '$pathToPemFiles/mycert.pem'
+@@ -2156,6 +2158,11 @@
+ 		$hostURL = ($this->port != '') ? "https://$this->host:$this->port" : "https://$this->host";
+ 		// add path
+ 		$hostURL .= $this->path;
++		// set proxy if required
++		if ($this->proxyhost && $this->proxyport) {
++			$this->debug('connect using proxy ' . $this->proxyhost . ":" .  $this->proxyport);
++			curl_setopt($this->ch, CURLOPT_PROXY, $this->proxyhost . ":" . $this->proxyport);
++		}
+ 		curl_setopt($this->ch, CURLOPT_URL, $hostURL);
+ 		// follow location headers (re-directs)
+ 		curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 1);
+@@ -2399,9 +2406,8 @@
+ 	* @access   public
+ 	*/
+ 	function setProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '') {
+-		$this->uri = $this->url;
+-		$this->host = $proxyhost;
+-		$this->port = $proxyport;
++		$this->proxyhost = $proxyhost;
++		$this->proxyport = $proxyport;
+ 		if ($proxyusername != '' && $proxypassword != '') {
+ 			$this->outgoing_headers['Proxy-Authorization'] = ' Basic '.base64_encode($proxyusername.':'.$proxypassword);
+ 			$this->debug('set Proxy-Authorization: ' . $this->outgoing_headers['Proxy-Authorization']);
+@@ -2732,6 +2738,21 @@
+ 		$this->debug('No cURL error, closing cURL');
+ 		curl_close($this->ch);
+ 		
++		// remove proxy header(s)
++		if ($this->proxyhost && $this->proxyport) {
++			if ($pos = strpos($data,"\r\n\r\n")) {
++				$lb = "\r\n";
++			} elseif( $pos = strpos($data,"\n\n")) {
++				$lb = "\n";
++			} else {
++				$this->debug('no proper separation of proxy headers');
++				$this->setError('no proper separation of proxy headers');
++				return false;
++			}
++			$this->debug('found proper separation of proxy headers and rest');
++			$data = ltrim(substr($data,$pos));
++		}
++
+ 		// remove 100 header(s)
+ 		while (ereg('^HTTP/1.1 100',$data)) {
+ 			if ($pos = strpos($data,"\r\n\r\n")) {
