@@ -27,7 +27,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.20");
+define("_version", "1.10");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -499,13 +499,44 @@ function removeDots($someData)
 	return (str_replace(".", "", $someData));
 }
 
-function checkVersion($doCheck)
+function checkVersion($doCheck, $proxyInfo)
 {
+	checkModules(array("curl"));
+
 	$returnValue = false;
 
 	if ($doCheck == true)
 	{
-		$upstreamVersion = trim(file_get_contents(_versionURL));
+		$ch = curl_init(_versionURL);
+
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+
+		/* check proxy */
+		if (strlen($proxyInfo["proxy_host"]) != 0)
+		{
+			if ($this->debug == true)
+				echo "CURL: Enabling proxy: " . $proxyInfo["proxy_host"] . ":" . $proxyInfo["proxy_port"] . "\n";
+
+			curl_setopt($ch, CURLOPT_PROXY, $proxyInfo["proxy_host"] . ":" . $proxyInfo["proxy_port"]);
+
+			if ($proxyInfo["proxy_authenticate"] == true)
+			{
+				if ($this->debug == true)
+					echo "CURL: Enabling proxy AUTH\n";
+
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyInfo["proxy_username"] . ":" . $proxyInfo["proxy_password"]);
+			}
+		}
+
+		$upstreamVersion = trim(curl_exec($ch));
+		if (curl_errno($ch) != 0)
+			doError("curl error occurred", curl_error($ch), true);
+
+		curl_close($ch);
 
 		/* if we didn't get a version for whatever reason, say it's the same as ours */
 		if ($upstreamVersion === false)

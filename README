@@ -1,4 +1,4 @@
-phptelemeter v1.20 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v1.10 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -128,10 +128,20 @@ Running on a webserver
 
 Running on windows
 ~~~~~~~~~~~~~~~~~~
-- This script has _not_ been tested on windows. In version 1.20 I implemented specific support
+- This script has _not_ been tested on windows. In version 1.10 I implemented specific support
   for the windows platfor, and i guess it _should_ work. Since I haven't tested this,
   I cannot guarantee it wil run. Should you run it, and it works, please let me know.
   If it doesn't, feel free to file any and all bugs.
+
+Proxy support
+~~~~~~~~~~~~~
+- Starting 1.10 phptelemeter has learned how to use a http proxy.
+- Unfortunately, there are bugs in the nusoap library I'm using which cause trouble.
+  The library tries to send a HTTPS encrypted string to a http proxy, which (duh) doesn't work.
+  I've mailed the creators of nuSoap but I've not gotten an answer back sofar, and the library itself
+  is too complex for me to dig out to fix.
+  So using a http proxy is not possible with the telemeter4tools parser. It'll try, but it spews out a
+  warning.
 
 Where to get it
 ~~~~~~~~~~~~~~~

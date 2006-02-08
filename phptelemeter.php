@@ -59,7 +59,7 @@ if ($configuration["general"]["debug"] == true)
 $configuration = checkConfig($configuration, $configFile, $configKeys);
 
 /* do a version check if it's asked */
-$newVersion = checkVersion($configuration["general"]["check_version"]);
+$newVersion = checkVersion($configuration["general"]["check_version"], $configuration["proxy"]);
 
 /* set the include path */
 set_include_path($configuration["general"]["modulepath"]);

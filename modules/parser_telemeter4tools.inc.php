@@ -33,7 +33,7 @@ require_once("modules/libs/xmlparser.inc.php");
 
 class telemeterParser
 {
-	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?WSDL";
+	var $url = "http://telemeter4tools.services.telenet.be/TelemeterService?WSDL";
 
 	var $useEndpointUrl = false;
 	var $endpointUrl = "";
@@ -120,8 +120,11 @@ class telemeterParser
 	{
 		$returnValue = false;
 
+		/* sorry.. no proxy plug and play at this moment with nuSoap... */
 		if (strlen($this->proxyHost) != 0)
 		{
+			doError("proxy not supported", "Sorry, but currently nuSoap (and thus parser_telemeter4tools) does work decently with proxies.\nI will try to continue, but it will most likely fail.\n", false);
+
 			if ($this->proxyAuth == true)
 				$client = new soapclient($this->url, true, $this->proxyHost, $this->proxyPort, $this->proxyUsername, $this->proxyPassword);
 			else
