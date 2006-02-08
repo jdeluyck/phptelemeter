@@ -337,7 +337,7 @@ function parseArgs($argv, $configuration)
 			case "--daily":
 			case "-d":
 			{
-				$configuration["general"]["daily"] = true;
+				$configuration["general"]["show_daily"] = true;
 				break;
 			}
 

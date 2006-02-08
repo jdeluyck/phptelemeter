@@ -10,6 +10,7 @@ What's new? Not much, but it's listed here.
 - Slight spelling corrections
 - Implemented (untested) start of other platform compatibility
 - Correcte telemeter_web parser for changes in the Telemeter web page
+- Fixed wrongly used obsolete daily parameter when using --daily
 
 1.01
 ~~~~
