@@ -7,11 +7,12 @@ What's new? Not much, but it's listed here.
   so no worries. If you don't like it, just disable it and it won't
   do anything.
 - New feature: proxy support, with new keys. Please check the README.
-  Currently not supported on telemeter4tools parser.
 - Slight spelling corrections
 - Implemented (untested) start of other platform compatibility
-- Correcte telemeter_web parser for changes in the Telemeter web page
+- Corrected telemeter_web parser for changes in the Telemeter web page
 - Fixed wrongly used obsolete daily parameter when using --daily
+- Patched NuSOAP library to allow http proxy connections (didn't work
+  earlier)
 
 1.01
 ~~~~

@@ -120,7 +120,6 @@ class telemeterParser
 	{
 		$returnValue = false;
 
-		/* sorry.. no proxy plug and play at this moment with nuSoap... */
 		if (strlen($this->proxyHost) != 0)
 		{
 			if ($this->proxyAuth == true)
