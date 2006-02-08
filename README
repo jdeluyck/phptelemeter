@@ -133,16 +133,6 @@ Running on windows
   I cannot guarantee it wil run. Should you run it, and it works, please let me know.
   If it doesn't, feel free to file any and all bugs.
 
-Proxy support
-~~~~~~~~~~~~~
-- Starting 1.10 phptelemeter has learned how to use a http proxy.
-- Unfortunately, there are bugs in the nusoap library I'm using which cause trouble.
-  The library tries to send a HTTPS encrypted string to a http proxy, which (duh) doesn't work.
-  I've mailed the creators of nuSoap but I've not gotten an answer back sofar, and the library itself
-  is too complex for me to dig out to fix.
-  So using a http proxy is not possible with the telemeter4tools parser. It'll try, but it spews out a
-  warning.
-
 Where to get it
 ~~~~~~~~~~~~~~~
 - There's only one place: http://www.sf.net/projects/phptelemeter/.

@@ -123,8 +123,6 @@ class telemeterParser
 		/* sorry.. no proxy plug and play at this moment with nuSoap... */
 		if (strlen($this->proxyHost) != 0)
 		{
-			doError("proxy not supported", "Sorry, but currently nuSoap (and thus parser_telemeter4tools) does work decently with proxies.\nI will try to continue, but it will most likely fail.\n", false);
-
 			if ($this->proxyAuth == true)
 				$client = new soapclient($this->url, true, $this->proxyHost, $this->proxyPort, $this->proxyUsername, $this->proxyPassword);
 			else
