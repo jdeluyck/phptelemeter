@@ -70,7 +70,7 @@ class telemeterParser
 		$this->_cookieFile = tempnam(_tempdir, "phptelemeter");
 
 		$this->url["login"] = "https://www.telenet.be/sys/sso/signon.jsp";
-		$this->url["stats"] = "https://services.telenet.be/lngtlm/detail.html";
+		$this->url["stats"] = "https://services.telenet.be/lngtlm/telemeter/detail.html";
 		$this->url["logout"] = "https://www.telenet.be/sys/sso/signoff.jsp";
 
 		$this->errors = array("sso.login.authfail.PasswordNOK" => "Incorrect password",
@@ -199,8 +199,8 @@ class telemeterParser
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$used      = removeDots(substr($data3[143],0,-3));
-		$remaining = removeDots(substr($data3[144],0,-3));
+		$used      = removeDots(substr($data3[149],0,-3));
+		$remaining = removeDots(substr($data3[150],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
@@ -211,6 +211,9 @@ class telemeterParser
 		/* change the month */
 		$dateRange[3] = $this->months[$dateRange[3]];
 		$dateRange[7] = $this->months[$dateRange[7]];
+
+		if ($this->debug == true)
+			var_dump($dateRange);
 
 		$start = mktime(0, 0, 0, $dateRange[3], $dateRange[2], $dateRange[4]);
 		$end = mktime(0, 0, 0, $dateRange[7], $dateRange[6], $dateRange[8]);
@@ -226,7 +229,7 @@ class telemeterParser
 
 		/* now do the magic for getting the values of the days */
 		$downloadPos = 35;
-		$uploadPos = 149;
+		$uploadPos = 155;
 
 		for ($i = 1; $i <= $days; $i++)
 		{

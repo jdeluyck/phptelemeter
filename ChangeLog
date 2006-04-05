@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.11
+~~~~
+- Fixed telemeter_web parser for telemeter changes
+
 1.10
 ~~~~
 - New feature: phptelemeter can now check if there's a new version
