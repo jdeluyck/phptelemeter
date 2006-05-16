@@ -3,7 +3,7 @@
 
 /*
 
-phpTelemeter - a php script to read out and display the telemeter stats.
+phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 Copyright (C) 2005 - 2006 Jan De Luyck <jan -at- kcore -dot- org>
 
@@ -22,7 +22,7 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-error_reporting(E_ERROR | E_WARNING);
+//error_reporting(E_ERROR | E_WARNING);
 define("_phptelemeter", 1);
 
 require("phptelemeter.inc.php");
@@ -64,12 +64,10 @@ $newVersion = checkVersion($configuration["general"]["check_version"], $configur
 /* set the include path */
 set_include_path($configuration["general"]["modulepath"]);
 
-/* load the necessary modules */
+/* load the compatibility matrix */
+require_once("modules/libs/phptelemeter_compatibility_matrix.inc.php");
 
-/* load and configure the parser */
-loadParser($configuration);
-$parser = new telemeterParser();
-checkModules($parser->getNeededModules());
+/* load the necessary modules */
 
 /* load and configure the publisher */
 loadPublisher($configuration);
@@ -77,11 +75,7 @@ $publisher = new telemeterPublisher();
 checkModules($publisher->getNeededModules());
 
 /* set the debugging flag if needed */
-$parser->setDebug($configuration["general"]["debug"]);
 $publisher->setDebug($configuration["general"]["debug"]);
-
-/* pipe through the proxy info */
-$parser->setProxy($configuration["proxy"]["proxy_host"],$configuration["proxy"]["proxy_port"],$configuration["proxy"]["proxy_authenticate"],$configuration["proxy"]["proxy_username"],$configuration["proxy"]["proxy_password"]);
 
 /* put the header on the screen */
 if ($configuration["general"]["file_output"] == false)
@@ -104,7 +98,18 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 
 	echo $publisher->accountHeader($configuration["accounts"][$i]["description"]);
 
-	/* run the telemeterParser getData() routine */
+	/* load and configure the parser */
+	loadParser($configuration["accounts"][$i]["parser"], $configuration);
+	$parserClassName = "telemeterParser_" . $configuration["accounts"][$i]["parser"];
+	$parser = new $parserClassName;
+	checkModules($parser->getNeededModules());
+	$parser->setDebug($configuration["general"]["debug"]);
+
+	/* pipe through the proxy info */
+	$parser->setProxy($configuration["proxy"]["proxy_host"],$configuration["proxy"]["proxy_port"],$configuration["proxy"]["proxy_authenticate"],$configuration["proxy"]["proxy_username"],$configuration["proxy"]["proxy_password"]);
+
+
+	/* run the parser getData() routine */
 	$data = $parser->getData($configuration["accounts"][$i]["username"],$configuration["accounts"][$i]["password"]);
 
 	if ($data === false)

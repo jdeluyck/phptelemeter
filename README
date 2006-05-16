@@ -1,21 +1,28 @@
-phptelemeter v1.11 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v1.20 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
 - phptelemeter is a script that can read the webpages for the
-  webbased 'quota' monitor for the Belgian ISP 'Telenet'.
-  These pages contain both the actual status,  and the status since
-  the last 'reset', which happens on the date of your invoice. This
+  webbased 'quota' monitor made available by ISP's.
+  These pages can contain both the actual status, and the status since
+  the last 'reset', which happens on a date set by the ISP. This
   is what makes up the used quota.
-- Alternatively (and recommended) it can parse the Telemeter4Tools
-  status pages, which are designed not to break on each update by
-  Telenet.
 
 What can it do?
 ~~~~~~~~~~~~~~~
 - This script was designed from the ground up to be usable both
   by humans and by machines. The output code can be in human-readable
   format, in a no-nonsense script parsable format (CSV) or in HTML format.
+
+Which ISP's are supported?
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------------------------------------
+| Parser			|	Reset Date	|	Quota	|	History |
+-------------------------------------------------------------
+| telemeter_web		|		X		|	  X		|	  X		|
+| telemeter4tools	|		X		|	  X		|     X		|
+| dommel_web		|		X		|	  X		|			|
+-------------------------------------------------------------
 
 Requirements
 ~~~~~~~~~~~~
@@ -88,12 +95,11 @@ show_resetdate=false				# Shows the reset-date for your telemeter.
 
 file_output=false					# Sets if file output should be used instead of screen (stdout)
 file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
+file_extension=txt					# The extension to use for the output files
 
 check_version=false					# Check the current version against the latest upstream version,
 									# and report if there's a new version available.
 
-parser=telemeter4tools				# The parsing module to use. Currently telemeter4tools and
-									#  telemeter_web are included.
 publisher=plaintext					# The publisher module to use. Currently plaintext, machine and
 									#  html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
@@ -110,12 +116,16 @@ username=youruser					# The username of account-1
 password=yourpassword				# The password of account-1
 description=your description		# Description of account-1, if it is set it'll be used instead
 									#  of the account name in the output
+parser=a parser						# The parsing module to use for account-1. Currently
+									#  telemeter4tools, telemeter_web and dommel_web are included.
+
 ...
 
 [account-9]
 username=youruser					# The username of account-9
 password=yourpassword				# The password of account-9
 description=your description		# Description of account-9
+parser=a parser						# Parser of account-9
 
 Running on a webserver
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -129,7 +139,7 @@ Running on a webserver
 Running on windows
 ~~~~~~~~~~~~~~~~~~
 - This script has _not_ been tested on windows. In version 1.10 I implemented specific support
-  for the windows platfor, and i guess it _should_ work. Since I haven't tested this,
+  for the windows platform, and I guess it _should_ work. Since I haven't tested this,
   I cannot guarantee it wil run. Should you run it, and it works, please let me know.
   If it doesn't, feel free to file any and all bugs.
 
@@ -143,7 +153,9 @@ Credits
 - The CURL team for creating curl, which made my job easy
 - Robbie (creator of pytelemeter), for the hints on how to output the data.
 - My friends for just being there ;p
-- Haploc for the idea on multiple-account support
+- Haploc:
+   * for the idea on multiple-account support
+   * access to Dommel.com meter data for testing
 - Telenet, for creating the Telemeter4Tools
 - NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
 - Eric Pollman for his XML Library (http://eric.pollmann.net/work/public_domain/)
@@ -152,6 +164,7 @@ Credits
 - YvesDM on be.comp.os.linux for:
    * the hint of output publishers and account descriptions.
    * some serious help in bugfixing with 'Turbo' accounts
+
 
 Bugs
 ~~~~

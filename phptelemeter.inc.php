@@ -4,7 +4,7 @@ if (! defined("_phptelemeter")) exit();
 
 /*
 
-phpTelemeter - a php script to read out and display the telemeter stats.
+phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 Copyright (C) 2005 - 2006 Jan De Luyck  <jan -at- kcore -dot- org>
 
@@ -23,11 +23,10 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.11");
+define("_version", "1.20");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -36,8 +35,8 @@ define("_phptelemeterURL", "http://www.kcore.org/?menumain=3&menusub=3");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "parser", "publisher", "check_version");
-$configKeys["general"]["obsolete"] = array("style", "daily");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version");
+$configKeys["general"]["obsolete"] = array("style", "daily", "parser");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 
 /* -------------------------------- */
@@ -184,7 +183,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; An explanation for all parameters can be found in the README file.\n" .
 			";\n" .
 			"; You can specify multiple accounts by making stanza's named\n" .
-			"; [account-1] through [account-" . _maxAccounts . "]. Atleast one account is REQUIRED!.\n" .
+			"; [account-1] through [account-" . _maxAccounts . "]. Atleast one account is REQUIRED!\n" .
 			";\n" .
 			"[general]\n" .
 			"show_daily=false\n" .
@@ -193,13 +192,10 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"show_resetdate=false\n" .
 			";\n" .
 			"file_prefix=/tmp/phptelemeter_\n" .
+			"file_extension=txt\n" .
 			"file_output=false\n" .
 			";\n" .
 			"check_version=false\n" .
-			";\n" .
-			"; This can either be telemeter4tools or telemeter_web, and the file\n" .
-			"; needs to be present in the phptelemeter/modules directory!\n" .
-			"parser=telemeter4tools\n" .
 			";\n" .
 			"; This can be set to either plaintext, machine or html, and the file\n" .
 			"; needs to be present in the phptelemeter/modules directory!\n" .
@@ -223,12 +219,17 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"[account-1]\n" .
 			"username=myuser\n" .
 			"password=mypassword\n" .
+			"parser=aparser\n" .
+			"; (the parser can either be telemeter4tools, telemeter_web or dommel_web,\n" .
+			"; and the file needs to be present in the phptelemeter/modules directory!)\n" .
 			";description=My first account\n" .
 			"; (the description is optional)\n" .
+			";\n" .
 			";\n" .
 			";[account-2]\n" .
 			";username=myuser\n" .
 			";password=mypassword\n" .
+			";parser=aparser\n" .
 			";description=My second account\n" .
 			";\n" .
 			"[die]\n"
@@ -275,12 +276,14 @@ function checkConfig($configuration, $configFile, $configKeys)
 		{
 			/* account found, check the validity */
 			if (! array_key_exists("username", $configuration[$accName]) ||
-				! array_key_exists("password", $configuration[$accName]))
+				! array_key_exists("password", $configuration[$accName]) ||
+				! array_key_exists("parser",   $configuration[$accName]))
 					doError("configuration not correct.", "account info for " . $accName . " is not correct - ignoring.", false);
 			else
 			{
 				$configuration["accounts"][]["username"] = $configuration[$accName]["username"];
 				$configuration["accounts"][count($configuration["accounts"]) - 1]["password"] = $configuration[$accName]["password"];
+				$configuration["accounts"][count($configuration["accounts"]) - 1]["parser"] = $configuration[$accName]["parser"];
 				if (array_key_exists("description", $configuration[$accName]))
 					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] =  $configuration[$accName]["description"];
 				else
@@ -430,7 +433,7 @@ function parseArgs($argv, $configuration)
 
 function outputData($configuration, $buffer, $userid)
 {
-	$fileName = $configuration["general"]["file_prefix"] . $userid;
+	$fileName = $configuration["general"]["file_prefix"] . $userid . "." . $configuration["general"]["file_extension"];
 
 	$fp = @fopen($fileName, "w");
 
@@ -443,20 +446,21 @@ function outputData($configuration, $buffer, $userid)
 		doError("error writing " . $fileName, "The output could not be written to the file.\nPlease check if you have write permissions!", true);
 }
 
-function loadParser($configuration)
+function loadParser($aParser, $configuration)
 {
-	$parser = "modules/parser_" . $configuration["general"]["parser"] . ".inc.php";
+	$parser = "modules/parser_" . $aParser . ".inc.php";
+	$parserID = "_phptelemeter_parser_" . $aParser;
 
 	if ($configuration["general"]["debug"] == true)
 		echo "PARSER: Trying to load " . $parser . "\n";
 
 	require_once($parser);
 
-	if (! defined("_phptelemeter_parser"))
-		doError("Invalid parser", "The parser " . $configuration["general"]["parser"] . " is not valid!", true);
+	if (! defined($parserID))
+		doError("Invalid parser", "The parser " . $aParser . " is not valid!", true);
 
 	if ($configuration["general"]["debug"] == true)
-		echo "PARSER: Loaded parser " . _phptelemeter_parser . ", version " . _phptelemeter_parser_version . "\n";
+		echo "PARSER: Loaded parser " . $aParser . ", version " . constant($parserID) . "\n";
 
 }
 
@@ -477,19 +481,48 @@ function loadPublisher($configuration)
 
 }
 
-function calculateUsage($data)
+function checkISPCompatibility($isp, $function)
 {
-	$returnValue["download"]["max"]     = $data[0];
-	$returnValue["download"]["use"]     = $data[2];
-	$returnValue["download"]["left"]    = $returnValue["download"]["max"] - $returnValue["download"]["use"];
-	$returnValue["download"]["percent"] = (100 / $returnValue["download"]["max"]) * $returnValue["download"]["use"];
-	$returnValue["download"]["hashes"]  = $returnValue["download"]["percent"] / 5;
+	global $isp_compatibility_matrix;
 
-	$returnValue["upload"]["max"]     = $data[1];
-	$returnValue["upload"]["use"]     = $data[3];
-	$returnValue["upload"]["left"]    = $returnValue["upload"]["max"] - $returnValue["upload"]["use"];
-	$returnValue["upload"]["percent"] = (100 / $returnValue["upload"]["max"]) * $returnValue["upload"]["use"];
-	$returnValue["upload"]["hashes"]  = $returnValue["upload"]["percent"] / 5;
+	if (array_key_exists($function, $isp_compatibility_matrix[$isp]) && $isp_compatibility_matrix[$isp][$function] == true)
+		$returnValue = true;
+	else
+		$returnValue = false;
+
+	if ($debug == true)
+		echo "ISP Compatibility: $isp for $function : $returnValue\n";
+
+	return ($returnValue);
+}
+
+
+function calculateUsage($data, $isp)
+{
+	if (checkISPCompatibility($isp, "seperate_quota") == true)
+	{
+		$returnValue["download"]["max"]     = $data[0];
+		$returnValue["download"]["use"]     = $data[2];
+		$returnValue["download"]["left"]    = $returnValue["download"]["max"] - $returnValue["download"]["use"];
+		$returnValue["download"]["percent"] = (100 / $returnValue["download"]["max"]) * $returnValue["download"]["use"];
+		$returnValue["download"]["hashes"]  = $returnValue["download"]["percent"] / 5;
+
+		$returnValue["upload"]["max"]     = $data[1];
+		$returnValue["upload"]["use"]     = $data[3];
+		$returnValue["upload"]["left"]    = $returnValue["upload"]["max"] - $returnValue["upload"]["use"];
+		$returnValue["upload"]["percent"] = (100 / $returnValue["upload"]["max"]) * $returnValue["upload"]["use"];
+		$returnValue["upload"]["hashes"]  = $returnValue["upload"]["percent"] / 5;
+	}
+	else
+	{
+		//0 = total used
+		//1 = remaining
+		$returnValue["total"]["use"] = $data[0];
+		$returnValue["total"]["left"] = $data[1];
+		$returnValue["total"]["max"] = $returnValue["total"]["max"] + $returnValue["total"]["left"];
+		$returnValue["total"]["percent"] = (100 / $returnValue["total"]["max"]) * $returnValue["total"]["use"];
+		$returnValue["total"]["hashes"] = $returnValue["total"]["percent"] / 5;
+	}
 
 	return ($returnValue);
 }

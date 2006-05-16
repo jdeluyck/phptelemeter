@@ -2,11 +2,10 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser", "telemeter_web");
-define("_phptelemeter_parser_version", "11");
+define("_phptelemeter_parser_telemeter_web", "13");
 /*
 
-phpTelemeter - a php script to read out and display the telemeter stats.
+phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_telemeter_web.inc.php - file which contains the Telemeter web page parser module.
 
@@ -27,10 +26,11 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-class telemeterParser
+class telemeterParser_telemeter_web
 {
 	var $_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 	var $_postFields = "goto=http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR";
+	var $_ISP = "telenet";
 	var $_cookieFile;
 	var $url;
 	var $errors;
@@ -64,7 +64,7 @@ class telemeterParser
 		return ($this->neededModules);
 	}
 
-	function telemeterParser()
+	function telemeterParser_telemeter_web()
 	{
 		/* do some var initialisation */
 		$this->_cookieFile = tempnam(_tempdir, "phptelemeter");
@@ -199,8 +199,8 @@ class telemeterParser
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$used      = removeDots(substr($data3[149],0,-3));
-		$remaining = removeDots(substr($data3[150],0,-3));
+		$used      = removeDots(substr($data3[152],0,-3));
+		$remaining = removeDots(substr($data3[153],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
@@ -249,8 +249,14 @@ class telemeterParser
 			$uploadPos++;
 		}
 
+		$endDate = $dailyMatches[count($dailyMatches) - 3];
+		$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
+
+
 		$returnValue["general"] = $generalMatches;
 		$returnValue["daily"] = $dailyMatches;
+		$returnValue["isp"] = $this->_ISP;
+		$returnValue["reset_date"] = $resetDate;
 
 		if ($this->debug == true)
 			print_r($returnValue);

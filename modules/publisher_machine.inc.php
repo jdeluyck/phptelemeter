@@ -3,10 +3,10 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "machine");
-define("_phptelemeter_publisher_version", "6");
+define("_phptelemeter_publisher_version", "7");
 /*
 
-phpTelemeter - a php script to read out and display the telemeter stats.
+phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 publisher_machine.inc.php - file which contains the machine-readable publisher
 
@@ -79,19 +79,29 @@ class telemeterPublisher
 	{
 		$generalData = $data["general"];
 		$dailyData   = $data["daily"];
+		$isp         = $data["isp"];
+		$resetDate   = $data["reset_date"];
 
 		/* general data, always shown */
 
-		$usage = calculateUsage($generalData);
+		$usage = calculateUsage($generalData, $isp);
 
-		$returnStr = "#DownlMax,DownlUsed,DownlPercent,DownlLeft\n";
-		$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["download"]["max"], $usage["download"]["use"], $usage["download"]["percent"], $usage["download"]["left"]);
-		$returnStr .= "#UplMax,UplUsed,UplPercent,UplLeft\n";
-		$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["upload"]["max"], $usage["upload"]["use"], $usage["upload"]["percent"], $usage["upload"]["left"]);
+		if (checkISPCompatibility($isp, "seperate_quota") == true)
+		{
+			$returnStr = "#DownlMax,DownlUsed,DownlPercent,DownlLeft\n";
+			$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["download"]["max"], $usage["download"]["use"], $usage["download"]["percent"], $usage["download"]["left"]);
+			$returnStr .= "#UplMax,UplUsed,UplPercent,UplLeft\n";
+			$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["upload"]["max"], $usage["upload"]["use"], $usage["upload"]["percent"], $usage["upload"]["left"]);
+		}
+		else
+		{
+			$returnStr .= "#TotMax,TotUsed,TotPercent,TotLeft\n";
+			$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["total"]["max"], $usage["total"]["use"], $usage["total"]["percent"], $usage["total"]["left"]);
+		}
 
 		$returnStr .= "\n";
 
-		if ($showDaily == true)
+		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
 			$returnStr .= "#Date,DownlUsed,UplUsed\n";
 

@@ -42,5 +42,22 @@
     </treestatus>
     <annotations/>
     <item url="phptelemeter.session" uploadstatus="1" />
+    <item url="docs/" uploadstatus="1" />
+    <item url="docs/CVS/" uploadstatus="1" />
+    <item url="docs/CVS/Entries" uploadstatus="1" />
+    <item url="docs/CVS/Repository" uploadstatus="1" />
+    <item url="docs/CVS/Root" uploadstatus="1" />
+    <item url="docs/Telemeter4Tools_Overzicht.pdf" uploadstatus="1" />
+    <item url="docs/Telemeter_Interface_Description.pdf" uploadstatus="1" />
+    <item url="docs/gpl.txt" uploadstatus="1" />
+    <item url="patches/" uploadstatus="1" />
+    <item url="patches/CVS/" uploadstatus="1" />
+    <item url="patches/CVS/Entries" uploadstatus="1" />
+    <item url="patches/CVS/Repository" uploadstatus="1" />
+    <item url="patches/CVS/Root" uploadstatus="1" />
+    <item url="patches/nusoap.patch" uploadstatus="1" />
+    <item url="mkrelease.sh" uploadstatus="1" />
+    <item url="modules/parser_dommel_web.inc.php" uploadstatus="1" />
+    <item url="modules/libs/phptelemeter_compatibility_matrix.inc.php" uploadstatus="1" />
   </project>
 </webproject>

@@ -2,11 +2,10 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser", "telemeter4tools");
-define("_phptelemeter_parser_version", "6");
+define("_phptelemeter_parser_telemeter4tools", "7");
 /*
 
-phpTelemeter - a php script to read out and display the telemeter stats.
+phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_telemeter4tools.inc.php - file which contains the Telemeter4tools parser module.
 
@@ -31,15 +30,18 @@ http://www.gnu.org/licenses/gpl.txt
 require_once("modules/libs/nusoap.inc.php");
 require_once("modules/libs/xmlparser.inc.php");
 
-class telemeterParser
+class telemeterParser_telemeter4tools
 {
 	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?WSDL";
+
+	var $_ISP = "telenet";
 
 	var $useEndpointUrl = false;
 	var $endpointUrl = "";
 
 	var $errors_critical;
 	var $errors_normal;
+
 	var $debug = false;
 	var $neededModules = "";
 
@@ -68,7 +70,7 @@ class telemeterParser
 		return ($this->neededModules);
 	}
 
-	function telemeterParser()
+	function telemeterParser_telemeter4tools()
 	{
 		/* do some var initialisation */
 		$this->errors_critical = array(
@@ -183,8 +185,13 @@ class telemeterParser
 						$i++;
 					}
 
+					$endDate = $daily[count($daily) - 3];
+					$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
+
 					$returnValue["general"] = $general;
 					$returnValue["daily"] = $daily;
+					$returnValue["isp"] = $this->_ISP;
+					$returnValue["reset_date"] = $resetDate;
 				}
 			}
 		}

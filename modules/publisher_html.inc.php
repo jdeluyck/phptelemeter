@@ -3,10 +3,10 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "html");
-define("_phptelemeter_publisher_version", "6");
+define("_phptelemeter_publisher_version", "7");
 /*
 
-phpTelemeter - a php script to read out and display the telemeter stats.
+phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 publisher_html.inc.php - file which contains the HTML publisher
 
@@ -91,52 +91,72 @@ class telemeterPublisher
 	{
 		$generalData = $data["general"];
 		$dailyData   = $data["daily"];
+		$isp         = $data["isp"];
+		$resetDate   = $data["reset_date"];
 
 		/* general data, always shown */
-		$usage = calculateUsage($generalData);
+		$usage = calculateUsage($generalData, $isp);
 
-		$returnStr = "<h2>Telemeter statistics on " . date("d/m/Y") . "</h2>\n";
+		$returnStr = "<h2>Usage statistics on " . date("d/m/Y") . "</h2>\n";
 
 		if ($showGraph == true)
 		{
-			$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"]);
-			$returnStr .= sprintf("&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"]);
+			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			{
+				$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"]);
+				$returnStr .= sprintf("&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"]);
+			}
+			else
+				$returnStr .= sprintf("&nbsp;&nbsp;Quota used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["total"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["total"]["hashes"]),$usage["total"]["use"], $usage["total"]["percent"]);
 		}
 
 		if ($showRemaining == true)
 		{
-			if ($usage["download"]["left"] <= 0)
+			if (checkISPCompatibility($isp, "seperate_quota") == true)
 			{
-				$totaldownloadString = "\n<br>You have exceeded your download volume by %d MiB.";
-				$totalUploadString = "";
-			}
-			elseif ($usage["upload"]["left"] <= 0)
-			{
-				$totaldownloadString = "";
-				$totalUploadString = "\n<br>You have exceeded your upload volume by %d MiB.";
+				if ($usage["download"]["left"] <= 0)
+				{
+					$totaldownloadString = "\n<br>You have exceeded your download volume by %d MiB.";
+					$totalUploadString = "";
+				}
+				elseif ($usage["upload"]["left"] <= 0)
+				{
+					$totaldownloadString = "";
+					$totalUploadString = "\n<br>You have exceeded your upload volume by %d MiB.";
+				}
+				else
+				{
+					$totaldownloadString = "\n<br>You can download %d MiB without exceeding your download volume.";
+					$totalUploadString = "\n<br>You can upload %d MiB without exceeding your upload volume.";
+				}
+
+				$returnStr .= sprintf($totaldownloadString, abs($usage["download"]["left"]));
+				$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
 			}
 			else
 			{
-				$totaldownloadString = "\n<br>You can download %d MiB without exceeding your download volume.";
-				$totalUploadString = "\n<br>You can upload %d MiB without exceeding your upload volume.";
-			}
+				if ($usage["total"]["left"] <= 0)
+				{
+					$totalString = "\n<br>You have exceeded your volume by %d MiB.";
+				}
+				else
+				{
+					$totaldownloadString = "\n<br>You can transfer %d MiB without exceeding your volume.";
+				}
 
-			$returnStr .= sprintf($totaldownloadString, abs($usage["download"]["left"]));
-			$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
+				$returnStr .= sprintf($totaldownloadString, abs($usage["total"]["left"]));
+			}
 			$returnStr .= "<br>";
 		}
 
-		if ($showResetDate)
+		if ($showResetDate && checkISPCompatibility($isp, "reset_date") == true)
 		{
-			$endDate = $dailyData[count ($dailyData) - 3];
-			$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
-
 			$returnStr .= "\n<br>";
 			$returnStr .= "Your quota will be reset on " . $resetDate . ".<br>\n";
 
 		}
 
-		if ($showDaily == true)
+		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
 			$returnStr .= "<h2>Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - 3] . "</h2>";
 			$returnStr .= "
