@@ -75,12 +75,7 @@ class telemeterParser_dommel_web
 		$this->url["packages"] = "https://crm.schedom-europe.net/user.php?op=view&tile=mypackages";
 		$this->url["stats"] = "https://crm.schedom-europe.net/include/scripts/linked/dslinfo/dslinfo.php";
 		$this->url["logout"] = "https://crm.schedom-europe.net/index.php?op=logout";
-		/*$this->errors = array("sso.login.authfail.PasswordNOK" => "Incorrect password",
-							"sso.login.authfail.LoginDoesNotExist" => "Incorrect username.",
-							"sso.login.invaliduid" => "Invalid username",
-							"sso.jump.nocookie" => "No cookie detected");
-		*/
-		$this->errors = array();
+		$this->errors = array("your login is incorrect." => "Incorrect login");
 	}
 
 	/* exit function for us. Destroys the cookiefile */
