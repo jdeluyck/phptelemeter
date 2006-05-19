@@ -30,7 +30,6 @@ class telemeterParser_dommel_web
 {
 	var $_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 	var $url;
-	//var $_url = "https://crm.schedom-europe.net/include/scripts/linked/dslinfo/dslinfo.php?servid=19039&";
 	var $_ISP = "dommel";
 	var $_postFields = "op=login&new_language=english&submit=login";
 
@@ -38,8 +37,6 @@ class telemeterParser_dommel_web
 	var $errors;
 	var $debug = false;
 	var $neededModules = array("curl");
-
-	//var $months;
 
 	var $proxyHost;
 	var $proxyPort;
