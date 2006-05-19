@@ -29,8 +29,10 @@ http://www.gnu.org/licenses/gpl.txt
 class telemeterParser_dommel_web
 {
 	var $_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
-	var $_url = "https://crm.schedom-europe.net/include/scripts/linked/dslinfo/dslinfo.php?servid=19039&";
+	var $url;
+	//var $_url = "https://crm.schedom-europe.net/include/scripts/linked/dslinfo/dslinfo.php?servid=19039&";
 	var $_ISP = "dommel";
+	var $_postFields = "op=login&new_language=english&submit=login";
 
 	var $_cookieFile;
 	var $errors;
@@ -69,6 +71,10 @@ class telemeterParser_dommel_web
 		/* do some var initialisation */
 		$this->_cookieFile = tempnam(_tempdir, "phptelemeter");
 
+		$this->url["login"] = "https://crm.schedom-europe.net/index.php";
+		$this->url["packages"] = "https://crm.schedom-europe.net/user.php?op=view&tile=mypackages";
+		$this->url["stats"] = "https://crm.schedom-europe.net/include/scripts/linked/dslinfo/dslinfo.php";
+		$this->url["logout"] = "https://crm.schedom-europe.net/index.php?op=logout";
 		/*$this->errors = array("sso.login.authfail.PasswordNOK" => "Incorrect password",
 							"sso.login.authfail.LoginDoesNotExist" => "Incorrect username.",
 							"sso.login.invaliduid" => "Invalid username",
@@ -81,6 +87,12 @@ class telemeterParser_dommel_web
 	function destroy()
 	{
 		@unlink ($this->_cookieFile);
+	}
+
+	/* Returns the postfields string with the authentication fields intact */
+	function createAuthPostFields($username, $password)
+	{
+		return ($this->_postFields . "&username=" . $username . "&password=" . $password);
 	}
 
 	/* Checks output from curl for errors */
@@ -107,6 +119,13 @@ class telemeterParser_dommel_web
 		if ($this->debug == true) echo "CURL: $URL\n";
 
 		$ch = curl_init($URL);
+
+		if ($postFields !== false)
+		{
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+			if ($this->debug == true) echo "CURL: POST: $postFields\n";
+		}
 
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
@@ -147,11 +166,35 @@ class telemeterParser_dommel_web
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
-		/* log in and get the data */
-		$data = $this->doCurl($this->_url . "password=" . $password . "&client_id=" . $userName);
+		/* log in */
+		$log = $this->doCurl($this->url["login"], $this->createAuthPostFields($userName, $password));
+		$this->checkForError($log);
+
+		/* go to the packages page, and get the serv_id and client_id */
+		$log = $this->docurl($this->url["packages"], FALSE);
+		$this->checkforError($log);
+
+		$log = explode("\n", $log);
+
+		/* figure out the stats exact url */
+		for ($i = 0; $i < count($log); $i++)
+		{
+			if ($log2 = strstr($log[$i], $this->url["stats"]))
+				break;
+		}
+
+		$this->url["stats"] = substr($log2,0,strpos($log2,"'"));
+
+		if ($this->debug == true)
+			echo "DEBUG: STATS URL: " . $this->url["stats"] . "\n";
+
+		/* and get the data */
+		$data = $this->doCurl($this->url["stats"], FALSE);
 		$this->checkForError($data);
 
-		//$data = file_get_contents("/var/www/phptelemeter/modules/source_traffic_meter_dommel.html");
+		/* logout */
+		$log = $this->doCurl($this->url["logout"], FALSE);
+		$this->checkForError($log);
 
 		$data = explode("\n", $data);
 
