@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "13");
+define("_phptelemeter_parser_telemeter_web", "14");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -26,38 +26,13 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-class telemeterParser_telemeter_web
+require_once("libs/phptelemeter_parser_web_shared.inc.php");
+
+class telemeterParser_telemeter_web extends telemeterParser_web_shared
 {
-	var $_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
-	var $_postFields = "goto=http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR";
 	var $_ISP = "telenet";
-	var $_cookieFile;
-	var $url;
-	var $errors;
-	var $debug = false;
-	var $neededModules = array("curl");
 
 	var $months;
-
-	var $proxyHost;
-	var $proxyPort;
-	var $proxyAuth;
-	var $proxyUsername;
-	var $proxyPassword;
-
-	function setDebug($debug)
-	{
-		$this->debug = $debug;
-	}
-
-	function setProxy($proxyHost, $proxyPort, $proxyAuth, $proxyUsername, $proxyPassword)
-	{
-		$this->proxyHost = $proxyHost;
-		$this->proxyPort = $proxyPort;
-		$this->proxyAuth = $proxyAuth;
-		$this->proxyUsername = $proxyUsername;
-		$this->proxyPassword = $proxyPassword;
-	}
 
 	function getNeededModules()
 	{
@@ -66,8 +41,11 @@ class telemeterParser_telemeter_web
 
 	function telemeterParser_telemeter_web()
 	{
+		/* call parent constructor */
+		telemeterParser_web_shared::telemeterParser_web_shared();
+
 		/* do some var initialisation */
-		$this->_cookieFile = tempnam(_tempdir, "phptelemeter");
+		$this->_postFields = array("goto" => "http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR");
 
 		$this->url["login"] = "https://www.telenet.be/sys/sso/signon.jsp";
 		$this->url["stats"] = "https://services.telenet.be/lngtlm/telemeter/detail.html";
@@ -81,90 +59,10 @@ class telemeterParser_telemeter_web
 		$this->months = array("januari" => 1, "februari" => 2, "maart" => 3, "april" => 4, "mei" => 5, "juni" => 6, "juli" => 7, "augustus" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
 	}
 
-	/* exit function for us. Destroys the cookiefile */
-	function destroy()
-	{
-		@unlink ($this->_cookieFile);
-	}
-
-	/* Checks output from curl for errors */
-	function checkForError($log)
-	{
-		if ($this->debug)
-			echo "\n" . $log . "\n";
-
-		$returnValue = false;
-
-		foreach($this->errors as $errCode => $errDesc)
-		{
-			if (stristr($log, $errCode) !== FALSE)
-				$returnValue .= $errDesc . "\n";
-		}
-
-		if ($returnValue !== false)
-			doError("problem detected", trim($returnValue), true);
-	}
-
-	/* Returns the postfields string with the authentication fields intact */
-	function createAuthPostFields($uid, $password)
-	{
-		return ($this->_postFields . "&uid=" . $uid . "&pwd=" . $password);
-	}
-
-	/* Does some CURLing (no, not that strange sport on ice that l... I disgress. */
-	function doCurl($URL, $postFields)
-	{
-		if ($this->debug == true) echo "CURL: $URL\n";
-
-		$ch = curl_init($URL);
-
-		if ($postFields !== false)
-		{
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-			if ($this->debug == true) echo "CURL: POST: $postFields\n";
-		}
-
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
-		curl_setopt($ch, CURLOPT_COOKIEJAR, $this->_cookieFile);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, $this->_cookieFile);
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->_userAgent);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-
-		/* check proxy */
-		if (strlen($this->proxyHost) != 0)
-		{
-			if ($this->debug == true)
-				echo "CURL: Enabling proxy: " .$this->proxyHost . ":" . $this->proxyPort . "\n";
-
-			curl_setopt($ch, CURLOPT_PROXY, $this->proxyHost . ":" . $this->proxyPort);
-
-			if ($this->proxyAuth == true)
-			{
-				if ($this->debug == true)
-					echo "CURL: Enabling proxy AUTH\n";
-
-				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxyUsername . ":" . $this->proxyPassword);
-			}
-		}
-
-		$output = curl_exec($ch);
-		if (curl_errno($ch) != 0)
-			doError("curl error occurred", curl_error($ch), true);
-
-		curl_close($ch);
-
-		return ($output);
-	}
-
-
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
-		$log = $this->doCurl($this->url["login"], $this->createAuthPostFields($userName, $password));
+		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("uid" => $userName, "pwd" => $password)));
 		$this->checkForError($log);
 
 		/* get the data */
