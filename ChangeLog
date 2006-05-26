@@ -1,5 +1,13 @@
 What's new? Not much, but it's listed here.
 
+1.21
+~~~~
+- Extracted the common functionality between the _web parsers
+  and moved it to a parent class
+- Removed some useless debugging code
+- Fixed bug in calculation code
+- Added skynet_web parser for Skynet
+
 1.20
 ~~~~
 - Fixed telemeter_web parser for Telenet Changes

@@ -40,4 +40,10 @@ $isp_compatibility_matrix["telenet"]["history"] = true;
 $isp_compatibility_matrix["dommel"]["reset_date"] = true;
 $isp_compatibility_matrix["dommel"]["seperate_quota"] = false;
 $isp_compatibility_matrix["dommel"]["history"] = false;
+
+/* SKYNET */
+$isp_compatibility_matrix["skynet"]["reset_date"] = false;
+$isp_compatibility_matrix["skynet"]["seperate_quota"] = false;
+$isp_compatibility_matrix["skynet"]["history"] = false;
+
 ?>

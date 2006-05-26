@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.20");
+define("_version", "1.21");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -220,8 +220,9 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"username=myuser\n" .
 			"password=mypassword\n" .
 			"parser=aparser\n" .
-			"; (the parser can either be telemeter4tools, telemeter_web or dommel_web,\n" .
-			"; and the file needs to be present in the phptelemeter/modules directory!)\n" .
+			"; (the parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
+			"; or skynet_web, and the file needs to be present in the \n" .
+			"; phptelemeter/modules directory!)\n" .
 			";description=My first account\n" .
 			"; (the description is optional)\n" .
 			";\n" .
@@ -490,9 +491,6 @@ function checkISPCompatibility($isp, $function)
 	else
 		$returnValue = false;
 
-	if ($debug == true)
-		echo "ISP Compatibility: $isp for $function : $returnValue\n";
-
 	return ($returnValue);
 }
 
@@ -515,14 +513,18 @@ function calculateUsage($data, $isp)
 	}
 	else
 	{
-		//0 = total used
-		//1 = remaining
+		/*	0 = total used
+			1 = remaining
+		*/
 		$returnValue["total"]["use"] = $data[0];
 		$returnValue["total"]["left"] = $data[1];
-		$returnValue["total"]["max"] = $returnValue["total"]["max"] + $returnValue["total"]["left"];
+		$returnValue["total"]["max"] = $returnValue["total"]["use"] + $returnValue["total"]["left"];
 		$returnValue["total"]["percent"] = (100 / $returnValue["total"]["max"]) * $returnValue["total"]["use"];
 		$returnValue["total"]["hashes"] = $returnValue["total"]["percent"] / 5;
 	}
+
+	echo "Calculated Usage\n";
+	var_dump($returnValue);
 
 	return ($returnValue);
 }
@@ -551,18 +553,10 @@ function checkVersion($doCheck, $proxyInfo)
 		/* check proxy */
 		if (strlen($proxyInfo["proxy_host"]) != 0)
 		{
-			if ($this->debug == true)
-				echo "CURL: Enabling proxy: " . $proxyInfo["proxy_host"] . ":" . $proxyInfo["proxy_port"] . "\n";
-
 			curl_setopt($ch, CURLOPT_PROXY, $proxyInfo["proxy_host"] . ":" . $proxyInfo["proxy_port"]);
 
 			if ($proxyInfo["proxy_authenticate"] == true)
-			{
-				if ($this->debug == true)
-					echo "CURL: Enabling proxy AUTH\n";
-
 				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyInfo["proxy_username"] . ":" . $proxyInfo["proxy_password"]);
-			}
 		}
 
 		$upstreamVersion = trim(curl_exec($ch));

@@ -30,10 +30,13 @@ class telemeterParser_web_shared
 	var $_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 	var $_cookieFile;
 	var $_postFields;
+	var $_curlParams = false;
+
 	var $url;
 	var $errors;
 	var $debug = false;
 	var $neededModules = array("curl");
+
 
 	var $proxyHost;
 	var $proxyPort;
@@ -59,10 +62,12 @@ class telemeterParser_web_shared
 				$returnValue .= $key . "=" . $value . "&";
 		}
 
+		$returnValue = substr($returnValue,0,-1);
+
 		if ($this->debug == true)
 			echo "Postfields: $returnValue\n";
 
-		return (substr($returnValue,0,-1));
+		return ($returnValue);
 	}
 
 	function setProxy($proxyHost, $proxyPort, $proxyAuth, $proxyUsername, $proxyPassword)
@@ -115,6 +120,19 @@ class telemeterParser_web_shared
 		if ($this->debug == true) echo "CURL: $URL\n";
 
 		$ch = curl_init($URL);
+
+		/* any extra curl parameters to pass around? */
+		if ($this->_curlParams !== false)
+		{
+			if ($this->debug == true)
+			{
+				echo "CURL: Extra settings:\n";
+				var_dump($this->_curlParams);
+			}
+
+			foreach ($this->_curlParams as $key => $value)
+				curl_setopt($ch, $key, $value);
+		}
 
 		if ($postFields !== false)
 		{

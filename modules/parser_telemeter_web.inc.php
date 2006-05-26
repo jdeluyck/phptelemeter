@@ -34,11 +34,6 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 
 	var $months;
 
-	function getNeededModules()
-	{
-		return ($this->neededModules);
-	}
-
 	function telemeterParser_telemeter_web()
 	{
 		/* call parent constructor */

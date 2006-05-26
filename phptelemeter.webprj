@@ -60,5 +60,6 @@
     <item url="modules/parser_dommel_web.inc.php" uploadstatus="1" />
     <item url="modules/libs/phptelemeter_compatibility_matrix.inc.php" uploadstatus="1" />
     <item url="modules/libs/phptelemeter_parser_web_shared.inc.php" />
+    <item url="modules/parser_skynet_web.inc.php" />
   </project>
 </webproject>

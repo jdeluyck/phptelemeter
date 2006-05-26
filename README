@@ -1,4 +1,4 @@
-phptelemeter v1.20 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v1.21 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -16,13 +16,14 @@ What can it do?
 
 Which ISP's are supported?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
--------------------------------------------------------------
-| Parser			|	Reset Date	|	Quota	|	History |
--------------------------------------------------------------
-| telemeter_web		|		X		|	  X		|	  X		|
-| telemeter4tools	|		X		|	  X		|     X		|
-| dommel_web		|		X		|	  X		|			|
--------------------------------------------------------------
+--------------------------------------------------------------
+| ISP     | Parser            | Reset Date | Quota | History |
+--------------------------------------------------------------
+| Telenet | telemeter_web     |      X     |   X   |    X    |
+|         | telemeter4tools   |      X     |   X   |    X    |
+| Dommel  | dommel_web        |      X     |   X   |         |
+| Skynet  | skynet_web        |      X     |   X   |         |
+--------------------------------------------------------------
 
 Requirements
 ~~~~~~~~~~~~
@@ -117,7 +118,8 @@ password=yourpassword				# The password of account-1
 description=your description		# Description of account-1, if it is set it'll be used instead
 									#  of the account name in the output
 parser=a parser						# The parsing module to use for account-1. Currently
-									#  telemeter4tools, telemeter_web and dommel_web are included.
+									#  telemeter4tools, telemeter_web, dommel_web and skynet_web
+									#  are included.
 
 ...
 
@@ -147,6 +149,11 @@ Where to get it
 ~~~~~~~~~~~~~~~
 - There's only one place: http://www.sf.net/projects/phptelemeter/.
 
+Known issues
+~~~~~~~~~~~~
+- dommel_web parser:
+  * it will only take the first ADSL account it finds in your "My Packages" page.
+
 Credits
 ~~~~~~~
 - The PHP team for creating php ;p
@@ -164,7 +171,6 @@ Credits
 - YvesDM on be.comp.os.linux for:
    * the hint of output publishers and account descriptions.
    * some serious help in bugfixing with 'Turbo' accounts
-
 
 Bugs
 ~~~~
