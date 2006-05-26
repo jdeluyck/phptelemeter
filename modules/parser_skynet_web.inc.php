@@ -83,8 +83,12 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		$temp = explode(" ", $data[$remainingPos]);
 		$volume[] = (substr($temp[0],1) * 1024) + $temp[2];
 
+		/* resetdate. It's reset on the first of the next month */
+		$resetDate = date("d/m/Y", mktime(0,0,0,date("m") + 1 ,1, date("Y")));
+
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
+		$returnValue["reset_date"] = $resetDate;
 
 		if ($this->debug == true)
 			print_r($returnValue);
