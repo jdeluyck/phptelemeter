@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_dommel_web", "1");
+define("_phptelemeter_parser_dommel_web", "2");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -26,140 +26,33 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-class telemeterParser_dommel_web
+require_once("libs/phptelemeter_parser_web_shared.inc.php");
+
+class telemeterParser_dommel_web extends telemeterParser_web_shared
 {
-	var $_userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
-	var $url;
 	var $_ISP = "dommel";
-	var $_postFields = "op=login&new_language=english&submit=login";
-
-	var $_cookieFile;
-	var $errors;
-	var $debug = false;
-	var $neededModules = array("curl");
-
-	var $proxyHost;
-	var $proxyPort;
-	var $proxyAuth;
-	var $proxyUsername;
-	var $proxyPassword;
-
-	function setDebug($debug)
-	{
-		$this->debug = $debug;
-	}
-
-	function setProxy($proxyHost, $proxyPort, $proxyAuth, $proxyUsername, $proxyPassword)
-	{
-		$this->proxyHost = $proxyHost;
-		$this->proxyPort = $proxyPort;
-		$this->proxyAuth = $proxyAuth;
-		$this->proxyUsername = $proxyUsername;
-		$this->proxyPassword = $proxyPassword;
-	}
-
-	function getNeededModules()
-	{
-		return ($this->neededModules);
-	}
 
 	function telemeterParser_dommel_web()
 	{
+		/* call parent constructor */
+		telemeterParser_web_shared::telemeterParser_web_shared();
+
 		/* do some var initialisation */
-		$this->_cookieFile = tempnam(_tempdir, "phptelemeter");
+		$this->_postFields = array("op" => "login", "new_language" => "english", "submit" => "login");
 
 		$this->url["login"] = "https://crm.schedom-europe.net/index.php";
 		$this->url["packages"] = "https://crm.schedom-europe.net/user.php?op=view&tile=mypackages";
 		$this->url["stats"] = "https://crm.schedom-europe.net/include/scripts/linked/dslinfo/dslinfo.php";
 		$this->url["logout"] = "https://crm.schedom-europe.net/index.php?op=logout";
+
 		$this->errors = array("your login is incorrect." => "Incorrect login");
 	}
-
-	/* exit function for us. Destroys the cookiefile */
-	function destroy()
-	{
-		@unlink ($this->_cookieFile);
-	}
-
-	/* Returns the postfields string with the authentication fields intact */
-	function createAuthPostFields($username, $password)
-	{
-		return ($this->_postFields . "&username=" . $username . "&password=" . $password);
-	}
-
-	/* Checks output from curl for errors */
-	function checkForError($log)
-	{
-		if ($this->debug)
-			echo "\n" . $log . "\n";
-
-		$returnValue = false;
-
-		foreach($this->errors as $errCode => $errDesc)
-		{
-			if (stristr($log, $errCode) !== FALSE)
-				$returnValue .= $errDesc . "\n";
-		}
-
-		if ($returnValue !== false)
-			doError("problem detected", trim($returnValue), true);
-	}
-
-	/* Does some CURLing (no, not that strange sport on ice that l... I disgress. */
-	function doCurl($URL, $postFields)
-	{
-		if ($this->debug == true) echo "CURL: $URL\n";
-
-		$ch = curl_init($URL);
-
-		if ($postFields !== false)
-		{
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-			if ($this->debug == true) echo "CURL: POST: $postFields\n";
-		}
-
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
-		curl_setopt($ch, CURLOPT_COOKIEJAR, $this->_cookieFile);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, $this->_cookieFile);
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->_userAgent);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-
-		/* check proxy */
-		if (strlen($this->proxyHost) != 0)
-		{
-			if ($this->debug == true)
-				echo "CURL: Enabling proxy: " .$this->proxyHost . ":" . $this->proxyPort . "\n";
-
-			curl_setopt($ch, CURLOPT_PROXY, $this->proxyHost . ":" . $this->proxyPort);
-
-			if ($this->proxyAuth == true)
-			{
-				if ($this->debug == true)
-					echo "CURL: Enabling proxy AUTH\n";
-
-				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxyUsername . ":" . $this->proxyPassword);
-			}
-		}
-
-		$output = curl_exec($ch);
-		if (curl_errno($ch) != 0)
-			doError("curl error occurred", curl_error($ch), true);
-
-		curl_close($ch);
-
-		return ($output);
-	}
-
 
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
 		/* log in */
-		$log = $this->doCurl($this->url["login"], $this->createAuthPostFields($userName, $password));
+		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("username" => $userName, "password" => $password)));
 		$this->checkForError($log);
 
 		/* go to the packages page, and get the serv_id and client_id */
