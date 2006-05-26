@@ -44,25 +44,18 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		$this->_curlParams = array(CURLOPT_SSL_VERIFYPEER => 0);
 
 		$this->url["login"] = "https://e-care.skynet.be/index.cfm?function=connection.getVolume";
-		//$this->url["stats"] = "https://services.telenet.be/lngtlm/telemeter/detail.html";
 		$this->url["logout"] = "https://e-care.skynet.be/index.cfm?function=login.logoff";
 
-		$this->errors = array("sso.login.authfail.PasswordNOK" => "Incorrect password",
-							"sso.login.authfail.LoginDoesNotExist" => "Incorrect username.",
-							"sso.login.invaliduid" => "Invalid username",
-							"sso.jump.nocookie" => "No cookie detected");
+		$this->errors = array("ese21Z-3" => "Technical problem or non-existant username.",
+							"ese21Z-2" => "Password incorrect.");
 	}
 
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
-
+		/* login and get the data */
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("form_login" => $userName, "form_password" => $password)));
 		$this->checkForError($data);
-
-		/* get the data */
-		//$data = $this->doCurl($this->url["stats"], FALSE);
-		//$this->checkForError($data);
 
 		/* logout */
 		$log = $this->doCurl($this->url["logout"], FALSE);
@@ -90,12 +83,8 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		$temp = explode(" ", $data[$remainingPos]);
 		$volume[] = (substr($temp[0],1) * 1024) + $temp[2];
 
-		/* reset date */
-		//$reset_date = substr($data2[5],0,10);
-
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
-		//$returnValue["reset_date"] = $reset_date;
 
 		if ($this->debug == true)
 			print_r($returnValue);

@@ -523,9 +523,6 @@ function calculateUsage($data, $isp)
 		$returnValue["total"]["hashes"] = $returnValue["total"]["percent"] / 5;
 	}
 
-	echo "Calculated Usage\n";
-	var_dump($returnValue);
-
 	return ($returnValue);
 }
 
