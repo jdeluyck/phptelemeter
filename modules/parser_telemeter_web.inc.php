@@ -79,27 +79,29 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 				$data3[] = $data[$i];
 		}
 
+		$data = $data3;
+
 		if ($this->debug == true)
-			var_dump($data3);
+			var_dump($data);
 
 		/* download - total */
 		$downCorrection = 0;
 
-		$used      = removeDots(substr($data3[29],0,-3));
-		$remaining = removeDotS(substr($data3[30],0,-3));
+		$used      = removeDots(substr($data[29],0,-3));
+		$remaining = removeDotS(substr($data[30],0,-3));
 
 		$generalMatches[0] = $remaining + $used;
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$used      = removeDots(substr($data3[152],0,-3));
-		$remaining = removeDots(substr($data3[153],0,-3));
+		$used      = removeDots(substr($data[152],0,-3));
+		$remaining = removeDots(substr($data[153],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
 
 		/* determine the date range */
-		$dateRange = explode(" ", $data3[2]);
+		$dateRange = explode(" ", $data[2]);
 
 		/* change the month */
 		$dateRange[3] = $this->months[$dateRange[3]];
@@ -127,15 +129,15 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		for ($i = 1; $i <= $days; $i++)
 		{
 
-			if ($data3[$downloadPos] == "&gt;")
+			if ($data[$downloadPos] == "&gt;")
 			{
 				$downloadPos++;
 				$uploadPos++;
 			}
 
 			$dailyMatches[] = date("d/m/y", $start + (($i - 1) * 86400));
-			$dailyMatches[] = removeDots($data3[++$downloadPos]) + removeDots($data3[++$downloadPos]);
-			$dailyMatches[] = removeDots($data3[++$uploadPos]) + removeDots($data3[++$uploadPos]);
+			$dailyMatches[] = removeDots($data[++$downloadPos]) + removeDots($data[++$downloadPos]);
+			$dailyMatches[] = removeDots($data[++$uploadPos]) + removeDots($data[++$uploadPos]);
 
 			/* increase pos by one, we don't care for the dates */
 			$downloadPos++;

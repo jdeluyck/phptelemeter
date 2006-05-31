@@ -40,7 +40,7 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("op" => "login", "new_language" => "english", "submit" => "login");
+		$this->_postFields = array("");
 
 		$this->url["login"] = "http://customercare.scarlet.be/index.jsp?language=nl";
 		$this->url["stats"] = "http://customercare.scarlet.be/usage/detail.do";
@@ -57,17 +57,16 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 	function getData($userName, $password)
 	{
 		/* log in */
-		//$log = $this->doCurl($this->url["login"], $this->createPostFields(array("username" => $userName, "password" => $password)));
-		//$this->checkForError($log);
+		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("username" => $userName, "password" => $password)));
+		$this->checkForError($log);
 
 		/* and get the data */
-		//$data = $this->doCurl($this->url["stats"], FALSE);
-		//$this->checkForError($data);
-		$data = file_get_contents("/tmp/scarletmeter.txt");
+		$data = $this->doCurl($this->url["stats"], FALSE);
+		$this->checkForError($data);
 
 		/* logout */
-		//$log = $this->doCurl($this->url["logout"], FALSE);
-		//$this->checkForError($log);
+		$log = $this->doCurl($this->url["logout"], FALSE);
+		$this->checkForError($log);
 
 		/* clean out the data a bit */
 		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));
@@ -81,29 +80,34 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 			$data[$i] = trim($data[$i]);
 
 			if (strlen($data[$i]) != 0)
-				$data2[] = $data[$i];
-
-			/* determine positions */
-			if (stristr($data[$i], "Periode van") !== false)
-				$pos["daterange"] = count($data2) - 1;
-			elseif (stristr($data[$i], "Uw maandelijkse factuur wordt opgesteld op") !== false)
-				$pos["resetdate"] = count($data2) - 1;
-			elseif ($data[$i] == "Download")
-				$pos["download"] = count($data2) - 1 + $pos["data_interval"];
-			elseif ($data[$i] == "Upload")
-				$pos["upload"] = count($data2) - 1 + $pos["data_interval"];
-			elseif (stristr($data[$i], "limiet van uw on-line") !== false)
-				$pos["total"] = count($data2) - 1;
+				$temp[] = $data[$i];
 		}
 
-		$data = $data2;
-		unset($data2);
+		$data = $temp;
 
 		if ($this->debug == true)
 		{
 			echo "DATA:\n";
 			var_dump($data);
+		}
 
+		for ($i = 0; $i < count($data); $i++)
+		{
+			/* determine positions */
+			if (stristr($data[$i], "Periode van") !== false)
+				$pos["daterange"] = $i;
+			elseif (stristr($data[$i], "Uw maandelijkse factuur wordt opgesteld op") !== false)
+				$pos["resetdate"] = $i;
+			elseif ($data[$i] == "Download")
+				$pos["download"] = $i + $pos["data_interval"];
+			elseif ($data[$i] == "Upload")
+				$pos["upload"] = $i + $pos["data_interval"];
+			elseif (stristr($data[$i], "limiet van uw on-line") !== false)
+				$pos["total"] = $i;
+		}
+
+		if ($this->debug == true)
+		{
 			echo "POS:\n";
 			var_dump($pos);
 		}
