@@ -49,5 +49,5 @@ $isp_compatibility_matrix["skynet"]["history"] = false;
 /* SCARLET */
 $isp_compatibility_matrix["scarlet"]["reset_date"] = true;
 $isp_compatibility_matrix["scarlet"]["seperate_quota"] = false;
-$isp_compatibility_matrix["scarlet"]["history"] = false;
+$isp_compatibility_matrix["scarlet"]["history"] = true;
 ?>
