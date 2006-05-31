@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.21");
+define("_version", "1.22");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -221,7 +221,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"password=mypassword\n" .
 			"parser=aparser\n" .
 			"; (the parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
-			"; or skynet_web, and the file needs to be present in the \n" .
+			"; skynet_web or scarlet_web, and the file needs to be present in the \n" .
 			"; phptelemeter/modules directory!)\n" .
 			";description=My first account\n" .
 			"; (the description is optional)\n" .

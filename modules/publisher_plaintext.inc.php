@@ -141,11 +141,11 @@ class telemeterPublisher
 		{
 			$returnStr .= "\n";
 			$returnStr .= "Your quota will be reset on " . $resetDate . ".\n";
+			$returnStr .= "\n";
 		}
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
-			$returnStr .= "\n";
 			$returnStr .= "Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - 3] . "\n";
 			$returnStr .= "------------------------------------\n";
 			$returnStr .= "\n";

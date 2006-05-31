@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.22
+~~~~
+- Added scarlet_web parser for Scarlet
+
 1.21
 ~~~~
 - Extracted the common functionality between the _web parsers
