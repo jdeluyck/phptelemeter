@@ -172,6 +172,7 @@ Credits
 - YvesDM on be.comp.os.linux for:
    * the hint of output publishers and account descriptions.
    * some serious help in bugfixing with 'Turbo' accounts
+- Gh0sty for testing the scarlet parser and helping me to fix the few bugs in it
 
 Bugs
 ~~~~

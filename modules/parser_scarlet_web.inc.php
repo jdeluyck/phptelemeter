@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "1");
+define("_phptelemeter_parser_scarlet_web", "2");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -42,15 +42,15 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		/* do some var initialisation */
 		$this->_postFields = array("");
 
-		$this->url["login"] = "http://customercare.scarlet.be/index.jsp?language=nl";
-		$this->url["stats"] = "http://customercare.scarlet.be/usage/detail.do";
+		$this->url["login"] = "http://customercare.scarlet.be/logon.do";
+		$this->url["stats"] = "http://customercare.scarlet.be/usage/dispatch.do";
 		$this->url["logout"] = "http://customercare.scarlet.be/logoff.do";
 
 		$this->errors = array("Uw gebruikersnaam of wachtwoord is fout ingegeven." => "Incorrect login",
 							"Vergeet uw wachtwoord niet in te voeren.", "No password supplied",
 							"Vergeet uw gebruikersnaam niet in te voeren.", "No username supplied");
 
-		$this->months = array("januari" => 1, "februari" => 2, "maart" => 3, "april" => 4, "mei" => 5, "juni" => 6, "juli" => 7, "augustus" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
+		$this->months = array("January" => 1, "February" => 2, "March" => 3, "April" => 4, "May" => 5, "June" => 6, "July" => 7, "August" => 8, "September" => 9, "October" => 10, "November" => 11, "December" => 12);
 	}
 
 	/* EXTERNAL! */
@@ -184,7 +184,6 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 					$uploadMultiplier = (1/1024);
 			}
 
-			$str = str_replace(",", ".", $str);
 			$dailyData[] = round(floatval(str_replace(",",".",substr($data[$pos["download"]],0,-2))) * $downloadMultiplier);
 			$dailyData[] = round(floatval(str_replace(",",".",substr($data[$pos["upload"]],0,-2))) * $uploadMultiplier);
 
