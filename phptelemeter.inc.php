@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.22");
+define("_version", "1.23");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -88,14 +88,11 @@ function checkOS($configuration, &$configFiles)
 	}
 }
 
-/* we require version >= 4.3.0 and < 5.0.0 */
+/* we require version >= 4.3.0 */
 function checkPhpVersion()
 {
 	if (version_compare("4.3.0", phpversion()) >= 0)
 		doError("PHP version too low","Please upgrade PHP to atleast 4.3.0", true);
-
-	if (version_compare("5.0.0", phpversion()) < 0)
-		doError("PHP5 not supported", "Please use PHP4. PHP5 is not supported at this time.", true);
 }
 
 function findConfigFile($configFiles, $configuration)
@@ -221,8 +218,8 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"password=mypassword\n" .
 			"parser=aparser\n" .
 			"; (the parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
-			"; skynet_web or scarlet_web, and the file needs to be present in the \n" .
-			"; phptelemeter/modules directory!)\n" .
+			"; skynet_web, scarlet_web or upccz_web, and the file needs to be present\n" .
+			"; in the phptelemeter/modules directory!)\n" .
 			";description=My first account\n" .
 			"; (the description is optional)\n" .
 			";\n" .

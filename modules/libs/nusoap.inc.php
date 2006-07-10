@@ -33,7 +33,7 @@ http://www.nusphere.com
 */
 
 /* this version of nusoap has been modified to allow http proxies to work with
-https urls, see patch at 
+https urls, see patch at
 http://sourceforge.net/tracker/index.php?func=detail&aid=1427254&group_id=149435&atid=774602
 
 Modifications done by Jan De Luyck
@@ -6432,7 +6432,7 @@ class soap_parser extends nusoap_base {
 * @version  $Id$
 * @access   public
 */
-class soapclient extends nusoap_base  {
+class phptelemeter_soapclient extends nusoap_base  {
 
 	var $username = '';
 	var $password = '';
@@ -6499,7 +6499,7 @@ class soapclient extends nusoap_base  {
 	* @param	integer $response_timeout set the response timeout
 	* @access   public
 	*/
-	function soapclient($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30){
+	function phptelemeter_soapclient($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30){
 		parent::nusoap_base();
 		$this->endpoint = $endpoint;
 		$this->proxyhost = $proxyhost;

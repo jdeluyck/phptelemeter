@@ -1,4 +1,4 @@
-phptelemeter v1.22 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v1.23 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -24,20 +24,22 @@ Which ISP's are supported?
 | Dommel  | dommel_web        |      X     |   X   |         |
 | Skynet  | skynet_web        |      X     |   X   |         |
 | Scarlet | scarlet_web       |      X     |   X   |    X    |
+| UPC CZ  | upccz_web         |      X     |   X   |         |
 --------------------------------------------------------------
 
 Requirements
 ~~~~~~~~~~~~
-- It requires PHP >= 4.3.0 and < 5.0, and the PHP4 CURL extension, compiled
+- It requires PHP >= 4.3.0 and the PHP CURL extension, compiled
   with SSL support!
 - For Telemeter4Tools it requires the nusoap SOAP library, and the xmlparser
-  XML library. Both are included in the package.
+  XML library. Both are included in the package. Do _not_ update the nusoap
+  library because it has been patched to work with phptelemeter.
 
 Howto
 ~~~~~
 - First off, to actually run this script you must tell it where the
   php binary is. Edit phptelemeter.php and modify the first line
-  to #!/path/to/php4 -q. On Debian Sid, this is /usr/bin/php4.
+  to #!/path/to/php -q. On Debian Sid, this is /usr/bin/php4 (or php5).
 
 - To create the initial configuration file, just run the script.
   It will notice the absence of ~/.phptelemeterrc, and create a
@@ -119,8 +121,8 @@ password=yourpassword				# The password of account-1
 description=your description		# Description of account-1, if it is set it'll be used instead
 									#  of the account name in the output
 parser=a parser						# The parsing module to use for account-1. Currently
-									#  telemeter4tools, telemeter_web, dommel_web, skynet_web and
-									#  scarlet_web are included.
+									#  telemeter4tools, telemeter_web, dommel_web, skynet_web,
+                                    #  scarlet_web and upccz_web are included.
 
 ...
 
@@ -154,6 +156,9 @@ Known issues
 ~~~~~~~~~~~~
 - dommel_web parser:
   * it will only take the first ADSL account it finds in your "My Packages" page.
+
+- upccz_web, scarlet parsers:
+  * I have no accounts with these ISP's. If it breaks, please tell me so I can investigate.
 
 Credits
 ~~~~~~~

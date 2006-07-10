@@ -53,8 +53,11 @@ class telemeterParser_web_shared
 	{
 		$returnValue = "";
 
-		foreach ($this->_postFields as $key => $value)
-			$returnValue .= $key . "=" . $value . "&";
+		if (is_array($this->_postFields))
+		{
+			foreach ($this->_postFields as $key => $value)
+				$returnValue .= $key . "=" . $value . "&";
+		}
 
 		if ($additionalFields != false)
 		{
@@ -99,19 +102,22 @@ class telemeterParser_web_shared
 	/* Checks output from curl for errors */
 	function checkForError($log)
 	{
-		if ($this->debug)
-			echo "\n" . $log . "\n";
-
-		$returnValue = false;
-
-		foreach($this->errors as $errCode => $errDesc)
+		if (is_array($this->errors))
 		{
-			if (stristr($log, $errCode) !== FALSE)
-				$returnValue .= $errDesc . "\n";
-		}
+			if ($this->debug)
+				echo "\n" . $log . "\n";
 
-		if ($returnValue !== false)
-			doError("problem detected", trim($returnValue), true);
+			$returnValue = false;
+
+			foreach($this->errors as $errCode => $errDesc)
+			{
+				if (stristr($log, $errCode) !== FALSE)
+					$returnValue .= $errDesc . "\n";
+			}
+
+			if ($returnValue !== false)
+				doError("problem detected", trim($returnValue), true);
+		}
 	}
 
 	/* Does some CURLing (no, not that strange sport on ice that l... I disgress. */

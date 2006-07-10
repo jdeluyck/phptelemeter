@@ -50,4 +50,10 @@ $isp_compatibility_matrix["skynet"]["history"] = false;
 $isp_compatibility_matrix["scarlet"]["reset_date"] = true;
 $isp_compatibility_matrix["scarlet"]["seperate_quota"] = false;
 $isp_compatibility_matrix["scarlet"]["history"] = true;
+
+/* UPC CZ */
+$isp_compatibility_matrix["upccz"]["reset_date"] = true;
+$isp_compatibility_matrix["upccz"]["seperate_quota"] = false;
+$isp_compatibility_matrix["upccz"]["history"] = false;
+
 ?>

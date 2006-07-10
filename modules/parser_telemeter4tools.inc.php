@@ -125,12 +125,12 @@ class telemeterParser_telemeter4tools
 		if (strlen($this->proxyHost) != 0)
 		{
 			if ($this->proxyAuth == true)
-				$client = new soapclient($this->url, true, $this->proxyHost, $this->proxyPort, $this->proxyUsername, $this->proxyPassword);
+				$client = new phptelemeter_soapclient($this->url, true, $this->proxyHost, $this->proxyPort, $this->proxyUsername, $this->proxyPassword);
 			else
-				$client = new soapclient($this->url, true, $this->proxyHost, $this->proxyPort);
+				$client = new phptelemeter_soapclient($this->url, true, $this->proxyHost, $this->proxyPort);
 		}
 		else
-			$client = new soapclient($this->url, true);
+			$client = new phptelemeter_soapclient($this->url, true);
 
 		if ($this->debug == true)
 			echo $client->getDebug();

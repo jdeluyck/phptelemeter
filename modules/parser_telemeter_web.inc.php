@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "14");
+define("_phptelemeter_parser_telemeter_web", "15");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -81,27 +81,51 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 
 		$data = $data3;
 
+		/* determine positions */
+		for ($i = 0; $i < count($data); $i++)
+		{
+			if (stristr($data[$i], "Detail facturatieperiode") !== false)
+				$pos["daterange"] = $i;
+			elseif (stristr($data[$i], "Ontvangen gegevens (download)") !== false)
+			{
+				$pos["downloadused"] = $i + 17;
+				$pos["downloadleft"] = $i + 18;
+				$pos["downloaddetail"] = $i + 23;
+			}
+			elseif (stristr($data[$i], "Verstuurde gegevens (upload)") !== false)
+			{
+				$pos["uploadused"] = $i + 17;
+				$pos["uploadleft"] = $i + 18;
+				$pos["uploaddetail"] = $i + 23;
+			}
+		}
+
 		if ($this->debug == true)
+		{
+			echo "POS:\n";
+			var_dump($pos);
+			echo "DATA:\n";
 			var_dump($data);
+		}
 
 		/* download - total */
 		$downCorrection = 0;
 
-		$used      = removeDots(substr($data[29],0,-3));
-		$remaining = removeDotS(substr($data[30],0,-3));
+		$used      = removeDots(substr($data[$pos["downloadused"]],0,-3));
+		$remaining = removeDotS(substr($data[$pos["downloadleft"]],0,-3));
 
 		$generalMatches[0] = $remaining + $used;
 		$generalMatches[2] = $used;
 
 		/* upload - total */
-		$used      = removeDots(substr($data[152],0,-3));
-		$remaining = removeDots(substr($data[153],0,-3));
+		$used      = removeDots(substr($data[$pos["uploadused"]],0,-3));
+		$remaining = removeDots(substr($data[$pos["uploadleft"]],0,-3));
 
  		$generalMatches[1] = $remaining + $used;
 		$generalMatches[3] = $used;
 
 		/* determine the date range */
-		$dateRange = explode(" ", $data[2]);
+		$dateRange = explode(" ", $data[$pos["daterange"]]);
 
 		/* change the month */
 		$dateRange[3] = $this->months[$dateRange[3]];
@@ -123,25 +147,22 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		}
 
 		/* now do the magic for getting the values of the days */
-		$downloadPos = 35;
-		$uploadPos = 155;
-
 		for ($i = 1; $i <= $days; $i++)
 		{
 
-			if ($data[$downloadPos] == "&gt;")
+			if ($data[$pos["downloaddetail"]] == "&gt;")
 			{
-				$downloadPos++;
-				$uploadPos++;
+				$pos["downloaddetail"]++;
+				$pos["uploaddetail"]++;
 			}
 
 			$dailyMatches[] = date("d/m/y", $start + (($i - 1) * 86400));
-			$dailyMatches[] = removeDots($data[++$downloadPos]) + removeDots($data[++$downloadPos]);
-			$dailyMatches[] = removeDots($data[++$uploadPos]) + removeDots($data[++$uploadPos]);
+			$dailyMatches[] = removeDots($data[++$pos["downloaddetail"]]) + removeDots($data[++$pos["downloaddetail"]]);
+			$dailyMatches[] = removeDots($data[++$pos["uploaddetail"]]) + removeDots($data[++$pos["uploaddetail"]]);
 
 			/* increase pos by one, we don't care for the dates */
-			$downloadPos++;
-			$uploadPos++;
+			$pos["downloaddetail"]++;
+			$pos["uploaddetail"]++;
 		}
 
 		$endDate = $dailyMatches[count($dailyMatches) - 3];

@@ -1,6 +1,6 @@
 <?php
 
-//
+/*
 // Based on code found online at:
 // http://php.net/manual/en/function.xml-parse-into-struct.php
 //
@@ -8,6 +8,8 @@
 // Released into public domain September 2003
 // http://eric.pollmann.net/work/public_domain/
 //
+// Modified by Jan De Luyck for PHP5 compliance
+*/
 
 class XMLParser {
 	var $data;		// Input XML data buffer
@@ -32,7 +34,7 @@ class XMLParser {
 
 		// try filename, then if that fails...
 		} elseif (file_exists($data_source))
-			$this->data = implode('', file($data_source)); 
+			$this->data = implode('', file($data_source));
 
 		// try url
 		else {
@@ -48,7 +50,7 @@ class XMLParser {
 	function getTree() {
 		$parser = xml_parser_create('ISO-8859-1');
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
-		xml_parse_into_struct($parser, $this->data, $vals, $index); 
+		xml_parse_into_struct($parser, $this->data, $vals, $index);
 		xml_parser_free($parser);
 
 		$i = -1;
@@ -59,7 +61,7 @@ class XMLParser {
 	function buildtag($thisvals, $vals, &$i, $type) {
 
 		if (isset($thisvals['attributes']))
-			$tag['ATTRIBUTES'] = $thisvals['attributes']; 
+			$tag['ATTRIBUTES'] = $thisvals['attributes'];
 
 		// complete tag, just return it for storage in array
 		if ($type === 'complete')
@@ -67,13 +69,13 @@ class XMLParser {
 
 		// open tag, recurse
 		else
-			$tag = array_merge($tag, $this->getchildren($vals, $i));
+			$tag = array_merge((array)$tag, $this->getchildren($vals, $i));
 
 		return $tag;
 	}
 
 	// internal function: build an nested array representing children
-	function getchildren($vals, &$i) { 
+	function getchildren($vals, &$i) {
 		$children = array();     // Contains node data
 
 		// Node has CDATA before it's children
@@ -81,7 +83,7 @@ class XMLParser {
 			$children['VALUE'] = $vals[$i]['value'];
 
 		// Loop through children, until hit close tag or run out of tags
-		while (++$i < count($vals)) { 
+		while (++$i < count($vals)) {
 
 			$type = $vals[$i]['type'];
 
@@ -105,12 +107,12 @@ class XMLParser {
 			//		Do not increment $i or nodes disappear!
 			elseif ($type === 'close')
 				break;
-		} 
+		}
 		if ($this->collapse_dups)
 			foreach($children as $key => $value)
 				if (is_array($value) && (count($value) == 1))
 					$children[$key] = $value[0];
 		return $children;
-	} 
+	}
 }
 ?>

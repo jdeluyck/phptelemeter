@@ -1,5 +1,13 @@
 What's new? Not much, but it's listed here.
 
+1.23
+~~~~
+- Added parser upccz_web for UPC in the Czech Republic
+  (written by Miroslav Suchý)
+- Made phptelemeter PHP5 compatible.
+- Added detection of positions in the webpage for the
+  telemeter_web parser (less prone to error on page changes)
+
 1.22
 ~~~~
 - Added scarlet_web parser for Scarlet

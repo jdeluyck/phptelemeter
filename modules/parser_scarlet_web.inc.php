@@ -40,8 +40,6 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("");
-
 		$this->url["login"] = "http://customercare.scarlet.be/logon.do";
 		$this->url["stats"] = "http://customercare.scarlet.be/usage/dispatch.do";
 		$this->url["logout"] = "http://customercare.scarlet.be/logoff.do";

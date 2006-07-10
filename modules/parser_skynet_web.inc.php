@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_skynet_web", "2");
+define("_phptelemeter_parser_skynet_web", "3");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -47,7 +47,8 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		$this->url["logout"] = "https://e-care.skynet.be/index.cfm?function=login.logoff";
 
 		$this->errors = array("ese21Z-3" => "Technical problem or non-existant username.",
-							"ese21Z-2" => "Password incorrect.");
+					"ese21Z-2" => "Password incorrect.",
+					"forbidden access" => "Access denied - try again later.");
 	}
 
 	/* EXTERNAL! */

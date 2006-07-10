@@ -62,5 +62,7 @@
     <item url="modules/libs/phptelemeter_parser_web_shared.inc.php" uploadstatus="1" />
     <item url="modules/parser_skynet_web.inc.php" uploadstatus="1" />
     <item url="modules/parser_scarlet_web.inc.php" uploadstatus="1" />
+    <item url="modules/parser_upccz_web.inc.php" />
+    <item url="AUTHORS" />
   </project>
 </webproject>
