@@ -51,6 +51,8 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
+		$overusage = false;
+
 		/* log in */
 		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("username" => $userName, "password" => $password)));
 		$this->checkForError($log);
@@ -89,6 +91,9 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 				break;
 		}
 
+		if (strpos($data2, "overusage") !== false)
+			$overusage = true;
+
 		$data2 = explode("<br>", $data2);
 
 		for ($i = 0; $i < count($data2); $i++)
@@ -105,13 +110,24 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		/* stats */
 		/* total used */
-		$volume[] = substr($data2[2],0,-3) * 1024;
+		$volume[0] = substr($data2[2],0,-3) * 1024;
 
 		/* remaining */
-		$volume[] = substr($data2[4],0,-3) * 1024;
+		$volume[1] = substr($data2[4],0,-3) * 1024;
 
-		/* reset date */
-		$reset_date = substr($data2[5],0,10);
+		if ($overusage)
+		{
+			/* overusage and reset date */
+			$overusage = substr($data2[5],0,-3) * 1024;
+			$volume[0] -= $overusage;
+			$volume[1] -= $overusage;
+			$reset_date = substr($data2[6],0,10);
+		}
+		else
+		{
+			/* reset date */
+			$reset_date = substr($data2[5],0,10);
+		}
 
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
