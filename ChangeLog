@@ -1,5 +1,10 @@
 What's new? Not much, but it's listed here.
 
+1.24
+~~~~
+- Added detection of overusage on Dommel parser
+- Added detection of 'Access Denied' errors on Skynet parser
+
 1.23
 ~~~~
 - Added parser upccz_web for UPC in the Czech Republic
