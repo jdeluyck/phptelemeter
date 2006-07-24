@@ -30,7 +30,7 @@ define("_version", "1.24");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
-define("_phptelemeterURL", "http://www.kcore.org/?menumain=3&menusub=3");
+define("_phptelemeterURL", "http://phptelemeter.kcore.org/");
 
 $configuration = array();
 
