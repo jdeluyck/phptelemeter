@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_skynet_web", "3");
+define("_phptelemeter_parser_skynet_web", "4");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -84,12 +84,18 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		}
 
 		if ($this->debug == true)
+		{
+			echo "DATA:\n";
 			var_dump($data);
+		}
 
 		/* stats */
 		/* total used */
 		$temp = explode(" ", $data[$usedPos]);
-		$volume[] = ($temp[0] * 1024) + $temp[2];
+		if ($temp[1] == "MB")
+			$volume[] = $temp[0] + $temp[2];
+		else
+			$volume[] = ($temp[0] * 1024) + $temp[2];
 
 		/* remaining */
 		$temp = explode(" ", $data[$remainingPos]);
