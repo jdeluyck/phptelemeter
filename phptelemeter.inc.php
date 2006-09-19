@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.25");
+define("_version", "1.26");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -194,8 +194,8 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			";\n" .
 			"check_version=false\n" .
 			";\n" .
-			"; This can be set to either plaintext, machine or html, and the file\n" .
-			"; needs to be present in the phptelemeter/modules directory!\n" .
+			"; This can be set to either plaintext, plaintext_graph, machine or html,\n" .
+			"; and the file needs to be present in the phptelemeter/modules directory!\n" .
 			"publisher=plaintext\n" .
 			";\n" .
 			"; You can set this path if phptelemeter has trouble finding\n" .

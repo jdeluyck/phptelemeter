@@ -1,4 +1,4 @@
-phptelemeter v1.25 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v1.26 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -104,8 +104,8 @@ file_extension=txt					# The extension to use for the output files
 check_version=false					# Check the current version against the latest upstream version,
 									# and report if there's a new version available.
 
-publisher=plaintext					# The publisher module to use. Currently plaintext, machine and
-									#  html are included.
+publisher=plaintext					# The publisher module to use. Currently plaintext, machine
+									#  plaintext_graphonly and html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
 
 [proxy]

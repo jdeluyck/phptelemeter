@@ -1,5 +1,10 @@
 What's new? Not much, but it's listed here.
 
+1.26
+~~~~
+- Added new publisher, plaintext_graphonly, which only
+  shows a graph. (Requested by Gh0sty)
+
 1.25
 ~~~~
 - Fixed skynet_web parser when used quota is < 1 gB.
