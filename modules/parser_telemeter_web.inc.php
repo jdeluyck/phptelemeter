@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "15");
+define("_phptelemeter_parser_telemeter_web", "16");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
