@@ -40,9 +40,9 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("goto" => "http://www.telenet.be/nl/mijntelenet/index.page?content=https%3A%2F%2Fwww.telenet.be%2Fsys%2Fsso%2Fjump.jsp%3Fhttps%3A%2F%2Fservices.telenet.be%2Fisps%2FMainServlet%3FACTION%3DTELEMTR");
-
+		$this->_postFields = array("goto" => "http://www.telenet.be/nl/mijntelenet/index.page");
 		$this->url["login"] = "https://www.telenet.be/sys/sso/signon.jsp";
+		$this->url["telemeter"] = "https://services.telenet.be/lngtlm/telemeter/overview.html?&identifier=";
 		$this->url["stats"] = "https://services.telenet.be/lngtlm/telemeter/detail.html";
 		$this->url["logout"] = "https://www.telenet.be/sys/sso/signoff.jsp";
 
@@ -58,6 +58,9 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 	function getData($userName, $password)
 	{
 		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("uid" => $userName, "pwd" => $password)));
+		$this->checkForError($log);
+
+		$log = $this->doCurl($this->url["telemeter"] . $userName, FALSE);
 		$this->checkForError($log);
 
 		/* get the data */
