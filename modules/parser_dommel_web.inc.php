@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_dommel_web", "3");
+define("_phptelemeter_parser_dommel_web", "4");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -85,20 +85,32 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		$data = explode("\n", $data);
 
+		/* find the entry position */
 		for ($i = 0; $i < count($data); $i++)
 		{
-			if ($data2 = strstr($data[$i], "download :"))
+			if ($data2 = stristr($data[$i], "broadband download :"))
 				break;
 		}
 
-		if (strpos($data2, "overusage") !== false)
-			$overusage = true;
-
 		$data2 = explode("<br>", $data2);
 
+		/* set some default positions */
+		$pos["remaining"] = false;
+
+		/* position finding & data cleanup */
 		for ($i = 0; $i < count($data2); $i++)
 		{
 			$data2[$i] = strip_tags($data2[$i]);
+
+			echo "looking at: -- " , $data2[$i], " --\n";
+			if (stristr($data2[$i], "total traffic transferred in broadband") !== false)
+				$pos["traffic"] = $i;
+			elseif (stristr($data2[$i], "next counter reset") !== false)
+				$pos["reset_date"] = $i;
+			elseif (stristr($data2[$i], "remaining") !== false)
+				$pos["remaining"] = $i;
+
+			/* data cleanup */
 			$data2[$i] = substr($data2[$i], strpos($data2[$i], ":") + 2);
 		}
 
@@ -106,28 +118,24 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 		{
 			echo "DEBUG: \$data2\n";
 			var_dump($data2);
+
+			echo "POS:\n";
+			var_dump($pos);
 		}
+
 
 		/* stats */
 		/* total used */
-		$volume[0] = substr($data2[2],0,-3) * 1024;
+		$volume[0] = substr($data2[$pos["traffic"]],0,-3) * 1024;
 
-		/* remaining */
-		$volume[1] = substr($data2[4],0,-3) * 1024;
-
-		if ($overusage)
-		{
-			/* overusage and reset date */
-			$overusage = substr($data2[5],0,-3) * 1024;
-			$volume[0] -= $overusage;
-			$volume[1] -= $overusage;
-			$reset_date = substr($data2[6],0,10);
-		}
+		/* remaining, if exists? */
+		if ($pos["remaining"] !== false)
+			$volume[1] = substr($data2[$pos["remaining"]],0,-3) * 1024;
 		else
-		{
-			/* reset date */
-			$reset_date = substr($data2[5],0,10);
-		}
+			$volume[1] = 0;
+
+		/* reset date */
+		$reset_date = substr($data2[$pos["reset_date"]],0,10);
 
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
