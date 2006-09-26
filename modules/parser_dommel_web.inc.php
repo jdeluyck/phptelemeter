@@ -102,7 +102,6 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 		{
 			$data2[$i] = strip_tags($data2[$i]);
 
-			echo "looking at: -- " , $data2[$i], " --\n";
 			if (stristr($data2[$i], "total traffic transferred in broadband") !== false)
 				$pos["traffic"] = $i;
 			elseif (stristr($data2[$i], "next counter reset") !== false)
