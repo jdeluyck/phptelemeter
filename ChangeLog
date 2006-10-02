@@ -5,6 +5,7 @@ What's new? Not much, but it's listed here.
 - Added new publisher, plaintext_graphonly, which only
   shows a graph. (Requested by Gh0sty)
 - Fixed telemeter_web parser (again).
+- Fixed dommel_web parser for overusage.
 
 1.25
 ~~~~
