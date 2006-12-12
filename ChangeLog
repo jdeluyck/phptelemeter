@@ -3,6 +3,7 @@ What's new? Not much, but it's listed here.
 1.27
 ~~~~
 - Fixed dommel_web parser since they no longer count upload.
+- Fixed telemeter_web parser, they changed some small things.
 
 1.26
 ~~~~
