@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.27
+~~~~
+- Fixed dommel_web parser since they no longer count upload.
+
 1.26
 ~~~~
 - Added new publisher, plaintext_graphonly, which only

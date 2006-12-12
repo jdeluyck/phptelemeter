@@ -64,5 +64,6 @@
     <item url="modules/parser_scarlet_web.inc.php" uploadstatus="1" />
     <item url="modules/parser_upccz_web.inc.php" uploadstatus="1" />
     <item url="AUTHORS" uploadstatus="1" />
+    <item url="modules/publisher_plaintext_graphonly.inc.php" />
   </project>
 </webproject>

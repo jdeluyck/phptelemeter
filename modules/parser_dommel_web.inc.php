@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_dommel_web", "4");
+define("_phptelemeter_parser_dommel_web", "5");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -97,12 +97,18 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 		/* set some default positions */
 		$pos["remaining"] = false;
 
+		if ($this->debug == true)
+		{
+			echo "DEBUG: \$data2, pre cleanup!\n";
+			var_dump($data2);
+		}
+
 		/* position finding & data cleanup */
 		for ($i = 0; $i < count($data2); $i++)
 		{
 			$data2[$i] = strip_tags($data2[$i]);
 
-			if (stristr($data2[$i], "total traffic transferred in broadband") !== false)
+			if (stristr($data2[$i], "total traffic downloaded") !== false)
 				$pos["traffic"] = $i;
 			elseif (stristr($data2[$i], "next counter reset") !== false)
 				$pos["reset_date"] = $i;
