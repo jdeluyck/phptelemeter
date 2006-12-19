@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_upccz_web", "1");
+define("_phptelemeter_parser_upccz_web", "2");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -45,7 +45,8 @@ class telemeterParser_upccz_web extends telemeterParser_web_shared
 	function getData($userName, $password)
 	{
 		$data = $this->doCurl("https://kraken.dkm.cz/", $this->createPostFields(array("login" => $userName, "pass" => $password)));
-		$this->checkForError($log);
+		if ($this->checkForError($data) !== false)
+			return (false);
 
 		$reg = array();
 		ereg("ba:</td><td><b>(.*)</b></td></tr>
@@ -65,7 +66,7 @@ class telemeterParser_upccz_web extends telemeterParser_web_shared
 		if ($this->debug == true)
 			var_dump($data);
 
-		$used      = $upload < $download ? $download : $upload;
+		$used = $upload < $download ? $download : $upload;
 
 		/* in GB */
 		$limit["easy"] = 10;

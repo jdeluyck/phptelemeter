@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_skynet_web", "4");
+define("_phptelemeter_parser_skynet_web", "5");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -56,11 +56,13 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 	{
 		/* login and get the data */
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("form_login" => $userName, "form_password" => $password)));
-		$this->checkForError($data);
+		if ($this->checkForError($data) !== false)
+			return (false);
 
 		/* logout */
 		$log = $this->doCurl($this->url["logout"], FALSE);
-		$this->checkForError($log);
+		if ($this->checkForError($log) !== false)
+			return (false);
 
 		/* clean out the data a bit */
 		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));

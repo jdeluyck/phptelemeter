@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_dommel_web", "5");
+define("_phptelemeter_parser_dommel_web", "6");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -55,11 +55,13 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		/* log in */
 		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("username" => $userName, "password" => $password)));
-		$this->checkForError($log);
+		if ($this->checkForError($log) !== false)
+			return (false);
 
 		/* go to the packages page, and get the serv_id and client_id */
 		$log = $this->docurl($this->url["packages"], FALSE);
-		$this->checkforError($log);
+		if ($this->checkForError($log) !== false)
+			return (false);
 
 		$log = explode("\n", $log);
 
@@ -77,11 +79,13 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		/* and get the data */
 		$data = $this->doCurl($this->url["stats"], FALSE);
-		$this->checkForError($data);
+		if ($this->checkForError($log) !== false)
+			return (false);
 
 		/* logout */
 		$log = $this->doCurl($this->url["logout"], FALSE);
-		$this->checkForError($log);
+		if ($this->checkForError($log) !== false)
+			return (false);
 
 		$data = explode("\n", $data);
 
@@ -127,7 +131,6 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 			echo "POS:\n";
 			var_dump($pos);
 		}
-
 
 		/* stats */
 		/* total used */
