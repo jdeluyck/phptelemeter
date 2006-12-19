@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "7");
+define("_phptelemeter_parser_telemeter4tools", "8");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -43,6 +43,7 @@ class telemeterParser_telemeter4tools
 	var $errors_normal;
 
 	var $debug = false;
+	var $ignoreErrors = false;
 	var $neededModules = "";
 
 	var $proxyHost;
@@ -50,6 +51,11 @@ class telemeterParser_telemeter4tools
 	var $proxyAuth;
 	var $proxyUsername;
 	var $proxyPassword;
+
+	function setIgnoreErrors($ignoreErrors)
+	{
+		$this->ignoreErrors = $ignoreErrors;
+	}
 
 	function setDebug($debug)
 	{
@@ -103,15 +109,17 @@ class telemeterParser_telemeter4tools
 		}
 
 		if ($returnValue !== false)
-			doError("problem detected", trim($returnValue), $quit);
+			doError("problem detected", trim($returnValue), $quit, $this->ignoreErrors);
 
 		return($returnValue);
 	}
 
 	function checkStatus($text)
 	{
-		$this->checkForError($text, $this->errors_critical, true);
-		$returnValue = $this->checkForError($text, $this->errors_normal, false);
+		$returnValue = $this->checkForError($text, $this->errors_critical, true);
+
+		if ($returnValue === false)
+			$returnValue = $this->checkForError($text, $this->errors_normal, false);
 
 		return ($returnValue);
 	}
@@ -138,7 +146,7 @@ class telemeterParser_telemeter4tools
 		/* Check for an error */
 		$error = $client->getError();
 		if ($error)
-			doError("SOAP Error", $error, true);
+			doError("SOAP Error", $error, true, $this->ignoreErrors);
 
 		/* Do we need to override the endpoint url returned by the wdsl? */
 		if ($this->useEndpointUrl == true)
@@ -151,13 +159,20 @@ class telemeterParser_telemeter4tools
 
 		/* Check for a fault */
 		if ($client->fault)
-			doError("SOAP Fault", $result, true);
+		{
+			$returnValue = false;
+			doError("SOAP Fault", $result, true, $this->ignoreErrors);
+		}
 		else
 		{
 			/* Check for errors */
-	    		$error = $client->getError();
-    			if ($error)
-				doError("SOAP Error", $error, true);
+	    	$error = $client->getError();
+
+    		if ($error)
+    		{
+				doError("SOAP Error", $error, true, $this->ignoreErrors);
+				$returnValue = false;
+			}
 			else
 			{
 				/* now look for error messages */
@@ -193,6 +208,8 @@ class telemeterParser_telemeter4tools
 					$returnValue["isp"] = $this->_ISP;
 					$returnValue["reset_date"] = $resetDate;
 				}
+				else
+					$returnValue = false;
 			}
 		}
 

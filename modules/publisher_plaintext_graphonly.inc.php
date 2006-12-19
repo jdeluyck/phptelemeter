@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext_graphonly");
-define("_phptelemeter_publisher_version", "1");
+define("_phptelemeter_publisher_version", "2");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -27,51 +27,10 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-class telemeterPublisher
+require_once("libs/phptelemeter_publisher_shared.inc.php");
+
+class telemeterPublisher extends telemeterPublisher_shared
 {
-	var $debug = false;
-	var $neededModules = "";
-
-	function setDebug($debug)
-	{
-		$this->debug = $debug;
-	}
-
-	function getNeededModules()
-	{
-		return ($this->neededModules);
-	}
-
-	function telemeterPublisher()
-	{
-	}
-
-	/* exit function for us. */
-	function destroy()
-	{
-	}
-
-	/* EXTERNAL */
-	function mainHeader()
-	{
-	}
-
-	function mainFooter()
-	{
-		return ("");
-	}
-
-	/* EXTERNAL */
-	function accountHeader($accountName)
-	{
-	}
-
-	/* EXTERNAL */
-	function accountFooter()
-	{
-	}
-
-	/* EXTERNAL! */
 	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate)
 	{
 		$generalData = $data["general"];
@@ -100,7 +59,6 @@ class telemeterPublisher
 	{
 		return("\nThere's a new version available: v" . $versionNr . "\nYou can get it at " . _phptelemeterURL . "\n");
 	}
-
 }
 
 ?>
