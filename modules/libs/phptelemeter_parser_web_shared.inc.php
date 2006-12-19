@@ -35,6 +35,7 @@ class telemeterParser_web_shared
 	var $url;
 	var $errors;
 	var $debug = false;
+	var $ignoreErrors = false;
 	var $neededModules = array("curl");
 
 
@@ -43,6 +44,11 @@ class telemeterParser_web_shared
 	var $proxyAuth;
 	var $proxyUsername;
 	var $proxyPassword;
+
+	function setIgnoreErrors($ignoreErrors)
+	{
+		$this->ignoreErrors = $ignoreErrors;
+	}
 
 	function setDebug($debug)
 	{
@@ -99,25 +105,47 @@ class telemeterParser_web_shared
 		@unlink ($this->_cookieFile);
 	}
 
-	/* Checks output from curl for errors */
+	/* checks output from Curl for errors */
+	function checkForCurlError($log)
+	{
+		$returnValue = false;
+
+		if (is_array($log) && array_key_exists("curl_error", $log))
+			$returnValue = $log["curl_error"];
+
+		return ($returnValue);
+	}
+
+	/* Checks output for errors */
 	function checkForError($log)
 	{
-		if (is_array($this->errors))
+		/* check for any curl errors */
+		$returnValue = $this->checkForCurlError($log);
+
+		if ($returnValue === false)
 		{
-			if ($this->debug)
-				echo "\n" . $log . "\n";
+			$errorTitle = "problem detected";
 
-			$returnValue = false;
-
-			foreach($this->errors as $errCode => $errDesc)
+			/* nope, no curl errors. Check for other errors. */
+			if (is_array($this->errors))
 			{
-				if (stristr($log, $errCode) !== FALSE)
-					$returnValue .= $errDesc . "\n";
-			}
+				if ($this->debug)
+					echo "\n" . $log . "\n";
 
-			if ($returnValue !== false)
-				doError("problem detected", trim($returnValue), true);
+				foreach($this->errors as $errCode => $errDesc)
+				{
+					if (stristr($log, $errCode) !== FALSE)
+						$returnValue .= $errDesc . "\n";
+				}
+			}
 		}
+		else
+			$errorTitle = "curl error";
+
+		if ($returnValue !== false)
+				doError($errorTitle, trim($returnValue), true, $this->ignoreErrors);
+
+		return($returnValue);
 	}
 
 	/* Does some CURLing (no, not that strange sport on ice that l... I disgress. */
@@ -175,7 +203,10 @@ class telemeterParser_web_shared
 
 		$output = curl_exec($ch);
 		if (curl_errno($ch) != 0)
-			doError("curl error occurred", curl_error($ch), true);
+		{
+			//doError("curl error occurred", curl_error($ch), true, $this->ignoreErrors);
+			$output["curl_error"] = curl_error($ch);
+		}
 
 		curl_close($ch);
 
