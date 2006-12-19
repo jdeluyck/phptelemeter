@@ -1,5 +1,11 @@
 What's new? Not much, but it's listed here.
 
+1.28
+~~~~
+- New parameter: ignore_errors, makes phptelemeter ignore any
+  runtime errors (instead of quitting).
+- Splitted off all common publisher stuff into a new parent class.
+
 1.27
 ~~~~
 - Fixed dommel_web parser since they no longer count upload.

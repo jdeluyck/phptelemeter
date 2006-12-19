@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.27");
+define("_version", "1.28");
 define("_maxAccounts", 9);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -35,7 +35,7 @@ define("_phptelemeterURL", "http://phptelemeter.kcore.org/");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors");
 $configKeys["general"]["obsolete"] = array("style", "daily", "parser");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 
@@ -132,14 +132,19 @@ function checkModules($neededModules)
 }
 
 /* Throws an error at the user, and optionally bombs back to the cli */
-function doError($errorMsg, $errorDescription, $exit)
+function doError($errorMsg, $errorDescription, $exit, $ignoreErrors=false)
 {
 	echo "\n";
 	echo "phptelemeter: error: " . $errorMsg . "\n";
 	echo $errorDescription . "\n";
 
 	if ($exit == true)
-		quit();
+	{
+		if ($ignoreErrors == true)
+			echo "\n";
+		else
+			quit();
+	}
 }
 
 /* DUH. What do you think? Quits. */
@@ -202,6 +207,9 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; it's modules. Point it to the directory that contains the\n" .
 			"; modules directory.\n" .
 			";modulepath=/usr/local/share/phptelemeter\n" .
+			";\n" .
+			"; Do you want to ignore any runtime errors that occur and continue?\n" .
+			"ignore_errors=false\n" .
 			";\n" .
 			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
 			"; If you set proxy_authenticate to true, you must fill the username\n" .
@@ -400,6 +408,13 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
+			case "--ignore-errors":
+			case "-i":
+			{
+				$configuration["general"]["ignore_errors"] = true;
+				break;
+			}
+
 			case "--help":
 			case "-h":
 			default:
@@ -412,6 +427,7 @@ function parseArgs($argv, $configuration)
 				echo "-f,\t--file-output\tActivates file output instead of screen output.\n";
 				echo "-g,\t--graph\t\tShows the usage graphs.\n";
 				echo "-h,\t--help\t\tShows this help message.\n";
+				echo "-i,\t--ignore-errors\tIgnores any errors that might occur and continue.\n";
 				echo "-n,\t--new-config\tMakes a new dummy config file in the current directory.\n";
 				echo "-r,\t--remaining\tShows your max traffic allotment for today.\n";
 				echo "-V,\t--version\tShows the version and exits.\n";

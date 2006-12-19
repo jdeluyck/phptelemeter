@@ -70,7 +70,8 @@ cp -r ${SOURCE}/* ${RELPATH}
 
 mv ${RELPATH}/docs/gpl.txt ${RELPATH}
 # clean out
-rm -fr ${RELPATH}/*.session ${RELPATH}/*.webprj ${RELPATH}/CVS ${RELPATH}/modules/CVS ${RELPATH}/modules/libs/CVS ${RELPATH}/docs ${RELPATH}/mkrelease.sh ${RELPATH}/patches
+rm -fr ${RELPATH}/*.session ${RELPATH}/*.webprj ${RELPATH}/CVS ${RELPATH}/modules/CVS ${RELPATH}/modules/libs/CVS ${RELPATH}/docs ${RELPATH}/mkrelease.sh ${RELPATH}/patches 
+find ${RELPATH} -name "*~" -exec rm {} \;
 
 echo ${REL} > ${VERFILE}
 

@@ -1,14 +1,18 @@
-phptelemeter 1.20
+phptelemeter 1.28
 ~~~~~~~~~~~~~~~~~
-- The parameter parser was deprecated from the [general] section.
-- A new parameter parser has been added to the [account-x] sections.
-- The parameter file_extension has been added to the [general] section
+- A new parameter ignore_errors has been added to the [general] section.
 
 Please update your configuration file, or generate a new one.
 
 ------------
 | OLD NEWS |
 ------------
+phptelemeter 1.20
+~~~~~~~~~~~~~~~~~
+- The parameter parser was deprecated from the [general] section.
+- A new parameter parser has been added to the [account-x] sections.
+- The parameter file_extension has been added to the [general] section
+
 phptelemeter 1.10
 ~~~~~~~~~~~~~~~~~
 - A new key check_version was added.

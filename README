@@ -1,4 +1,4 @@
-phptelemeter v1.27 - Copyright (c) 2005 - 2006 by Jan De Luyck
+phptelemeter v1.28 - Copyright (c) 2005 - 2006 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -60,6 +60,7 @@ Command line options
   * -f, --file-output - sets the output to file mode instead of screen (stdout) **
   * -g, --graph - show the usage graph **
   * -h, --help - show help message
+  * -i, --ignore-errors - ignores any runtime errors and tries to continue **
   * -n, --new-config - generates a new dummy config file on the spot
   * -r, --remaining - show the remaining quota **
   * -V, --version - shows the version and exits
@@ -107,6 +108,8 @@ check_version=false					# Check the current version against the latest upstream 
 publisher=plaintext					# The publisher module to use. Currently plaintext, machine
 									#  plaintext_graphonly and html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
+
+ignore_errors=false					# Ignore any runtime errors that might occur.
 
 [proxy]
 proxy_host=							# Hostname of the proxy. Leave blank to disable
@@ -169,6 +172,7 @@ Credits
 - Haploc:
    * for the idea on multiple-account support
    * access to Dommel.com meter data for testing
+   * for the idea on the ignore_errors parameter
 - Telenet, for creating the Telemeter4Tools
 - NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
 - Eric Pollman for his XML Library (http://eric.pollmann.net/work/public_domain/)

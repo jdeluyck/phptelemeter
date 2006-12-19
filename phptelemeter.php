@@ -77,6 +77,9 @@ checkModules($publisher->getNeededModules());
 /* set the debugging flag if needed */
 $publisher->setDebug($configuration["general"]["debug"]);
 
+/* set the ignoreErrorsflag if needed */
+$publisher->setIgnoreErrors($configuration["general"]["ignore_errors"]);
+
 /* put the header on the screen */
 if ($configuration["general"]["file_output"] == false)
 {
@@ -104,6 +107,7 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	$parser = new $parserClassName;
 	checkModules($parser->getNeededModules());
 	$parser->setDebug($configuration["general"]["debug"]);
+	$parser->setIgnoreErrors($configuration["general"]["ignore_errors"]);
 
 	/* pipe through the proxy info */
 	$parser->setProxy($configuration["proxy"]["proxy_host"],$configuration["proxy"]["proxy_port"],$configuration["proxy"]["proxy_authenticate"],$configuration["proxy"]["proxy_username"],$configuration["proxy"]["proxy_password"]);
@@ -111,6 +115,9 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 
 	/* run the parser getData() routine */
 	$data = $parser->getData($configuration["accounts"][$i]["username"],$configuration["accounts"][$i]["password"]);
+
+	if ($configuration["general"]["debug"] == true)
+		print_r($data);
 
 	if ($data === false)
 		continue;
