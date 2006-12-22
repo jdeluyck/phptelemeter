@@ -59,6 +59,7 @@ class XMLParser {
 
 	// internal function: build a node of the tree
 	function buildtag($thisvals, $vals, &$i, $type) {
+		$tag = "";
 
 		if (isset($thisvals['attributes']))
 			$tag['ATTRIBUTES'] = $thisvals['attributes'];

@@ -134,7 +134,7 @@ class telemeterParser_web_shared
 
 				foreach($this->errors as $errCode => $errDesc)
 				{
-					if (stristr($log, $errCode) !== FALSE)
+					if (stristr($log, $errCode) !== false)
 						$returnValue .= $errDesc . "\n";
 				}
 			}

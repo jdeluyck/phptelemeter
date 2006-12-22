@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "8");
+define("_phptelemeter_parser_telemeter4tools", "9");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -196,8 +196,6 @@ class telemeterParser_telemeter4tools
 						$daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
 						$daily[] = $value["NS1:DOWN"]["VALUE"];
 						$daily[] = $value["NS1:UP"]["VALUE"];
-
-						$i++;
 					}
 
 					$endDate = $daily[count($daily) - 3];

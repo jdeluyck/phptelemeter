@@ -79,7 +79,7 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		/* and get the data */
 		$data = $this->doCurl($this->url["stats"], FALSE);
-		if ($this->checkForError($log) !== false)
+		if ($this->checkForError($data) !== false)
 			return (false);
 
 		/* logout */

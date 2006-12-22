@@ -167,6 +167,10 @@ function readConfig($configFile)
 	else
 		$configuration = parse_ini_file($configFile, true);
 
+	/* if debugging parameter isn't set, set it. we want debugging ASAP activated. */
+	if (! array_key_exists("debug", $configuration["general"]))
+		$configuration["general"]["debug"] = false;
+
 	return $configuration;
 }
 
@@ -208,7 +212,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; modules directory.\n" .
 			";modulepath=/usr/local/share/phptelemeter\n" .
 			";\n" .
-			"; Do you want to ignore any runtime errors that occur and continue?\n" .
+			"; Do you want to ignore any runtime errors that occur and continue instead?\n" .
 			"ignore_errors=false\n" .
 			";\n" .
 			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .

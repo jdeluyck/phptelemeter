@@ -30,6 +30,13 @@ class telemeterPublisher_shared
 	var $ignoreErrors = false;
 	var $neededModules = "";
 
+	var $dataParts;
+
+	function telemeterPublisher_shared()
+	{
+		$this->dataParts = array("general", "daily", "isp", "reset_date");
+	}
+
 	function setDebug($debug)
 	{
 		$this->debug = $debug;
@@ -75,6 +82,23 @@ class telemeterPublisher_shared
 	function newVersion($versionNr)
 	{
 		return ("");
+	}
+
+	function normalizeData($data)
+	{
+		/* create any parts necessary if they don't exist (because not supported by a parser) to avoid warnings */
+		foreach ($this->dataParts as $key => $value)
+		{
+			if (! array_key_exists($value, $data))
+			{
+				if ($this->debug == true)
+					echo "DEBUG: Adding ". $value . "to the data array.\n";
+
+				$data[$value] = "";
+			}
+		}
+
+		return ($data);
 	}
 }
 
