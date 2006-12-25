@@ -7,6 +7,7 @@ What's new? Not much, but it's listed here.
 - Splitted off all common publisher stuff into a new parent class.
 - Fixed warnings/notices that appear when php is run with E_ALL error reporting.
 - Removed useless variable from parser_telemeter4tools
+- Fixed error handling in scarlet_web parser
 
 1.27
 ~~~~

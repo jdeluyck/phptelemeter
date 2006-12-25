@@ -121,6 +121,11 @@ class telemeterParser_web_shared
 	{
 		/* check for any curl errors */
 		$returnValue = $this->checkForCurlError($log);
+		if ($this->debug)
+		{
+			echo "CURL error check:\n";
+			var_dump($returnValue);
+		}
 
 		if ($returnValue === false)
 		{
@@ -130,10 +135,13 @@ class telemeterParser_web_shared
 			if (is_array($this->errors))
 			{
 				if ($this->debug)
-					echo "\n" . $log . "\n";
+					echo "Error checking in: \n" . $log . "\n";
 
 				foreach($this->errors as $errCode => $errDesc)
 				{
+					if ($this->debug)
+						echo "Matching against: $errCode\n";
+		
 					if (stristr($log, $errCode) !== false)
 						$returnValue .= $errDesc . "\n";
 				}
