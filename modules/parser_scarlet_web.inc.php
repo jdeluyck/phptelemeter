@@ -67,8 +67,6 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 
 		/* logout */
 		$log = $this->doCurl($this->url["logout"], FALSE);
-		if ($this->checkForError($log) !== false)
-			return (false);
 
 		/* clean out the data a bit */
 		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));
