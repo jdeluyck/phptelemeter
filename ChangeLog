@@ -8,6 +8,7 @@ What's new? Not much, but it's listed here.
 - Fixed warnings/notices that appear when php is run with E_ALL error reporting.
 - Removed useless variable from parser_telemeter4tools
 - Fixed error handling in scarlet_web parser
+- Fixed off-by-one bug in the last day before reset in the scarlet_web parser.
 
 1.27
 ~~~~

@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "3");
+define("_phptelemeter_parser_scarlet_web", "4");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -147,7 +147,7 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		$totalUsedVolume = 0;
 
 		/* loop through it to get all the data */
-		for ($i = 1; $i <= $days; $i++)
+		for ($i = 1; $i <= $realdays; $i++)
 		{
 			$dailyData[] = date("d/m/y", $start + (($i - 1) * 86400));
 
