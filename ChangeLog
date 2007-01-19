@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.29
+~~~~
+- Added count of days left until your quota resets.
+
 1.28
 ~~~~
 - New parameter: ignore_errors, makes phptelemeter ignore any

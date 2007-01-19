@@ -65,6 +65,6 @@
     <item url="modules/parser_upccz_web.inc.php" uploadstatus="1" />
     <item url="AUTHORS" uploadstatus="1" />
     <item url="modules/publisher_plaintext_graphonly.inc.php" uploadstatus="1" />
-    <item url="modules/libs/phptelemeter_publisher_shared.inc.php" />
+    <item url="modules/libs/phptelemeter_publisher_shared.inc.php" uploadstatus="1" />
   </project>
 </webproject>

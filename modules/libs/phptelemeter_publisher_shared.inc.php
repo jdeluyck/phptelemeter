@@ -34,7 +34,7 @@ class telemeterPublisher_shared
 
 	function telemeterPublisher_shared()
 	{
-		$this->dataParts = array("general", "daily", "isp", "reset_date");
+		$this->dataParts = array("general", "daily", "isp", "reset_date", "days_left");
 	}
 
 	function setDebug($debug)

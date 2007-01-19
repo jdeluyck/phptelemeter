@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_dommel_web", "6");
+define("_phptelemeter_parser_dommel_web", "7");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -148,6 +148,7 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
 		$returnValue["reset_date"] = $reset_date;
+		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
 		if ($this->debug == true)
 			print_r($returnValue);
