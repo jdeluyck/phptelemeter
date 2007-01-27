@@ -592,8 +592,8 @@ function checkVersion($doCheck, $proxyInfo)
 
 function calculateDaysLeft($resetDate)
 {
-	$targetDate = gregoriantojd(substr($resetDate,3,2), substr($resetDate,0,2), substr($resetDate,6,4));
-	$nowDate = gregoriantojd(date("m"),date("d"), date("Y"));
+	$targetDate = gregoriantojd((int)substr($resetDate,3,2), (int)substr($resetDate,0,2), (int)substr($resetDate,6,4));
+	$nowDate = gregoriantojd((int)date("m"),(int)date("d"),(int)date("Y"));
 
 	$returnValue = $targetDate - $nowDate;
 	return ($returnValue);
