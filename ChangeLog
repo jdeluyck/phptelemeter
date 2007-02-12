@@ -3,6 +3,8 @@ What's new? Not much, but it's listed here.
 1.29
 ~~~~
 - Added count of days left until your quota resets.
+- Really fix the scarlet_web parser.
+- Updated the xmlparser.php external library, the fixes were incorporated upstream.
 
 1.28
 ~~~~
