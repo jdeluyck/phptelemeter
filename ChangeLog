@@ -4,8 +4,10 @@ What's new? Not much, but it's listed here.
 ~~~~
 - Added count of days left until your quota resets.
 - REALLY fix the scarlet_web parser. Thanks Gh0sty!
-- Updated the xmlparser.php external library, the fixes were incorporated upstream.
+- Updated the xmlparser.php external library, the fixes were incorporated 
+  upstream.
 - Migrated codebase to svn (from cvs)
+- Increased # of accounts to 99 (request from YvesDM)
 
 1.28
 ~~~~
@@ -159,15 +161,16 @@ What's new? Not much, but it's listed here.
 
 0.23 (never released)
 ~~~~
-- Since the telemeter4tools will automatically be 'restored' once Telenet fixes their SOAP url
-  it's not an issue to delay this release.
+- Since the telemeter4tools will automatically be 'restored' once Telenet fixes 
+  their SOAP url it's not an issue to delay this release.
 - Added support for systemwide phptelemeterrc file (in /etc/)
-- Added --new-config parameter to make a dummy config file in the current directory.
+- Added --new-config parameter to make a dummy config file in the current 
+  directory.
 
 0.23-pre1
 ~~~~~~~~~
-- Fixed telemeter_web parser b0rkage because of changes to the telemeter webpage.
-  telemeter4tools parser is still broken...
+- Fixed telemeter_web parser b0rkage because of changes to the telemeter 
+  webpage. telemeter4tools parser is still broken...
 
 0.22
 ~~~~
@@ -175,7 +178,8 @@ What's new? Not much, but it's listed here.
 
 0.21
 ~~~~
-- Added possibility to put phptelemeter 'systemwide' and still find the modules ;p
+- Added possibility to put phptelemeter 'systemwide' and still find the 
+  modules ;p
 
 0.20
 ~~~~
