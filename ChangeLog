@@ -5,6 +5,7 @@ What's new? Not much, but it's listed here.
 - Added count of days left until your quota resets.
 - REALLY fix the scarlet_web parser. Thanks Gh0sty!
 - Updated the xmlparser.php external library, the fixes were incorporated upstream.
+- Migrated codebase to svn (from cvs)
 
 1.28
 ~~~~
