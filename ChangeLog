@@ -8,6 +8,7 @@ What's new? Not much, but it's listed here.
   upstream.
 - Migrated codebase to svn (from cvs)
 - Increased # of accounts to 99 (request from YvesDM)
+- Reformatted documentation to fit on 80-char wide terminals
 
 1.28
 ~~~~

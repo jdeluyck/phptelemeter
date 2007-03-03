@@ -57,7 +57,8 @@ Command line options
   * -c, --check-version - checks the version online **
   * -d, --daily - show the 30day overview **
   * -D, --debug - shows some debugging stuff **
-  * -f, --file-output - sets the output to file mode instead of screen (stdout) **
+  * -f, --file-output - sets the output to file mode instead of screen 
+                        (stdout) **
   * -g, --graph - show the usage graph **
   * -h, --help - show help message
   * -i, --ignore-errors - ignores any runtime errors and tries to continue **
@@ -93,47 +94,62 @@ Configuration file location
 Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
-show_daily=true						# Show 30-day stats (true/false)
-show_remaining=true					# Show how much you have remaining (true/false)
-show_graph=true						# Show the transfer graph (true/false)
-show_resetdate=false				# Shows the reset-date for your telemeter.
+show_daily=true				# Show 30-day stats (true/false)
+show_remaining=true			# Show how much you have remaining 
+					# (true/false)
+show_graph=true				# Show the transfer graph (true/false)
+show_resetdate=false			# Shows the reset-date for your meter.
 
-file_output=false					# Sets if file output should be used instead of screen (stdout)
-file_prefix=/tmp/phptelemeter_		# The path prefix to use for the output files
-file_extension=txt					# The extension to use for the output files
+file_output=false			# Sets if file output should be used 
+					# instead of screen (stdout)
+file_prefix=/tmp/phptelemeter_		# The path prefix to use for the 
+					# output files
+file_extension=txt			# The extension to use for the output 
+					# files
 
-check_version=false					# Check the current version against the latest upstream version,
-									# and report if there's a new version available.
+check_version=false			# Check the current version against 
+					# the latest upstream version, and 
+					# report if there's a new version 
+					# available.
 
-publisher=plaintext					# The publisher module to use. Currently plaintext, machine
-									#  plaintext_graphonly and html are included.
-modulepath=/path/to/phptelemeter	# The path to where the modules directory is. Optional.
+publisher=plaintext			# The publisher module to use. 
+					# Currently plaintext, machine, 
+					# plaintext_graphonly and html are 
+					# included.
+modulepath=/path/to/phptelemeter	# The path to where the modules 
+					# directory is. Optional.
 
-ignore_errors=false					# Ignore any runtime errors that might occur.
+ignore_errors=false			# Ignore any runtime errors that might 
+					# occur.
 
 [proxy]
-proxy_host=							# Hostname of the proxy. Leave blank to disable
-proxy_port=8080						# port of the proxy
-proxy_auth=false					# set to true to enable proxy authentication
-proxy_username=						# Proxy username
-proxy_password=						# Proxy password
+proxy_host=				# Hostname of the proxy. Leave blank 
+					# to disable
+proxy_port=8080				# port of the proxy
+proxy_auth=false			# set to true to enable proxy 
+					# authentication
+proxy_username=				# Proxy username
+proxy_password=				# Proxy password
 
 [account-1]
-username=youruser					# The username of account-1
-password=yourpassword				# The password of account-1
-description=your description		# Description of account-1, if it is set it'll be used instead
-									#  of the account name in the output
-parser=a parser						# The parsing module to use for account-1. Currently
-									#  telemeter4tools, telemeter_web, dommel_web, skynet_web,
-                                    #  scarlet_web and upccz_web are included.
+username=youruser			# The username of account-1
+password=yourpassword			# The password of account-1
+description=your description		# Description of account-1, if it is 
+					# set it'll be used instead of the 
+					# account name in the output
+parser=a parser				# The parsing module to use for 
+					# account-1. Currently telemeter4tools,
+					# telemeter_web, dommel_web, skynet_web,
+					# scarlet_web and upccz_web are 
+					# included.
 
 ...
 
-[account-9]
-username=youruser					# The username of account-9
-password=yourpassword				# The password of account-9
-description=your description		# Description of account-9
-parser=a parser						# Parser of account-9
+[account-99]
+username=youruser			# The username of account-99
+password=yourpassword			# The password of account-99
+description=your description		# Description of account-99
+parser=a parser				# Parser of account-99
 
 Running on a webserver
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -146,10 +162,11 @@ Running on a webserver
 
 Running on windows
 ~~~~~~~~~~~~~~~~~~
-- This script has _not_ been tested on windows. In version 1.10 I implemented specific support
-  for the windows platform, and I guess it _should_ work. Since I haven't tested this,
-  I cannot guarantee it wil run. Should you run it, and it works, please let me know.
-  If it doesn't, feel free to file any and all bugs.
+- This script has _not_ been tested on windows. In version 1.10 I implemented 
+  specific support for the windows platform, and I guess it _should_ work. 
+  Since I haven't tested this, I cannot guarantee it wil run. Should you run 
+  it, and it works, please let me know. If it doesn't, feel free to file any 
+  and all bugs.
 
 Where to get it
 ~~~~~~~~~~~~~~~
@@ -158,10 +175,12 @@ Where to get it
 Known issues
 ~~~~~~~~~~~~
 - dommel_web parser:
-  * it will only take the first ADSL account it finds in your "My Packages" page.
+  * it will only take the first ADSL account it finds in your "My Packages" 
+    page.
 
 - upccz_web, scarlet parsers:
-  * I have no accounts with these ISP's. If it breaks, please tell me so I can investigate.
+  * I have no accounts with these ISP's. If it breaks, please tell me so I can 
+    investigate.
 
 Credits
 ~~~~~~~
@@ -175,7 +194,8 @@ Credits
    * for the idea on the ignore_errors parameter
 - Telenet, for creating the Telemeter4Tools
 - NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
-- Eric Pollman for his XML Library (http://eric.pollmann.net/work/public_domain/)
+- Eric Pollman for his XML Library 
+  (http://eric.pollmann.net/work/public_domain/)
 - Cajmere on be.comp.os.linux for a valid point about not finding the modules
   when it's installed systemwide
 - YvesDM on be.comp.os.linux for:
