@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -x 
 
-SOURCE="/var/www/phptelemeter"
+SOURCE="/var/www/phptelemeter/trunk"
 TARGET="/tmp"
 
 FTPDIR="software/phptelemeter"
