@@ -592,7 +592,7 @@ function checkVersion($doCheck, $proxyInfo)
 
 function calculateDaysLeft($resetDate)
 {
-	$returnValue = round ((mktime (0,0,0, substr($resetDate,3,2), substr($resetDate,0,2), substr($resetDate,6,4)) - mktime(0,0,0, date("m"), date("d"), date("Y"))) / 86400);
+	$returnValue = round(((mktime (0,0,0, substr($resetDate,3,2), substr($resetDate,0,2), substr($resetDate,6,4)) - mktime(0,0,0, date("m"), date("d"), date("Y"))) / 86400),0);
 	return ($returnValue);
 }
 ?>
