@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext");
-define("_phptelemeter_publisher_version", "10");
+define("_phptelemeter_publisher_version", "11");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -130,20 +130,44 @@ class telemeterPublisher extends telemeterPublisher_shared
 			$returnStr .= "Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - 3] . "\n";
 			$returnStr .= "------------------------------------\n";
 			$returnStr .= "\n";
-			$returnStr .= str_repeat("-", 42) . "\n";
-			$returnStr .= sprintf("| %-8s | %s | %s |\n", "Date", "Download used", "Upload used");
-			$returnStr .= str_repeat("-", 42) . "\n";
+			
+			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			{
+				$returnStr .= str_repeat("-", 42) . "\n";
+				$returnStr .= sprintf("| %-8s | %s | %s |\n", "Date", "Download used", "Upload used");
+				$returnStr .= str_repeat("-", 42) . "\n";
+			}
+			else
+			{
+				$returnStr .= str_repeat("-", 25) . "\n";
+				$returnStr .= sprintf("| %-8s | %s |\n", "Date", "Quota used");
+				$returnStr .= str_repeat("-", 25) . "\n";
+			}
 
 			for ($i = 0; $i < count($dailyData); $i++)
 			{
 				$date = $dailyData[$i++];
-				$download = $dailyData[$i++];
-				$upload = $dailyData[$i];
 
-				$returnStr .= sprintf("| %8s | %9d MiB | %7d MiB |\n", $date, $download, $upload);
+				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				{
+					$download = $dailyData[$i++];
+					$upload = $dailyData[$i];
+
+					$returnStr .= sprintf("| %8s | %9d MiB | %7d MiB |\n", $date, $download, $upload);
+				}
+				else
+				{
+					$traffic = $dailyData[$i];
+					
+					$returnStr .= sprintf("| %8s | %9d MiB |\n", $date, $traffic);
+				}
 			}
 
-			$returnStr .= str_repeat("-", 42) . "\n\n";
+			if (checkISPCompatibility($isp, "seperate_quota") == true)
+				$returnStr .= str_repeat("-", 42) . "\n\n";
+			else
+				$returnStr .= str_repeat("-", 25) . "\n\n";
+					
 		}
 
 		return ($returnStr);
