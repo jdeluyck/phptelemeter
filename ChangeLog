@@ -107,7 +107,7 @@ X.XX
 
 0.27
 ~~~~
-- Renamed the daily confiuration file option to show_daily
+- Renamed the daily configuration file option to show_daily
 - Added new configuration file option show_reset_date
 - Added the GPL license
 - Made comment style more uniform throughout the code
