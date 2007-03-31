@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "html");
-define("_phptelemeter_publisher_version", "10");
+define("_phptelemeter_publisher_version", "11");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -142,18 +142,34 @@ class telemeterPublisher extends telemeterPublisher_shared
 			$returnStr .= "
 			<table border='1'>
 			<tr>
-				<th>Date</th>
-				<th>Download used</th>
-				<th>Upload used</th>
-			</tr>";
+				<th>Date</th>";
+				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				{
+					$returnStr .= "	<th>Download used</th>
+									<th>Upload used</th>";
+				}
+				else
+					$returnStr .= "	<th>Quota used</th>";
+					
+			$returnStr .= "</tr>";
 
 			for ($i = 0; $i < count($dailyData); $i++)
 			{
 				$date = $dailyData[$i++];
-				$download = $dailyData[$i++];
-				$upload = $dailyData[$i];
+				
+				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				{
+					$download = $dailyData[$i++];
+					$upload = $dailyData[$i];
+					
+					$returnStr .= sprintf("<tr>\n<td> %8s </td>\n<td> %7d MiB </td>\n<td> %7d MiB </td>\n</tr>\n", $date, $download, $upload);
+				}
+				else
+				{
+					$traffic = $dailyData[$i];
 
-				$returnStr .= sprintf("<tr>\n<td> %8s </td>\n<td> %7d MiB </td>\n<td> %7d MiB </td>\n</tr>\n", $date, $download, $upload);
+					$returnStr .= sprintf("<tr>\n<td> %8s </td>\n<td> %7d MiB </td>\n</tr>\n", $date, $traffic);
+				}
 			}
 
 			$returnStr .= "</table>\n";
