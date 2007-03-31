@@ -33,7 +33,7 @@ history				has a displayable history for the period
 
 /* TELENET */
 $isp_compatibility_matrix["telenet"]["reset_date"] = true;
-$isp_compatibility_matrix["telenet"]["seperate_quota"] = true;
+$isp_compatibility_matrix["telenet"]["seperate_quota"] = false;
 $isp_compatibility_matrix["telenet"]["history"] = true;
 
 /* DOMMEL */

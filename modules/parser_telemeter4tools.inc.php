@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "10");
+define("_phptelemeter_parser_telemeter4tools", "11");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -185,16 +185,13 @@ class telemeterParser_telemeter4tools
 				if ($this->checkStatus($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:STATUS"]["VALUE"]) === false)
 				{
 					/* split off the global usage data */
-					$general[0] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-DOWN"]["VALUE"];
-					$general[1] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-UP"]["VALUE"];
-					$general[2] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:DOWN"]["VALUE"];
-					$general[3] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
+					$general[0] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-UP"]["VALUE"];
+					$general[1] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
 
 					/* split off the daily data */
 					foreach ($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:USAGE"] as $key => $value)
 					{
 						$daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
-						$daily[] = $value["NS1:DOWN"]["VALUE"];
 						$daily[] = $value["NS1:UP"]["VALUE"];
 					}
 
