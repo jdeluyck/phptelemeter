@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "machine");
-define("_phptelemeter_publisher_version", "10");
+define("_phptelemeter_publisher_version", "11");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -78,15 +78,28 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
-			$returnStr .= "#Date,DownlUsed,UplUsed\n";
+			if (checkISPCompatibility($isp, "seperate_quota") == true)
+				$returnStr .= "#Date,DownlUsed,UplUsed\n";
+			else
+				$returnStr .= "#Date,QuotaUsed\n";
 
 			for ($i = 0; $i < count($dailyData); $i++)
 			{
 				$date = $dailyData[$i++];
-				$download = $dailyData[$i++];
-				$upload = $dailyData[$i];
+				
+				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				{
+					$download = $dailyData[$i++];
+					$upload = $dailyData[$i];
 
-				$returnStr .= sprintf("%s,%d,%d\n",$date, $download, $upload);
+					$returnStr .= sprintf("%s,%d,%d\n",$date, $download, $upload);
+				}
+				else
+				{
+					$traffic = $dailyData[$i];
+					
+					$returnStr .= sprintf("%s,%d\n", $date, $traffic);
+				}
 			}
 		}
 
