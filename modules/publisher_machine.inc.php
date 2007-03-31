@@ -70,7 +70,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		}
 		else
 		{
-			$returnStr .= "#TotMax,TotUsed,TotPercent,TotLeft\n";
+			$returnStr = "#TotMax,TotUsed,TotPercent,TotLeft\n";
 			$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["total"]["max"], $usage["total"]["use"], $usage["total"]["percent"], $usage["total"]["left"]);
 		}
 
