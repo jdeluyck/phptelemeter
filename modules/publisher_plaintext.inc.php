@@ -159,7 +159,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 				{
 					$traffic = $dailyData[$i];
 					
-					$returnStr .= sprintf("| %8s | %9d MiB |\n", $date, $traffic);
+					$returnStr .= sprintf("| %8s | %6d MiB |\n", $date, $traffic);
 				}
 			}
 
