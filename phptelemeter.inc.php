@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.29");
+define("_version", "1.29-beta");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -447,8 +447,6 @@ function parseArgs($argv, $configuration)
 	return $configuration;
 }
 
-
-
 function outputData($configuration, $buffer, $userid)
 {
 	$fileName = $configuration["general"]["file_prefix"] . $userid . "." . $configuration["general"]["file_extension"];
@@ -479,7 +477,6 @@ function loadParser($aParser, $configuration)
 
 	if ($configuration["general"]["debug"] == true)
 		echo "PARSER: Loaded parser " . $aParser . ", version " . constant($parserID) . "\n";
-
 }
 
 function loadPublisher($configuration)
@@ -496,7 +493,6 @@ function loadPublisher($configuration)
 
 	if ($configuration["general"]["debug"] == true)
 		echo "PUBLISHER: Loaded publisher " . _phptelemeter_publisher . ", version " . _phptelemeter_publisher_version . "\n";
-
 }
 
 function checkISPCompatibility($isp, $function)
