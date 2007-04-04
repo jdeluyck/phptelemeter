@@ -138,7 +138,12 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
-			$returnStr .= "<h2>Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - 3] . "</h2>";
+			if (checkISPCompatability($isp, "seperate_quota") == true)
+				$dateDiff = 3;
+			else
+				$dateDiff = 2;
+
+			$returnStr .= "<h2>Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - $dateDiff] . "</h2>";
 			$returnStr .= "
 			<table border='1'>
 			<tr>

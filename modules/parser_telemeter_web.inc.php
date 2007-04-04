@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "19");
+define("_phptelemeter_parser_telemeter_web", "20");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -93,17 +93,11 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		{
 			if (stristr($data[$i], "Detail facturatieperiode") !== false)
 				$pos["daterange"] = $i;
-			elseif (stristr($data[$i], "Ontvangen gegevens (download)") !== false)
+			elseif (stristr($data[$i], "Ontvangen (download) en verstuurde (upload) gegevens") !== false)
 			{
-				$pos["downloadused"] = $i + 17;
-				$pos["downloadleft"] = $i + 18;
-				$pos["downloaddetail"] = $i + 23;
-			}
-			elseif (stristr($data[$i], "Verstuurde gegevens (upload)") !== false)
-			{
-				$pos["uploadused"] = $i + 17;
-				$pos["uploadleft"] = $i + 18;
-				$pos["uploaddetail"] = $i + 23;
+				$pos["trafficused"] = $i + 17;
+				$pos["trafficleft"] = $i + 18;
+				$pos["trafficdetail"] = $i + 23;
 			}
 		}
 
@@ -115,21 +109,14 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 			var_dump($data);
 		}
 
-		/* download - total */
+		/* traffic - total */
 		$downCorrection = 0;
 
-		$used      = removeDots(substr($data[$pos["downloadused"]],0,-3));
-		$remaining = removeDotS(substr($data[$pos["downloadleft"]],0,-3));
+		$used      = removeDots(substr($data[$pos["trafficused"]],0,-3));
+		$remaining = removeDotS(substr($data[$pos["trafficleft"]],0,-3));
 
-		$generalMatches[0] = $remaining + $used;
-		$generalMatches[2] = $used;
-
-		/* upload - total */
-		$used      = removeDots(substr($data[$pos["uploadused"]],0,-3));
-		$remaining = removeDots(substr($data[$pos["uploadleft"]],0,-3));
-
- 		$generalMatches[1] = $remaining + $used;
-		$generalMatches[3] = $used;
+		$generalMatches[0] = $used;
+		$generalMatches[1] = $remaining;
 
 		/* determine the date range */
 		$dateRange = explode(" ", $data[$pos["daterange"]]);
@@ -157,22 +144,19 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		for ($i = 1; $i <= $days; $i++)
 		{
 
-			if ($data[$pos["downloaddetail"]] == "&gt;")
+			if ($data[$pos["trafficdetail"]] == "&gt;")
 			{
-				$pos["downloaddetail"]++;
-				$pos["uploaddetail"]++;
+				$pos["trafficdetail"]++;
 			}
 
 			$dailyMatches[] = date("d/m/y", $start + (($i - 1) * 86400));
-			$dailyMatches[] = removeDots($data[++$pos["downloaddetail"]]) + removeDots($data[++$pos["downloaddetail"]]);
-			$dailyMatches[] = removeDots($data[++$pos["uploaddetail"]]) + removeDots($data[++$pos["uploaddetail"]]);
+			$dailyMatches[] = removeDots($data[++$pos["trafficdetail"]]) + removeDots($data[++$pos["trafficdetail"]]);
 
 			/* increase pos by one, we don't care for the dates */
-			$pos["downloaddetail"]++;
-			$pos["uploaddetail"]++;
+			$pos["trafficdetail"]++;
 		}
 
-		$endDate = $dailyMatches[count($dailyMatches) - 3];
+		$endDate = $dailyMatches[count($dailyMatches) - 2];
 		$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
 
 
