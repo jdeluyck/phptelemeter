@@ -71,9 +71,9 @@ cp -r ${SOURCE}/* ${RELPATH}
 mv ${RELPATH}/docs/gpl.txt ${RELPATH}
 # clean out
 rm -fr ${RELPATH}/*.session ${RELPATH}/*.webprj ${RELPATH}/docs ${RELPATH}/mkrelease.sh ${RELPATH}/patches 
-find ${RELPATH} -name "CVS" -exec rm -r {} \;
-find ${RELPATH} -name ".svn" -exec rm -r {} \;
-find ${RELPATH} -name "*~" -exec rm {} \;
+find ${RELPATH} -name "CVS" -exec rm -fr {} \;
+find ${RELPATH} -name ".svn" -exec rm -fr {} \;
+find ${RELPATH} -name "*~" -exec rm -rf{} \;
 
 echo ${REL} > ${VERFILE}
 
