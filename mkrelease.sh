@@ -1,6 +1,25 @@
 #!/bin/bash
 #set -x 
 
+delPath()
+{
+	if [ -e ${1} ]; then
+		echo -n "${1} exists, delete? [Y/n] "
+		read answer
+
+		case ${answer} in
+			[Yy] | '')
+				rm -rf ${1}
+				;;
+			*)
+				echo "${1} exists, cannot continue."
+				exit 1
+				;;
+		esac
+	fi
+}
+		
+
 SOURCE="/var/www/phptelemeter/trunk"
 TARGET="/tmp"
 
@@ -11,6 +30,12 @@ FTPFILE="~/.ncftp/ftpaccess"
 SFFTPHOST="upload.sf.net"
 SFFTPDIR="incoming"
 
+if [ ! -e ${SOURCE}/phptelemeter.inc.php ]; then
+	echo "error: could not find phptelemeter in ${SOURCE}."
+	echo "Are you sure this path is correct?"
+	exit 1;
+fi
+
 REL=$(cat phptelemeter.inc.php | grep define\(\"_version\" | cut -d \" -f 4)
 
 RELNAME="phptelemeter-${REL}"
@@ -19,65 +44,26 @@ RELTAR="${RELPATH}.tar.gz"
 
 VERFILE="${TARGET}/VERSION"
 
-if [ -e ${RELPATH} ]; then
-	echo -n "${RELPATH} exists, delete? [Y/n] "
-	read answer
-
-	case ${answer} in
-		[Yy] | '')
-			rm -rf ${RELPATH}
-			;;
-		*)
-			echo "${RELPATH} exists, cannot continue."
-			exit 1
-			;;
-	esac
-fi
-
-if [ -e ${RELTAR} ]; then
-        echo -n "${RELTAR} exists, delete? [Y/n] "
-        read answer
-
-        case ${answer} in
-                [Yy] | '')
-                        rm -f ${RELTAR}
-                        ;;
-                *)
-                        echo "${RELTAR} exists, cannot continue."
-                        exit 1
-                        ;;
-        esac
-fi
-
-if [ -e ${VERFILE} ]; then
-        echo -n "${VERFILE} exists, delete? [Y/n] "
-        read answer
-
-        case ${answer} in
-                [Yy] | '')
-                        rm -f ${VERFILE}
-                        ;;
-                *)
-                        echo "${VERFILE} exists, cannot continue."
-                        exit 1
-                        ;;
-        esac
-fi
+delPath ${RELPATH}
+delPath ${RELTAR}
+delPath ${VERFILE}
 
 mkdir -p ${RELPATH}
 
 cp -r ${SOURCE}/* ${RELPATH}
 
 mv ${RELPATH}/docs/gpl.txt ${RELPATH}
+
 # clean out
-rm -fr ${RELPATH}/*.session ${RELPATH}/*.webprj ${RELPATH}/docs ${RELPATH}/mkrelease.sh ${RELPATH}/patches 
-find ${RELPATH} -name "CVS" -exec rm -fr {} \;
-find ${RELPATH} -name ".svn" -exec rm -fr {} \;
-find ${RELPATH} -name "*~" -exec rm -rf{} \;
+CLEANFILES="*.session *.webprj docs mkrelease.sh patches CVS .svn *~"
+
+for cleanitem in ${CLEANFILES}; do
+	find ${RELPATH} -name "${cleanitem}" -exec rm -fr {} \;
+done
 
 echo ${REL} > ${VERFILE}
 
-#tar it up
+# tar it up
 pushd /tmp 2>&1 >/dev/null
 tar cfz ${RELTAR} ${RELNAME}
 popd 2>&1 >/dev/null
