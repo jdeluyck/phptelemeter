@@ -1,3 +1,9 @@
+phptelemeter 1.30
+~~~~~~~~~~~~~~~~~
+Important! This release ONLY supports the NEW telemeter counters, those that
+no longer differentiate between up and download quota. The old style counter
+code has been removed.
+
 phptelemeter 1.28
 ~~~~~~~~~~~~~~~~~
 - A new parameter ignore_errors has been added to the [general] section.

@@ -1,6 +1,6 @@
 What's new? Not much, but it's listed here.
 
-X.XX
+1.30
 ~~~~
 - Replaced gregoriantojd() calls with something else, fixes phptelemeter
   if php is compiled without --enable-calendar. (feature request: 1684526)

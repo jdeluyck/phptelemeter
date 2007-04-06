@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.29-beta");
+define("_version", "1.30");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
