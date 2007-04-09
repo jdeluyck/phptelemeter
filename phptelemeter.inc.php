@@ -150,7 +150,7 @@ function doError($errorMsg, $errorDescription, $exit, $ignoreErrors=false)
 /* DUH. What do you think? Quits. */
 function quit()
 {
-	exit (-1);
+	exit (0);
 }
 
 /* Parses the config file and does some checking on the contents */
