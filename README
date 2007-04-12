@@ -146,8 +146,8 @@ parser=a parser				# The parsing module to use for
 					# telemeter_web, dommel_web, skynet_web,
 					# scarlet_web and upccz_web are
 					# included.
-warn_percentage=percentage		# Percentage when a warning email 
-					# should be sent to the warn_email 
+warn_percentage=percentage		# Percentage when a warning email
+					# should be sent to the warn_email
 					# email address. Set percentage to 0
 					# to disable it.
 warn_email=email address
@@ -160,6 +160,17 @@ description=your description		# Description of account-99
 parser=a parser				# Parser of account-99
 warn_percentage=percentage		# Warning percentage of account-99
 warn_email=email address		# Warning email address of account-99
+
+Include files
+~~~~~~~~~~~~~
+- Starting version 1.31, phptelemeter supports using include files in the main
+  configuration file. This allows you to easily split up the configuration
+  in logical chunks.
+- To use this, you have to insert into phptelemeterrc an
+  [include /path/to/file]
+  statement. phptelemeter will read this file and insert it at the location
+  where it was in the original file.
+- Recursive [include] statements are _not_ supported!
 
 Running on a webserver
 ~~~~~~~~~~~~~~~~~~~~~~
