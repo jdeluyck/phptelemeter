@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_dommel_web", "8");
+define("_phptelemeter_parser_dommel_web", "9");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -74,8 +74,7 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		$this->url["stats"] = substr($log2,0,strpos($log2,"'"));
 
-		if ($this->debug == true)
-			echo "DEBUG: STATS URL: " . $this->url["stats"] . "\n";
+		dumpDebugInfo($this->debug, "DEBUG: STATS URL: " . $this->url["stats"] . "\n");
 
 		/* and get the data */
 		$data = $this->doCurl($this->url["stats"], FALSE);
@@ -101,11 +100,8 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 		/* set some default positions */
 		$pos["remaining"] = false;
 
-		if ($this->debug == true)
-		{
-			echo "DEBUG: \$data2, pre cleanup!\n";
-			var_dump($data2);
-		}
+		dumpDebugInfo($this->debug, "DEBUG: \$data2, pre cleanup!\n");
+		dumpDebugInfo($this->debug, $data2);
 
 		/* position finding & data cleanup */
 		for ($i = 0; $i < count($data2); $i++)
@@ -123,14 +119,11 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 			$data2[$i] = substr($data2[$i], strpos($data2[$i], ":") + 2);
 		}
 
-		if ($this->debug == true)
-		{
-			echo "DEBUG: \$data2\n";
-			var_dump($data2);
+		dumpDebugInfo($this->debug, "DEBUG: \$data2\n");
+		dumpDebugInfo($this->debug, $data2);
 
-			echo "POS:\n";
-			var_dump($pos);
-		}
+		dumpDebugInfo($this->debug, "POS:\n");
+		dumpDebugInfo($this->debug, $pos);
 
 		/* stats */
 		/* total used */
@@ -150,8 +143,7 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 		$returnValue["reset_date"] = $reset_date;
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
-		if ($this->debug == true)
-			print_r($returnValue);
+		dumpDebugInfo($this->debug, $returnValue);
 
 		/* we need to unlink the cookiefile here, otherwise we get 'ghost' data. */
 		@unlink ($this->_cookieFile);

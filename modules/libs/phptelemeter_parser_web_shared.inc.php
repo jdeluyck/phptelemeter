@@ -73,9 +73,7 @@ class telemeterParser_web_shared
 
 		$returnValue = substr($returnValue,0,-1);
 
-		if ($this->debug == true)
-			echo "Postfields: $returnValue\n";
-
+		dumpDebugInfo($this->debug, $returnValue);
 		return ($returnValue);
 	}
 
@@ -121,11 +119,8 @@ class telemeterParser_web_shared
 	{
 		/* check for any curl errors */
 		$returnValue = $this->checkForCurlError($log);
-		if ($this->debug)
-		{
-			echo "CURL error check:\n";
-			var_dump($returnValue);
-		}
+
+		dumpDebugInfo($this->debug, "CURL error check:\n" . $returnValue);
 
 		if ($returnValue === false)
 		{
@@ -134,14 +129,12 @@ class telemeterParser_web_shared
 			/* nope, no curl errors. Check for other errors. */
 			if (is_array($this->errors))
 			{
-				if ($this->debug)
-					echo "Error checking in: \n" . $log . "\n";
+				dumpDebugInfo($this->debug, "Error checking in: \n" . $log . "\n");
 
 				foreach($this->errors as $errCode => $errDesc)
 				{
-					if ($this->debug)
-						echo "Matching against: $errCode\n";
-		
+					dumpDebugInfo($this->debug, "Matching against: $errCode\n");
+
 					if (stristr($log, $errCode) !== false)
 						$returnValue .= $errDesc . "\n";
 				}
@@ -159,18 +152,15 @@ class telemeterParser_web_shared
 	/* Does some CURLing (no, not that strange sport on ice that l... I disgress. */
 	function doCurl($URL, $postFields)
 	{
-		if ($this->debug == true) echo "CURL: $URL\n";
+		dumpDebugInfo($this->debug, "CURL: " . $URL . "\n");
 
 		$ch = curl_init($URL);
 
 		/* any extra curl parameters to pass around? */
 		if ($this->_curlParams !== false)
 		{
-			if ($this->debug == true)
-			{
-				echo "CURL: Extra settings:\n";
-				var_dump($this->_curlParams);
-			}
+			dumpDebugInfo($this->debug, "CURL: Extra settings:\n");
+			dumpDebugInfo($this->debug, $this->_curlParams);
 
 			foreach ($this->_curlParams as $key => $value)
 				curl_setopt($ch, $key, $value);
@@ -180,7 +170,7 @@ class telemeterParser_web_shared
 		{
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-			if ($this->debug == true) echo "CURL: POST: $postFields\n";
+			dumpDebugInfo($this->debug, "CURL: POST: $postFields\n");
 		}
 
 		curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -195,16 +185,13 @@ class telemeterParser_web_shared
 		/* check proxy */
 		if (strlen($this->proxyHost) != 0)
 		{
-			if ($this->debug == true)
-				echo "CURL: Enabling proxy: " .$this->proxyHost . ":" . $this->proxyPort . "\n";
+			dumpDebugInfo($this->debug, "CURL: Enabling proxy: " . $this->proxyHost . ":" . $this->proxyPort . "\n");
 
 			curl_setopt($ch, CURLOPT_PROXY, $this->proxyHost . ":" . $this->proxyPort);
 
 			if ($this->proxyAuth == true)
 			{
-				if ($this->debug == true)
-					echo "CURL: Enabling proxy AUTH\n";
-
+				dumpDebugInfo($this->debug, "CURL: Enabling proxy AUTH\n");
 				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxyUsername . ":" . $this->proxyPassword);
 			}
 		}

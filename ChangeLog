@@ -2,14 +2,16 @@ What's new? Not much, but it's listed here.
 
 x.xx
 ~~~~
-- Changed returncode to 0 instead of -1
+- Changed returncode to 0 instead of -1 (255)
+- Implemented login detail obfuscation in debug logs
+  (feature request: 1681619)
 
 1.30
 ~~~~
 - Replaced gregoriantojd() calls with something else, fixes phptelemeter
   if php is compiled without --enable-calendar. (feature request: 1684526)
 - Changed Telenet parsers: Telenet now has one fix quota instead of
-  seperate upload/download (bug 1671798)
+  seperate upload/download (fixes: 1671798)
 - Updated publishers to work with a history of one quota and seperate quotas
   (also for Telenet)
 

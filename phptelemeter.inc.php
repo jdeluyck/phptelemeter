@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.30");
+define("_version", "1.31-beta");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -42,7 +42,7 @@ $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_au
 /* -------------------------------- */
 /* Functions, functions, functions! */
 /* -------------------------------- */
-/* define some constants, based on the OS - initial try for win32 compatability */
+/* define some constants, based on the OS */
 function checkOS($configuration, &$configFiles)
 {
 	$os = strtoupper(substr(PHP_OS, 0, 3));
@@ -76,16 +76,14 @@ function checkOS($configuration, &$configFiles)
 
 	$configFiles = array($systemDir . "/" . _configFileName, _homedir . "/." . _configFileName);
 
-	if ($configuration["general"]["debug"] == true)
-	{
-		echo "OS     : " . _os . "\n";
-		echo "HOME   : " . _homedir . "\n";
-		echo "TEMP   : " . _tempdir . "\n";
-		echo "MODPATH: " . _defaultModulePath . "\n";
+	dumpDebugInfo($configuration["general"]["debug"],
+		"OS     : " . _os . "\n" .
+		"HOME   : " . _homedir . "\n" .
+		"TEMP   : " . _tempdir . "\n" .
+		"MODPATH: " . _defaultModulePath . "\n");
 
-		echo "CONFIG FILES:\n";
-		var_dump($configFiles);
-	}
+	dumpDebugInfo($configuration["general"]["debug"], "CONFIG FILES:\n");
+	dumpDebugInfo($configuration["general"]["debug"], $configFiles);
 }
 
 /* we require version >= 4.3.0 */
@@ -113,8 +111,7 @@ function findConfigFile($configFiles, $configuration)
 	if ($found == false)
 		$returnValue = $aConfigFile;
 
-	if ($configuration["general"]["debug"] == true)
-		echo "CONFIG: $returnValue\n";
+	dumpDebugInfo($configuration["general"]["debug"], "CONFIG: $returnValue\n");
 
 	return ($returnValue);
 }
@@ -332,12 +329,6 @@ function checkConfigurationForKeys($configurationSection, $keys, $keyThere, $err
 	}
 }
 
-/* Debugging: does a var_dump of the configfile */
-function dumpConfig($configuration)
-{
-	var_dump($configuration);
-}
-
 /* Parses the command-line arguments and fits them in the configuration array */
 function parseArgs($argv, $configuration)
 {
@@ -441,7 +432,7 @@ function parseArgs($argv, $configuration)
 				quit();
 			}
 		}
-		if ($configuration["general"]["debug"] == true) echo "ARG: $flag\n";
+		dumpDebugInfo($configuration["general"]["debug"], "ARG: $flag\n");
 	}
 
 	return $configuration;
@@ -467,32 +458,28 @@ function loadParser($aParser, $configuration)
 	$parser = "modules/parser_" . $aParser . ".inc.php";
 	$parserID = "_phptelemeter_parser_" . $aParser;
 
-	if ($configuration["general"]["debug"] == true)
-		echo "PARSER: Trying to load " . $parser . "\n";
+	dumpDebugInfo($configuration["general"]["debug"], "PARSER: Trying to load " . $parser . "\n");
 
 	require_once($parser);
 
 	if (! defined($parserID))
 		doError("Invalid parser", "The parser " . $aParser . " is not valid!", true);
 
-	if ($configuration["general"]["debug"] == true)
-		echo "PARSER: Loaded parser " . $aParser . ", version " . constant($parserID) . "\n";
+	dumpDebugInfo($configuration["general"]["debug"], "PARSER: Loaded parser " . $aParser . ", version " . constant($parserID) . "\n");
 }
 
 function loadPublisher($configuration)
 {
 	$publisher = "modules/publisher_" . $configuration["general"]["publisher"] . ".inc.php";
 
-	if ($configuration["general"]["debug"] == true)
-		echo "PUBLISHER: Trying to load " . $publisher . "\n";
+	dumpDebugInfo($configuration["general"]["debug"], "PUBLISHER: Trying to load " . $publisher . "\n");
 
 	require_once($publisher);
 
 	if (! defined("_phptelemeter_publisher"))
 		doError("Invalid publisher", "The publisher " . $configuration["general"]["publisher"] . " is not valid!", true);
 
-	if ($configuration["general"]["debug"] == true)
-		echo "PUBLISHER: Loaded publisher " . _phptelemeter_publisher . ", version " . _phptelemeter_publisher_version . "\n";
+	dumpDebugInfo($configuration["general"]["debug"], "PUBLISHER: Loaded publisher " . _phptelemeter_publisher . ", version " . _phptelemeter_publisher_version . "\n");
 }
 
 function checkISPCompatibility($isp, $function)
@@ -589,6 +576,53 @@ function checkVersion($doCheck, $proxyInfo)
 function calculateDaysLeft($resetDate)
 {
 	$returnValue = round(((mktime (0,0,0, substr($resetDate,3,2), substr($resetDate,0,2), substr($resetDate,6,4)) - mktime(0,0,0, date("m"), date("d"), date("Y"))) / 86400),0);
+	return ($returnValue);
+}
+
+function dumpDebugInfo($debug, $data)
+{
+	/* sadly, a global, but it's going to be hard to get that data passed around otherwise. */
+	global $credentialInfo;
+
+	if ($debug == true)
+	{
+		$data = obfuscateLog($data, $credentialInfo);
+
+		print_r($data);
+	}
+}
+
+function obfuscateLog($data, $credentialInfo)
+{
+	if (is_array($data))
+	{
+		/* if it's an array, recurse */
+		foreach ($data as $key => $value)
+		{
+			/* special cases, we need to remove the username/pw from the config dump */
+			if (strpos($key, "username") !== false || strpos($key, "password") !== false)
+				$newdata[$key] = "-HIDDEN-";
+			else
+				$newdata[$key] = obfuscateLog($value, $credentialInfo);
+		}
+		$data = $newdata;
+	}
+	else
+		$data = str_replace($credentialInfo, "-HIDDEN-", $data);
+
+	return ($data);
+}
+
+function getAllCredentials($configuration)
+{
+	$returnValue = array();
+
+	for ($i=0; $i < count($configuration["accounts"]); $i++)
+	{
+		$returnValue[] = $configuration["accounts"][$i]["username"];
+		$returnValue[] = $configuration["accounts"][$i]["password"];
+	}
+
 	return ($returnValue);
 }
 ?>

@@ -53,10 +53,13 @@ $configuration = parseArgs($argv, $configuration);
 if ($configuration["general"]["debug"] == true)
 {
 	error_reporting(E_ALL);
-	dumpConfig($configuration);
+	dumpDebugInfo(true, $configuration);
 }
 
 $configuration = checkConfig($configuration, $configFile, $configKeys);
+
+/* needed for debug log obfuscation */
+$credentialInfo = getAllCredentials($configuration);
 
 /* do a version check if it's asked */
 $newVersion = checkVersion($configuration["general"]["check_version"], $configuration["proxy"]);
@@ -116,8 +119,7 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	/* run the parser getData() routine */
 	$data = $parser->getData($configuration["accounts"][$i]["username"],$configuration["accounts"][$i]["password"]);
 
-	if ($configuration["general"]["debug"] == true)
-		print_r($data);
+	dumpDebugInfo($configuration["general"]["debug"], $data);
 
 	if ($data === false)
 		continue;
