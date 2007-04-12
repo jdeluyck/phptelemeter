@@ -94,7 +94,7 @@ if ($configuration["general"]["file_output"] == false)
 }
 
 /* loop through all our users */
-for ($i = 0; $i < count($configuration["accounts"]); $i++)
+foreach ($configuration["accounts"] as $key => $account)
 {
 	/* start buffering */
 	ob_start();
@@ -102,11 +102,11 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 	if ($configuration["general"]["file_output"] == true)
 		echo $publisher->mainHeader();
 
-	echo $publisher->accountHeader($configuration["accounts"][$i]["description"]);
+	echo $publisher->accountHeader($account["description"]);
 
 	/* load and configure the parser */
-	loadParser($configuration["accounts"][$i]["parser"], $configuration);
-	$parserClassName = "telemeterParser_" . $configuration["accounts"][$i]["parser"];
+	loadParser($account["parser"], $configuration);
+	$parserClassName = "telemeterParser_" . $account["parser"];
 	$parser = new $parserClassName;
 	checkModules($parser->getNeededModules());
 	$parser->setDebug($configuration["general"]["debug"]);
@@ -117,13 +117,16 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 
 
 	/* run the parser getData() routine */
-	$data = $parser->getData($configuration["accounts"][$i]["username"],$configuration["accounts"][$i]["password"]);
-
-	dumpDebugInfo($configuration["general"]["debug"], $data);
+	$data = $parser->getData($account["username"],$account["password"]);
 
 	if ($data === false)
 		continue;
 
+	/* send a mail? */
+	if ($account["warn_percentage"] > 0)
+		sendWarnEmail($configuration["general"]["debug"], $data, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
+
+	/* publish the info */
 	echo $publisher->accountFooter();
 
 	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["show_daily"], $configuration["general"]["show_graph"], $configuration["general"]["show_resetdate"]);
@@ -134,7 +137,7 @@ for ($i = 0; $i < count($configuration["accounts"]); $i++)
 
 		$buffer = ob_get_contents();
 		ob_end_clean();
-		outputData($configuration, $buffer, $configuration["accounts"][$i]["username"]);
+		outputData($configuration, $buffer, $account["username"]);
 	}
 	else
 		ob_end_flush();

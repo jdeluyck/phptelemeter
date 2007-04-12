@@ -35,7 +35,7 @@ define("_phptelemeterURL", "http://phptelemeter.kcore.org/");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email");
 $configKeys["general"]["obsolete"] = array("style", "daily", "parser");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 
@@ -212,6 +212,9 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; Do you want to ignore any runtime errors that occur and continue instead?\n" .
 			"ignore_errors=false\n" .
 			";\n" .
+			"; What email address to use as the From: address when sending warning mails:\n" .
+			"email=youremail@domain.tld\n" .
+			";\n" .
 			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
 			"; If you set proxy_authenticate to true, you must fill the username\n" .
 			"; and password too.\n" .
@@ -226,11 +229,15 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"username=myuser\n" .
 			"password=mypassword\n" .
 			"parser=aparser\n" .
-			"; (the parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
+			"; The parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
 			"; skynet_web, scarlet_web or upccz_web, and the file needs to be present\n" .
-			"; in the phptelemeter/modules directory!)\n" .
+			"; in the phptelemeter/modules directory!\n" .
 			";description=My first account\n" .
-			"; (the description is optional)\n" .
+			"; The description is optional\n" .
+			"warn_percentage=90\n" .
+			"warn_email=youraddress@domain.tld\n" .
+			"; The percentage when, if crossed, an email should be send to the address\n" .
+			"; specified in warn_email. To disable, set warn_percentage to 0.\n" .
 			";\n" .
 			";\n" .
 			";[account-2]\n" .
@@ -238,6 +245,8 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			";password=mypassword\n" .
 			";parser=aparser\n" .
 			";description=My second account\n" .
+			";warn_percentage=90\n" .
+			";warn_email=youraddress@domain.tld\n" .
 			";\n" .
 			"[die]\n"
 		);
@@ -284,13 +293,17 @@ function checkConfig($configuration, $configFile, $configKeys)
 			/* account found, check the validity */
 			if (! array_key_exists("username", $configuration[$accName]) ||
 				! array_key_exists("password", $configuration[$accName]) ||
-				! array_key_exists("parser",   $configuration[$accName]))
+				! array_key_exists("parser",   $configuration[$accName]) ||
+				! array_key_exists("warn_percentage", $configuration[$accName]) ||
+				! array_key_exists("warn_email", $configuration[$accName]))
 					doError("configuration not correct.", "account info for " . $accName . " is not correct - ignoring.", false);
 			else
 			{
 				$configuration["accounts"][]["username"] = $configuration[$accName]["username"];
 				$configuration["accounts"][count($configuration["accounts"]) - 1]["password"] = $configuration[$accName]["password"];
 				$configuration["accounts"][count($configuration["accounts"]) - 1]["parser"] = $configuration[$accName]["parser"];
+				$configuration["accounts"][count($configuration["accounts"]) - 1]["warn_percentage"] = $configuration[$accName]["warn_percentage"];
+				$configuration["accounts"][count($configuration["accounts"]) - 1]["warn_email"] = $configuration[$accName]["warn_email"];
 				if (array_key_exists("description", $configuration[$accName]))
 					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] =  $configuration[$accName]["description"];
 				else
@@ -624,5 +637,58 @@ function getAllCredentials($configuration)
 	}
 
 	return ($returnValue);
+}
+
+function sendWarnEmail($debug, $data, $description, $percentage, $fromAddress, $toAddress)
+{
+	$sendMail = false;
+	$temp = calculateUsage($data["general"], $data["isp"]);
+
+	if (array_key_exists("total", $temp))
+	{
+		/* handle 'total' quota */
+		if ($temp["total"]["percent"] > $percentage)
+		{
+			$sendMail = true;
+			$text = "You have used " . $temp["total"]["percent"] . "% (" . $temp["total"]["use"] . " MiB) of your total transfer quota of " . $temp["total"]["max"] . " MiB.";
+		}
+	}
+	else
+	{
+		/* handle seperate quotas */
+		if ($temp["download"]["percent"] > $percentage || $temp["upload"]["percent"] > $percentage)
+		{
+			$sendMail = true;
+			$text  = "You have used " . $temp["download"]["percent"] . "% (" . $temp["download"]["use"] . " MiB) of your download quota of " . $temp["download"]["max"] . " MiB.";
+			$text .= "You have used " . $temp["upload"]["percent"] . "% (" . $temp["upload"]["use"] . " MiB) of your upload quota of " . $temp["upload"]["max"] . " MiB.";
+		}
+	}
+
+
+	if ($sendMail == true)
+	{
+		$subject = "phptelemeter warning for " . $description . " - usage exceeded " . $percentage . "%";
+
+		$message  = "Hello,\n\n";
+		$message .= "This is a phptelemeter warning email for account: " . $description . ".\n\n";
+		$message .= $text;
+		$message .= "\n\n";
+		$message .= "This is a generated message - please do not reply to it.\n";
+
+		$headers  = "From: " . $fromAddress . "\r\n";
+		$headers .= "Reply-To: " . $fromAddress . "\r\n";
+		$headers .= "X-Mailer: phptelemeter " . _version;
+
+		$parameters = "-r " . $fromAddress;
+
+		dumpDebugInfo($debug, "Sending email:\n" .
+			"Headers: " . $headers . "\n" .
+			"To: " . $toAddress . "\n" .
+			"Subject: " . $subject . "\n" .
+			"Message: " . $message . "\n" .
+			"Params: " . $parameters . "\n");
+
+		mail($toAddress, $subject, $message, $headers, $parameters);
+	}
 }
 ?>
