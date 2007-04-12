@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "6");
+define("_phptelemeter_parser_scarlet_web", "7");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -85,11 +85,8 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 
 		$data = $temp;
 
-		if ($this->debug == true)
-		{
-			echo "DATA:\n";
-			var_dump($data);
-		}
+		dumpDebugInfo($this->debug, "DATA:\n");
+		dumpDebugInfo($this->debug, $data);
 
 		for ($i = 0; $i < count($data); $i++)
 		{
@@ -106,11 +103,8 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 				$pos["total"] = $i;
 		}
 
-		if ($this->debug == true)
-		{
-			echo "POS:\n";
-			var_dump($pos);
-		}
+		dumpDebugInfo($this->debug, "POS:\n");
+		dumpDebugInfo($this->debug, $pos);
 
 		/* stats */
 
@@ -135,14 +129,12 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		$days = intval(($end - $start) / 86400) + 1;
 		$realdays = intval(($realend - $start) / 86400) + 1;
 
-		if ($this->debug == true)
-		{
-			echo "start: ", $start, " ", date("Y-m-d", $start), "\n";
-			echo "end: ", $end, " ", date("Y-m-d", $end), "\n";
-			echo "days: ", $days, "\n";
-			echo "realend: ", $realend, " ", date("Y-m-d", $realend),"\n";
-			echo "realdays: ", $realdays, "\n";
-		}
+		dumpDebugInfo($this->debug,
+			"start: ", $start, " ", date("Y-m-d", $start), "\n" .
+			"end: ", $end, " ", date("Y-m-d", $end), "\n" .
+			"days: ", $days, "\n" .
+			"realend: ", $realend, " ", date("Y-m-d", $realend),"\n" .
+			"realdays: ", $realdays, "\n");
 
 		$totalUsedVolume = 0;
 
@@ -189,12 +181,10 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 
 			$totalUsedVolume += $dailyData[count($dailyData) - 2] + $dailyData[count($dailyData) - 1];
 
-			if ($this->debug == true)
-			{
-				echo "DATE: ". $dailyData[count($dailyData) - 3]. "\n";
-				echo "DOWNLOAD (pos: " . $pos["download"] . "): " . $data[$pos["download"]] . " - CAPTURED: " . $dailyData[count($dailyData) - 2] . "\n";
-				echo "UPLOAD (pos: " . $pos["upload"] . "): " . $data[$pos["upload"]]. " - CAPTURED: " . $dailyData[count($dailyData) - 1] . "\n";
-			}
+			dumpDebugInfo($this->debug,
+				"DATE: ". $dailyData[count($dailyData) - 3]. "\n" .
+				"DOWNLOAD (pos: " . $pos["download"] . "): " . $data[$pos["download"]] . " - CAPTURED: " . $dailyData[count($dailyData) - 2] . "\n" .
+				"UPLOAD (pos: " . $pos["upload"] . "): " . $data[$pos["upload"]]. " - CAPTURED: " . $dailyData[count($dailyData) - 1] . "\n");
 
 			$pos["upload"] += $pos["data_interval"];
 			$pos["download"] += $pos["data_interval"];
@@ -222,8 +212,7 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		$returnValue["daily"] = $dailyData;
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
-		if ($this->debug == true)
-			print_r($returnValue);
+		dumpDebugInfo($this->debug, $returnValue);
 
 		/* we need to unlink the cookiefile here, otherwise we get 'ghost' data. */
 		@unlink ($this->_cookieFile);

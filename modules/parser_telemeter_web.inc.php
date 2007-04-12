@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "20");
+define("_phptelemeter_parser_telemeter_web", "21");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -101,13 +101,10 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 			}
 		}
 
-		if ($this->debug == true)
-		{
-			echo "POS:\n";
-			var_dump($pos);
-			echo "DATA:\n";
-			var_dump($data);
-		}
+		dumpDebugInfo($this->debug,"POS:\n");
+		dumpDebugInfo($this->debug,$pos);
+		dumpDebugInfo($this->debug,"DATA:\n");
+		dumpDebugInfo($this->debug,$data);
 
 		/* traffic - total */
 		$downCorrection = 0;
@@ -125,20 +122,17 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		$dateRange[3] = $this->months[$dateRange[3]];
 		$dateRange[7] = $this->months[$dateRange[7]];
 
-		if ($this->debug == true)
-			var_dump($dateRange);
+		dumpDebugInfo($this->debug, $dateRange);
 
 		$start = mktime(0, 0, 0, $dateRange[3], $dateRange[2], $dateRange[4]);
 		$end = mktime(0, 0, 0, $dateRange[7], $dateRange[6], $dateRange[8]);
 
 		$days = intval(($end - $start) / 86400) + 1;
 
-		if ($this->debug == true)
-		{
-			echo "start: ", $start, " ", date("Y-m-d", $start), "\n";
-			echo "end: ", $end, " ", date("Y-m-d", $end), "\n";
-			echo "days: ", $days, " \n";
-		}
+		dumpDebugInfo($this->debug,
+			"start: ", $start, " ", date("Y-m-d", $start), "\n" .
+			"end: ", $end, " ", date("Y-m-d", $end), "\n" .
+			"days: ", $days, " \n");
 
 		/* now do the magic for getting the values of the days */
 		for ($i = 1; $i <= $days; $i++)
@@ -166,8 +160,7 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		$returnValue["reset_date"] = $resetDate;
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
-		if ($this->debug == true)
-			print_r($returnValue);
+		dumpDebugInfo($this->debug, $returnValue);
 
 		/* we need to unlink the cookiefile here, otherwise we get 'ghost' data. */
 		@unlink ($this->_cookieFile);

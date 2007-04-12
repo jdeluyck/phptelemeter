@@ -91,8 +91,7 @@ class telemeterPublisher_shared
 		{
 			if (! array_key_exists($value, $data))
 			{
-				if ($this->debug == true)
-					echo "DEBUG: Adding ". $value . "to the data array.\n";
+				dumpDebugInfo ($this->debug, "DEBUG: Adding ". $value . "to the data array.\n");
 
 				$data[$value] = "";
 			}
