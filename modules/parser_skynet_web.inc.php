@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_skynet_web", "6");
+define("_phptelemeter_parser_skynet_web", "7");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -85,11 +85,8 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 				$remainingPos = $i;
 		}
 
-		if ($this->debug == true)
-		{
-			echo "DATA:\n";
-			var_dump($data);
-		}
+		dumpDebugInfo($this->debug, "DATA:\n");
+		dumpDebugInfo($this->debug, $data);
 
 		/* stats */
 		/* total used */
@@ -111,8 +108,7 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		$returnValue["reset_date"] = $resetDate;
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
-		if ($this->debug == true)
-			print_r($returnValue);
+		dumpDebugInfo($this->debug, $returnValue);
 
 		/* we need to unlink the cookiefile here, otherwise we get 'ghost' data. */
 		@unlink ($this->_cookieFile);
