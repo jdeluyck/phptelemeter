@@ -1,10 +1,12 @@
 What's new? Not much, but it's listed here.
 
-x.xx
+1.31
 ~~~~
 - Changed returncode to 0 instead of -1 (255)
 - Implemented login detail obfuscation in debug logs
   (feature request: 1681619)
+- Implemented warn-email sending. This requires a configuration change!
+  (feature request: 1693396)
 
 1.30
 ~~~~

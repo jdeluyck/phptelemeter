@@ -1,18 +1,28 @@
-phptelemeter 1.30
+phptelemeter 1.31
 ~~~~~~~~~~~~~~~~~
-Important! This release ONLY supports the NEW telemeter counters, those that
-no longer differentiate between up and download quota. The old style counter
-code has been removed.
+- New key was added to the [general] section:
+  * email
 
-phptelemeter 1.28
-~~~~~~~~~~~~~~~~~
-- A new parameter ignore_errors has been added to the [general] section.
+- New keys were added to the [account-] sections:
+  * warn_percentage
+  * warn_email
 
 Please update your configuration file, or generate a new one.
 
 ------------
 | OLD NEWS |
 ------------
+
+phptelemeter 1.30
+~~~~~~~~~~~~~~~~~
+- Important! This release ONLY supports the NEW telemeter counters, those that
+  no longer differentiate between up and download quota. The old style counter
+  code has been removed.
+
+phptelemeter 1.28
+~~~~~~~~~~~~~~~~~
+- A new parameter ignore_errors has been added to the [general] section.
+
 phptelemeter 1.20
 ~~~~~~~~~~~~~~~~~
 - The parameter parser was deprecated from the [general] section.
