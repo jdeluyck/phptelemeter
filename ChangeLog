@@ -7,6 +7,8 @@ What's new? Not much, but it's listed here.
   (feature request: 1681619)
 - Implemented warn-email sending. This requires a configuration change!
   (feature request: 1693396)
+- Implemented including files in the config file.
+  (feature request: 1671787)
 
 1.30
 ~~~~

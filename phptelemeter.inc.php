@@ -119,7 +119,7 @@ function findConfigFile($configFiles, $configuration)
 function checkModules($neededModules)
 {
 	if (! is_array($neededModules))
-		return 0;
+		return (0);
 
 	foreach ($neededModules as $moduleName)
 	{
@@ -168,7 +168,32 @@ function readConfig($configFile)
 	if (! array_key_exists("debug", $configuration["general"]))
 		$configuration["general"]["debug"] = false;
 
-	return $configuration;
+	return ($configuration);
+}
+
+function checkConfigIncludes($configuration)
+{
+	$newConfig = array();
+
+	foreach ($configuration as $key => $value)
+	{
+		if (strpos($key, "include ") === false)
+			$newConfig[$key] = $value;
+		else
+		{
+			$includeFile = substr($key, 8);
+
+			if (! file_exists($includeFile))
+				doError ("problem detected", "include file " . $includeFile . " does not exist!", true, $configuration["general"]["ignore_errors"]);
+
+			$temp = parse_ini_file($includeFile, true);
+
+			dumpDebugInfo($configuration["general"]["debug"], $temp);
+			$newConfig = array_merge($newConfig, $temp);
+		}
+	}
+
+	return ($newConfig);
 }
 
 function writeDummyConfig($configFile, $writeNewConfig=false)
@@ -448,7 +473,7 @@ function parseArgs($argv, $configuration)
 		dumpDebugInfo($configuration["general"]["debug"], "ARG: $flag\n");
 	}
 
-	return $configuration;
+	return ($configuration);
 }
 
 function outputData($configuration, $buffer, $userid)

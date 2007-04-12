@@ -35,7 +35,6 @@ require("phptelemeter.inc.php");
 /* check php version */
 checkPhpVersion();
 
-
 /* Parse args and configuration file. */
 
 /* we need this to enable help to work without a config file */
@@ -51,10 +50,16 @@ $configuration = readConfig($configFile);
 $configuration = parseArgs($argv, $configuration);
 
 if ($configuration["general"]["debug"] == true)
-{
 	error_reporting(E_ALL);
-	dumpDebugInfo(true, $configuration);
-}
+
+dumpDebugInfo($configuration["general"]["debug"], $configuration);
+
+/* check for include files and include them */
+
+$configuration = checkConfigIncludes($configuration);
+
+dumpDebugInfo($configuration["general"]["debug"], "Config after include parsing:\n");
+dumpDebugInfo($configuration["general"]["debug"], $configuration);
 
 $configuration = checkConfig($configuration, $configFile, $configKeys);
 
