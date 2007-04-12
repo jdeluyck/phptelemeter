@@ -1,4 +1,4 @@
-phptelemeter v1.30 - Copyright (c) 2005 - 2007 by Jan De Luyck
+phptelemeter v1.31 - Copyright (c) 2005 - 2007 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -13,6 +13,8 @@ What can it do?
 - This script was designed from the ground up to be usable both
   by humans and by machines. The output code can be in human-readable
   format, in a no-nonsense script parsable format (CSV) or in HTML format.
+- It can also send a warning-email every time phptelemeter is run to
+  notify that a certain percentage has been crossed.
 
 Which ISP's are supported?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +59,7 @@ Command line options
   * -c, --check-version - checks the version online **
   * -d, --daily - show the 30day overview **
   * -D, --debug - shows some debugging stuff **
-  * -f, --file-output - sets the output to file mode instead of screen 
+  * -f, --file-output - sets the output to file mode instead of screen
                         (stdout) **
   * -g, --graph - show the usage graph **
   * -h, --help - show help message
@@ -95,38 +97,40 @@ Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
 show_daily=true				# Show 30-day stats (true/false)
-show_remaining=true			# Show how much you have remaining 
+show_remaining=true			# Show how much you have remaining
 					# (true/false)
 show_graph=true				# Show the transfer graph (true/false)
 show_resetdate=false			# Shows the reset-date for your meter.
 
-file_output=false			# Sets if file output should be used 
+file_output=false			# Sets if file output should be used
 					# instead of screen (stdout)
-file_prefix=/tmp/phptelemeter_		# The path prefix to use for the 
+file_prefix=/tmp/phptelemeter_		# The path prefix to use for the
 					# output files
-file_extension=txt			# The extension to use for the output 
+file_extension=txt			# The extension to use for the output
 					# files
 
-check_version=false			# Check the current version against 
-					# the latest upstream version, and 
-					# report if there's a new version 
+check_version=false			# Check the current version against
+					# the latest upstream version, and
+					# report if there's a new version
 					# available.
 
-publisher=plaintext			# The publisher module to use. 
-					# Currently plaintext, machine, 
-					# plaintext_graphonly and html are 
+publisher=plaintext			# The publisher module to use.
+					# Currently plaintext, machine,
+					# plaintext_graphonly and html are
 					# included.
-modulepath=/path/to/phptelemeter	# The path to where the modules 
+modulepath=/path/to/phptelemeter	# The path to where the modules
 					# directory is. Optional.
 
-ignore_errors=false			# Ignore any runtime errors that might 
+ignore_errors=false			# Ignore any runtime errors that might
 					# occur.
+email=your email			# What email address to use as From:
+					# when sending warning mails
 
 [proxy]
-proxy_host=				# Hostname of the proxy. Leave blank 
+proxy_host=				# Hostname of the proxy. Leave blank
 					# to disable
 proxy_port=8080				# port of the proxy
-proxy_auth=false			# set to true to enable proxy 
+proxy_auth=false			# set to true to enable proxy
 					# authentication
 proxy_username=				# Proxy username
 proxy_password=				# Proxy password
@@ -134,15 +138,19 @@ proxy_password=				# Proxy password
 [account-1]
 username=youruser			# The username of account-1
 password=yourpassword			# The password of account-1
-description=your description		# Description of account-1, if it is 
-					# set it'll be used instead of the 
+description=your description		# Description of account-1, if it is
+					# set it'll be used instead of the
 					# account name in the output
-parser=a parser				# The parsing module to use for 
+parser=a parser				# The parsing module to use for
 					# account-1. Currently telemeter4tools,
 					# telemeter_web, dommel_web, skynet_web,
-					# scarlet_web and upccz_web are 
+					# scarlet_web and upccz_web are
 					# included.
-
+warn_percentage=percentage		# Percentage when a warning email 
+					# should be sent to the warn_email 
+					# email address. Set percentage to 0
+					# to disable it.
+warn_email=email address
 ...
 
 [account-99]
@@ -150,6 +158,8 @@ username=youruser			# The username of account-99
 password=yourpassword			# The password of account-99
 description=your description		# Description of account-99
 parser=a parser				# Parser of account-99
+warn_percentage=percentage		# Warning percentage of account-99
+warn_email=email address		# Warning email address of account-99
 
 Running on a webserver
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -162,11 +172,10 @@ Running on a webserver
 
 Running on windows
 ~~~~~~~~~~~~~~~~~~
-- This script has _not_ been tested on windows. In version 1.10 I implemented 
-  specific support for the windows platform, and I guess it _should_ work. 
-  Since I haven't tested this, I cannot guarantee it wil run. Should you run 
-  it, and it works, please let me know. If it doesn't, feel free to file any 
-  and all bugs.
+- This script has only preliminary been tested on windows. In version 1.10
+  I implemented specific support for the windows platform, and I guess it
+  _should_ work. Should you run it, and it works, please let me know.
+  If it doesn't, feel free to file any and all bugs.
 
 Where to get it
 ~~~~~~~~~~~~~~~
@@ -175,12 +184,18 @@ Where to get it
 Known issues
 ~~~~~~~~~~~~
 - dommel_web parser:
-  * it will only take the first ADSL account it finds in your "My Packages" 
+  * it will only take the first ADSL account it finds in your "My Packages"
     page.
 
 - upccz_web, scarlet parsers:
-  * I have no accounts with these ISP's. If it breaks, please tell me so I can 
+  * I have no accounts with these ISP's. If it breaks, please tell me so I can
     investigate.
+
+Extending phptelemeter
+~~~~~~~~~~~~~~~~~~~~~~
+- Extending phptelemeter is fairly easy. If you want to write a new parser,
+  take a look at the existing parser_web_ files in the modules directory.
+- For publishers, look at the publisher_ files.
 
 Credits
 ~~~~~~~
@@ -194,14 +209,15 @@ Credits
    * for the idea on the ignore_errors parameter
 - Telenet, for creating the Telemeter4Tools
 - NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
-- Eric Pollman for his XML Library 
+- Eric Pollman for his XML Library
   (http://eric.pollmann.net/work/public_domain/)
 - Cajmere on be.comp.os.linux for a valid point about not finding the modules
   when it's installed systemwide
 - YvesDM on be.comp.os.linux for:
    * the hint of output publishers and account descriptions.
    * some serious help in bugfixing with 'Turbo' accounts
-- Gh0sty for testing the scarlet parser and helping me to fix the few bugs in it
+   * The idea for warn-emails
+- Gh0sty for testing the scarlet parser
 
 Bugs
 ~~~~
