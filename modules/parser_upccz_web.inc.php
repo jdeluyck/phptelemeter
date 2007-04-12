@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_upccz_web", "3");
+define("_phptelemeter_parser_upccz_web", "4");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -62,9 +62,7 @@ class telemeterParser_upccz_web extends telemeterParser_web_shared
 		$upload=$reg[2]*1024;
 		$download=$reg[3]*1024;
 
-
-		if ($this->debug == true)
-			var_dump($data);
+		dumpDebugInfo($this->debug, $data);
 
 		$used = $upload < $download ? $download : $upload;
 
@@ -87,8 +85,7 @@ class telemeterParser_upccz_web extends telemeterParser_web_shared
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
 
-		if ($this->debug == true)
-			print_r($returnValue);
+		dumpDebugInfo($this->debug, $returnValue);
 
 		/* we need to unlink the cookiefile here, otherwise we get 'ghost' data. */
 		@unlink ($this->_cookieFile);

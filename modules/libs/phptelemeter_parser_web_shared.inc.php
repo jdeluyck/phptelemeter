@@ -198,10 +198,7 @@ class telemeterParser_web_shared
 
 		$output = curl_exec($ch);
 		if (curl_errno($ch) != 0)
-		{
-			//doError("curl error occurred", curl_error($ch), true, $this->ignoreErrors);
 			$output["curl_error"] = curl_error($ch);
-		}
 
 		curl_close($ch);
 
