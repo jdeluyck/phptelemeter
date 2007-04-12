@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "11");
+define("_phptelemeter_parser_telemeter4tools", "12");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -140,8 +140,7 @@ class telemeterParser_telemeter4tools
 		else
 			$client = new phptelemeter_soapclient($this->url, true);
 
-		if ($this->debug == true)
-			echo $client->getDebug();
+		dumpDebugInfo($this->debug, $client->getDebug());
 
 		/* Check for an error */
 		$error = $client->getError();
@@ -154,8 +153,7 @@ class telemeterParser_telemeter4tools
 
 		$result = $client->call('getUsage', array($userName, $password));
 
-		if ($this->debug == true)
-			echo $client->getDebug();
+		dumpDebugInfo($this->debug, $client->getDebug());
 
 		/* Check for a fault */
 		if ($client->fault)
@@ -179,7 +177,7 @@ class telemeterParser_telemeter4tools
 				$parser = new XMLParser($result, 'raw', 1);
 				$result = $parser->getTree();
 
-				if ($this->debug == true) var_dump($result);
+				dumpDebugInfo($this->debug, $result);
 
 				/* look at the status */
 				if ($this->checkStatus($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:STATUS"]["VALUE"]) === false)
@@ -209,8 +207,7 @@ class telemeterParser_telemeter4tools
 			}
 		}
 
-		if ($this->debug == true)
-			print_r($returnValue);
+		dumpDebugInfo($this->debug, $returnValue);
 
 		return ($returnValue);
 	}
