@@ -220,26 +220,26 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"show_graph=true\n" .
 			"show_resetdate=false\n" .
 			";\n" .
-			"file_prefix=/tmp/phptelemeter_\n" .
-			"file_extension=txt\n" .
+			"file_prefix=\"/tmp/phptelemeter_\"\n" .
+			"file_extension=\"txt\"\n" .
 			"file_output=false\n" .
 			";\n" .
 			"check_version=false\n" .
 			";\n" .
 			"; This can be set to either plaintext, plaintext_graph, machine or html,\n" .
 			"; and the file needs to be present in the phptelemeter/modules directory!\n" .
-			"publisher=plaintext\n" .
+			"publisher=\"plaintext\"\n" .
 			";\n" .
 			"; You can set this path if phptelemeter has trouble finding\n" .
 			"; it's modules. Point it to the directory that contains the\n" .
 			"; modules directory.\n" .
-			";modulepath=/usr/local/share/phptelemeter\n" .
+			";modulepath=\"/usr/local/share/phptelemeter\"\n" .
 			";\n" .
 			"; Do you want to ignore any runtime errors that occur and continue instead?\n" .
 			"ignore_errors=false\n" .
 			";\n" .
 			"; What email address to use as the From: address when sending warning mails:\n" .
-			"email=youremail@domain.tld\n" .
+			"email=\"youremail@domain.tld\"\n" .
 			";\n" .
 			"; Enable password encryption? Reminder: This is NOT SECURE!\n" .
 			"; (to get the encrypted value of a password, use --encrypt)\n" .
@@ -256,27 +256,27 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"proxy_password=\n" .
 			";\n" .
 			"[account-1]\n" .
-			"username=myuser\n" .
-			"password=mypassword\n" .
+			"username=\"myuser\"\n" .
+			"password=\"mypassword\"\n" .
 			"; The parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
 			"; skynet_web, scarlet_web or upccz_web, and the file needs to be present\n" .
 			"; in the phptelemeter/modules directory!\n" .
-			"parser=aparser\n" .
+			"parser=\"aparser\"\n" .
 			"; The description is optional\n" .
-			";description=My first account\n" .
+			";description=\"My first account\"\n" .
 			"; The percentage when, if crossed, an email should be send to the address\n" .
 			"; specified in warn_email. To disable, set warn_percentage to 0.\n" .
 			"warn_percentage=90\n" .
-			"warn_email=youraddress@domain.tld\n" .
+			"warn_email=\"youraddress@domain.tld\"\n" .
 			";\n" .
 			";\n" .
 			";[account-2]\n" .
-			";username=myuser\n" .
-			";password=mypassword\n" .
-			";parser=aparser\n" .
-			";description=My second account\n" .
+			";username=\"myuser\"\n" .
+			";password=\"mypassword\"\n" .
+			";parser=\"aparser\"\n" .
+			";description=\"My second account\"\n" .
 			";warn_percentage=90\n" .
-			";warn_email=youraddress@domain.tld\n" .
+			";warn_email=\"youraddress@domain.tld\"\n" .
 			";\n" .
 			"[die]\n"
 		);
@@ -419,7 +419,7 @@ function parseArgs($argv, $configuration)
 			case "--new-config":
 			case "-n":
 			{
-				writeDummyConfig($getcwd . _configFileName);
+				writeDummyConfig(getcwd() . "/" . _configFileName);
 				quit();
 				break;
 			}
@@ -458,7 +458,7 @@ function parseArgs($argv, $configuration)
 			{
 				/* do encrypt */
 				$password = next($argv);
-				$encryptedPw = cryptPassword($password, "encrypt");
+				$encryptedPw = cryptPassword($password, "encrypt", true);
 				showVersion();
 				echo "Encrypted password: " . $encryptedPw . "\n";
 				quit();
@@ -470,7 +470,7 @@ function parseArgs($argv, $configuration)
 			{
 				/* do decrypt */
 				$password = next($argv);
-				$encryptedPw = cryptPassword($password, "decrypt");
+				$encryptedPw = cryptPassword($password, "decrypt",true);
 				showVersion();
 				echo "Decrypted password: " . $encryptedPw . "\n";
 				quit();
@@ -604,7 +604,7 @@ function removeDots($someData)
 	return (str_replace(".", "", $someData));
 }
 
-function checkVersion($doCheck, $proxyInfo)
+function checkVersion($doCheck, $proxyInfo, $cryptEnabled)
 {
 	checkModules(array("curl"));
 
@@ -626,7 +626,7 @@ function checkVersion($doCheck, $proxyInfo)
 			curl_setopt($ch, CURLOPT_PROXY, $proxyInfo["proxy_host"] . ":" . $proxyInfo["proxy_port"]);
 
 			if ($proxyInfo["proxy_authenticate"] == true)
-				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyInfo["proxy_username"] . ":" . $proxyInfo["proxy_password"]);
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyInfo["proxy_username"] . ":" . cryptPassword($proxyInfo["proxy_password"], "decrypt", $cryptEnabled));
 		}
 
 		$upstreamVersion = trim(curl_exec($ch));
@@ -673,7 +673,7 @@ function obfuscateLog($data, $credentialInfo)
 		foreach ($data as $key => $value)
 		{
 			/* special cases, we need to remove the username/pw from the config dump */
-			if (strpos($key, "username") !== false || strpos($key, "password") !== false)
+			if (strpos($key, "username") !== false || (strpos($key, "password") !== false && strpos($key, "passwords") === false))
 				$newdata[$key] = "-HIDDEN-";
 			else
 				$newdata[$key] = obfuscateLog($value, $credentialInfo);
@@ -752,15 +752,14 @@ function sendWarnEmail($debug, $data, $description, $percentage, $fromAddress, $
 	}
 }
 
-function cryptPassword($input, $mode, $cryptEnabled=true)
+function cryptPassword($input, $mode, $cryptEnabled)
 {
 	if ($cryptEnabled == true)
 	{
 		checkModules(array("mcrypt"));
 
 		if (strlen($input) == 0)
-			doError("string missing","You did not supply a string to " . $mode . "!", true);
-
+			doError("crypt string missing","You did not supply a string to " . $mode . "!", true);
 
 		$td = mcrypt_module_open('blowfish', '', 'ecb', '');
 		$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);

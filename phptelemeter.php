@@ -67,7 +67,7 @@ $configuration = checkConfig($configuration, $configFile, $configKeys);
 $credentialInfo = getAllCredentials($configuration);
 
 /* do a version check if it's asked */
-$newVersion = checkVersion($configuration["general"]["check_version"], $configuration["proxy"]);
+$newVersion = checkVersion($configuration["general"]["check_version"], $configuration["proxy"], $configuration["general"]["encrypt_passwords"]);
 
 /* set the include path */
 set_include_path($configuration["general"]["modulepath"]);
@@ -118,11 +118,12 @@ foreach ($configuration["accounts"] as $key => $account)
 	$parser->setIgnoreErrors($configuration["general"]["ignore_errors"]);
 
 	/* pipe through the proxy info */
-	$parser->setProxy($configuration["proxy"]["proxy_host"],$configuration["proxy"]["proxy_port"],$configuration["proxy"]["proxy_authenticate"],$configuration["proxy"]["proxy_username"],$configuration["proxy"]["proxy_password"]);
-
+	$parser->setProxy($configuration["proxy"]["proxy_host"], $configuration["proxy"]["proxy_port"],
+						$configuration["proxy"]["proxy_authenticate"], $configuration["proxy"]["proxy_username"],
+						cryptPassword($configuration["proxy"]["proxy_password"],"decrypt", $configuration["general"]["encrypt_passwords"]));
 
 	/* run the parser getData() routine */
-	$data = $parser->getData($account["username"],$account["password"]);
+	$data = $parser->getData($account["username"], cryptPassword($account["password"], "decrypt", $configuration["general"]["encrypt_passwords"]));
 
 	if ($data === false)
 		continue;
