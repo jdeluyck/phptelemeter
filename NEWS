@@ -1,6 +1,6 @@
 phptelemeter 1.31
 ~~~~~~~~~~~~~~~~~
-- New key was added to the [general] section:
+- New keys were added to the [general] section:
   * email
   * encrypt_passwords
 

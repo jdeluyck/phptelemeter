@@ -129,6 +129,7 @@ ignore_errors=false			# Ignore any runtime errors that might
 					# occur.
 email=your email			# What email address to use as From:
 					# when sending warning mails
+encrypt_passwords=false			# Encrypted passwords in the config
 
 [proxy]
 proxy_host=				# Hostname of the proxy. Leave blank
