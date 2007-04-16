@@ -73,7 +73,7 @@ class telemeterParser_web_shared
 
 		$returnValue = substr($returnValue,0,-1);
 
-		dumpDebugInfo($this->debug, $returnValue);
+		dumpDebugInfo($this->debug, "Postfields: ". $returnValue."\n");
 		return ($returnValue);
 	}
 
