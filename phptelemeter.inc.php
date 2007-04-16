@@ -31,11 +31,12 @@ define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
 define("_phptelemeterURL", "http://phptelemeter.kcore.org/");
+define("_key", "b?S3jLT+AB+SwQ,l2@0DrX}b!mL6}OeoDLHjiFKEGNxM}K*/dPbd4}.|");
 
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email", "encrypt_passwords");
 $configKeys["general"]["obsolete"] = array("style", "daily", "parser");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 
@@ -205,7 +206,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; This is a sample configuration file for phptelemeter\n" .
 			"; Comments start with ';'\n" .
 			";\n" .
-			"; The options daily, show_remaining and file_output can be overridden\n" .
+			"; The options show_daily, show_remaining and file_output can be overridden\n" .
 			"; on the command line. Use --help to see them all, or look in the README.\n" .
 			";\n" .
 			"; An explanation for all parameters can be found in the README file.\n" .
@@ -240,6 +241,10 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; What email address to use as the From: address when sending warning mails:\n" .
 			"email=youremail@domain.tld\n" .
 			";\n" .
+			"; Enable password encryption? Reminder: This is NOT SECURE!\n" .
+			"; (to get the encrypted value of a password, use --encrypt)\n" .
+			"encrypt_passwords=false\n" .
+			";\n" .
 			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
 			"; If you set proxy_authenticate to true, you must fill the username\n" .
 			"; and password too.\n" .
@@ -253,16 +258,16 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"[account-1]\n" .
 			"username=myuser\n" .
 			"password=mypassword\n" .
-			"parser=aparser\n" .
 			"; The parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
 			"; skynet_web, scarlet_web or upccz_web, and the file needs to be present\n" .
 			"; in the phptelemeter/modules directory!\n" .
-			";description=My first account\n" .
+			"parser=aparser\n" .
 			"; The description is optional\n" .
-			"warn_percentage=90\n" .
-			"warn_email=youraddress@domain.tld\n" .
+			";description=My first account\n" .
 			"; The percentage when, if crossed, an email should be send to the address\n" .
 			"; specified in warn_email. To disable, set warn_percentage to 0.\n" .
+			"warn_percentage=90\n" .
+			"warn_email=youraddress@domain.tld\n" .
 			";\n" .
 			";\n" .
 			";[account-2]\n" .
@@ -422,7 +427,7 @@ function parseArgs($argv, $configuration)
 			case "--version":
 			case "-V":
 			{
-				echo "phptelemeter - v" . _version . "\n";
+				showVersion();
 				quit();
 				break;
 			}
@@ -448,23 +453,49 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
+			case "--encrypt":
+			case "-e":
+			{
+				/* do encrypt */
+				$password = next($argv);
+				$encryptedPw = cryptPassword($password, "encrypt");
+				showVersion();
+				echo "Encrypted password: " . $encryptedPw . "\n";
+				quit();
+				break;
+			}
+
+			case "--decrypt":
+			case "-x":
+			{
+				/* do decrypt */
+				$password = next($argv);
+				$encryptedPw = cryptPassword($password, "decrypt");
+				showVersion();
+				echo "Decrypted password: " . $encryptedPw . "\n";
+				quit();
+				break;
+			}
+
 			case "--help":
 			case "-h":
 			default:
 			{
-				echo "phptelemeter - v" . _version . "\n";
+				showVersion();
 				echo "phptelemeter [options] \n";
-				echo "-c\t--check-version\tChecks if your phptelemeter is the latest version\n";
-				echo "-d,\t--daily\t\tShows statistics for last 30 days\n";
-				echo "-D,\t--debug\t\tShows some debugging info\n";
-				echo "-f,\t--file-output\tActivates file output instead of screen output.\n";
-				echo "-g,\t--graph\t\tShows the usage graphs.\n";
-				echo "-h,\t--help\t\tShows this help message.\n";
-				echo "-i,\t--ignore-errors\tIgnores any errors that might occur and continue.\n";
-				echo "-n,\t--new-config\tMakes a new dummy config file in the current directory.\n";
-				echo "-r,\t--remaining\tShows your max traffic allotment for today.\n";
-				echo "-V,\t--version\tShows the version and exits.\n";
-				echo "-z,\t--resetdate\tShows the quota reset date.\n";
+				echo "-c\t--check-version\t\tChecks if your phptelemeter is the latest version\n";
+				echo "-d,\t--daily\t\t\tShows statistics for current period\n";
+				echo "-D,\t--debug\t\t\tShows lots of debugging info\n";
+				echo "-e,\t--encrypt <password>\tEncrypts the supplied password\n";
+				echo "-f,\t--file-output\t\tActivates file output instead of screen output.\n";
+				echo "-g,\t--graph\t\t\tShows the usage graphs.\n";
+				echo "-h,\t--help\t\t\tShows this help message.\n";
+				echo "-i,\t--ignore-errors\t\tIgnores any errors that might occur and continue.\n";
+				echo "-n,\t--new-config\t\tMakes a new dummy config file in the current directory.\n";
+				echo "-r,\t--remaining\t\tShows your max traffic allotment for today.\n";
+				echo "-V,\t--version\t\tShows the version and exits.\n";
+				echo "-x,\t--decrypt <password>\tDecrypts the supplied password\n";
+				echo "-z,\t--resetdate\t\tShows the quota reset date.\n";
 				echo "\n";
 				echo "Options specified here override the configuration file.\n\n";
 				quit();
@@ -474,6 +505,11 @@ function parseArgs($argv, $configuration)
 	}
 
 	return ($configuration);
+}
+
+function showVersion()
+{
+	echo "phptelemeter - v" . _version . "\n";
 }
 
 function outputData($configuration, $buffer, $userid)
@@ -531,7 +567,6 @@ function checkISPCompatibility($isp, $function)
 
 	return ($returnValue);
 }
-
 
 function calculateUsage($data, $isp)
 {
@@ -715,5 +750,30 @@ function sendWarnEmail($debug, $data, $description, $percentage, $fromAddress, $
 
 		mail($toAddress, $subject, $message, $headers, $parameters);
 	}
+}
+
+function cryptPassword($input, $mode, $cryptEnabled=true)
+{
+	if ($cryptEnabled == true)
+	{
+		checkModules(array("mcrypt"));
+
+		if (strlen($input) == 0)
+			doError("string missing","You did not supply a string to " . $mode . "!", true);
+
+
+		$td = mcrypt_module_open('blowfish', '', 'ecb', '');
+		$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+		mcrypt_generic_init($td, _key, $iv);
+
+		if ($mode == "encrypt")
+			$returnValue = base64_encode(mcrypt_generic($td, $input));
+		elseif ($mode == "decrypt")
+			$returnValue = mdecrypt_generic($td, base64_decode($input));
+	}
+	else
+		$returnValue = $input;
+
+	return ($returnValue);
 }
 ?>

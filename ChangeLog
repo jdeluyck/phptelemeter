@@ -5,10 +5,10 @@ What's new? Not much, but it's listed here.
 - Changed returncode to 0 instead of -1 (255)
 - Implemented login detail obfuscation in debug logs
   (feature request: 1681619)
-- Implemented warn-email sending. This requires a configuration change!
-  (feature request: 1693396)
-- Implemented including files in the config file.
-  (feature request: 1671787)
+- Implemented warn-email sending. (feature request: 1693396)
+- Implemented including files in the config file. (feature request: 1671787)
+- Implemented password encryption/obfuscation. (feature request: 1674607)
+  These changes requires a configuration change!
 
 1.30
 ~~~~

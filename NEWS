@@ -2,12 +2,14 @@ phptelemeter 1.31
 ~~~~~~~~~~~~~~~~~
 - New key was added to the [general] section:
   * email
+  * encrypt_passwords
 
 - New keys were added to the [account-] sections:
   * warn_percentage
   * warn_email
 
 Please update your configuration file, or generate a new one.
+For more details, see the README file.
 
 ------------
 | OLD NEWS |

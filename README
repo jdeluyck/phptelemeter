@@ -59,6 +59,9 @@ Command line options
   * -c, --check-version - checks the version online **
   * -d, --daily - show the 30day overview **
   * -D, --debug - shows some debugging stuff **
+  * -e, --encrypt <password> - encrypts (obfuscates) the password given on the
+                               command line. Put this value then in the config
+                               file.
   * -f, --file-output - sets the output to file mode instead of screen
                         (stdout) **
   * -g, --graph - show the usage graph **
@@ -67,6 +70,7 @@ Command line options
   * -n, --new-config - generates a new dummy config file on the spot
   * -r, --remaining - show the remaining quota **
   * -V, --version - shows the version and exits
+  * -x, --decrypt <password> - decrypts the password given on the command line
   * -z, --resetdate - shows the reset date **
 
 (Options market with '**' override the configuration file)
@@ -170,7 +174,8 @@ Include files
   [include /path/to/file]
   statement. phptelemeter will read this file and insert it at the location
   where it was in the original file.
-- Recursive [include] statements are _not_ supported!
+- Recursive [include] statements are _not_ supported! (so don't use [include]
+  inside an [included] file!)
 
 Running on a webserver
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -201,6 +206,13 @@ Known issues
 - upccz_web, scarlet parsers:
   * I have no accounts with these ISP's. If it breaks, please tell me so I can
     investigate.
+
+- password encryption:
+  * The encryption used in phptelemeter is easily reversable, as the key
+    is embedded in the code. Do not rely on this as your only way of
+    protecting your login credentials!
+  * To change the key, modify the _key value at the top of
+    phptelemeter.inc.php.
 
 Extending phptelemeter
 ~~~~~~~~~~~~~~~~~~~~~~
