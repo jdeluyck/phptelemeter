@@ -19,8 +19,7 @@ delPath()
 	fi
 }
 		
-
-SOURCE="/var/www/phptelemeter/trunk"
+SOURCE=$(pwd)
 TARGET="/tmp"
 
 FTPDIR="software/phptelemeter"

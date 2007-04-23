@@ -6,6 +6,7 @@ What's new? Not much, but it's listed here.
 - Fixed stupid mistake when creating a new config file with -n
 - Fixed problem in telemeter4tools parser, it didn't output the right
   value for the used info (reported by Stijn Declercq)
+- Fixed some more warnings in E_ALL mode
 - Implemented login detail obfuscation in debug logs
   (feature request: 1681619)
 - Implemented warn-email sending. (feature request: 1693396)
