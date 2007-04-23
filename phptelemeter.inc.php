@@ -377,6 +377,9 @@ function parseArgs($argv, $configuration)
 {
 	array_shift($argv);
 
+	/* set debug to false, we can correct it later if needed */
+	$configuration["general"]["debug"] = false;
+
 	foreach ($argv as $flag)
 	{
 		switch ($flag)
