@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_upccz_web", "4");
+define("_phptelemeter_parser_upccz_web", "5");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -75,8 +75,8 @@ class telemeterParser_upccz_web extends telemeterParser_web_shared
 		$limit["professional"] = 999999999; /*no limit*/
 
 		/* 0-used 1-remaining*/
-		$generalMatches[0] = $used;
-		$generalMatches[1] = $limit[$service]*1024*1.08-$used;  /* accepted is aprox. 10% over limit - let say 8% */
+		$generalMatches["used"] = $used;
+		$generalMatches["remaining"] = $limit[$service]*1024*1.08-$used;  /* accepted is aprox. 10% over limit - let say 8% */
 
 		$returnValue["general"] = $generalMatches;
 		$returnValue["isp"] = $this->_ISP;

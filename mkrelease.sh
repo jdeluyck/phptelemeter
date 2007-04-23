@@ -55,7 +55,7 @@ cp -r ${SOURCE}/* ${RELPATH}
 mv ${RELPATH}/docs/gpl.txt ${RELPATH}
 
 # clean out
-CLEANFILES="*.session *.webprj docs mkrelease.sh patches CVS .svn *~"
+CLEANFILES="*.session *.webprj docs mkrelease.sh patches CVS .svn *~ *.tmproj"
 
 for cleanitem in ${CLEANFILES}; do
 	find ${RELPATH} -name "${cleanitem}" -exec rm -fr {} \;

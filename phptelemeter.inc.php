@@ -575,14 +575,14 @@ function calculateUsage($data, $isp)
 {
 	if (checkISPCompatibility($isp, "seperate_quota") == true)
 	{
-		$returnValue["download"]["max"]     = $data[0];
-		$returnValue["download"]["use"]     = $data[2];
+		$returnValue["download"]["max"]     = $data["download_used"];
+		$returnValue["download"]["use"]     = $data["download_remaining"];
 		$returnValue["download"]["left"]    = $returnValue["download"]["max"] - $returnValue["download"]["use"];
 		$returnValue["download"]["percent"] = (100 / $returnValue["download"]["max"]) * $returnValue["download"]["use"];
 		$returnValue["download"]["hashes"]  = $returnValue["download"]["percent"] / 5;
 
-		$returnValue["upload"]["max"]     = $data[1];
-		$returnValue["upload"]["use"]     = $data[3];
+		$returnValue["upload"]["max"]     = $data["upload_used"];
+		$returnValue["upload"]["use"]     = $data["upload_remaining"];
 		$returnValue["upload"]["left"]    = $returnValue["upload"]["max"] - $returnValue["upload"]["use"];
 		$returnValue["upload"]["percent"] = (100 / $returnValue["upload"]["max"]) * $returnValue["upload"]["use"];
 		$returnValue["upload"]["hashes"]  = $returnValue["upload"]["percent"] / 5;
@@ -592,8 +592,8 @@ function calculateUsage($data, $isp)
 		/*	0 = total used
 			1 = remaining
 		*/
-		$returnValue["total"]["use"] = $data[0];
-		$returnValue["total"]["left"] = $data[1];
+		$returnValue["total"]["use"] = $data["used"];
+		$returnValue["total"]["left"] = $data["remaining"];
 		$returnValue["total"]["max"] = $returnValue["total"]["use"] + $returnValue["total"]["left"];
 		$returnValue["total"]["percent"] = (100 / $returnValue["total"]["max"]) * $returnValue["total"]["use"];
 		$returnValue["total"]["hashes"] = $returnValue["total"]["percent"] / 5;

@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_dommel_web", "9");
+define("_phptelemeter_parser_dommel_web", "10");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -127,13 +127,13 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		/* stats */
 		/* total used */
-		$volume[0] = substr($data2[$pos["traffic"]],0,-3) * 1024;
+		$volume["used"] = substr($data2[$pos["traffic"]],0,-3) * 1024;
 
 		/* remaining, if exists? */
 		if ($pos["remaining"] !== false)
-			$volume[1] = substr($data2[$pos["remaining"]],0,-3) * 1024;
+			$volume["remaining"] = substr($data2[$pos["remaining"]],0,-3) * 1024;
 		else
-			$volume[1] = 0;
+			$volume["remaining"] = 0;
 
 		/* reset date */
 		$reset_date = substr($data2[$pos["reset_date"]],0,10);

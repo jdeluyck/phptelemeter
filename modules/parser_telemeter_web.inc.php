@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "21");
+define("_phptelemeter_parser_telemeter_web", "22");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -112,8 +112,8 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		$used      = removeDots(substr($data[$pos["trafficused"]],0,-3));
 		$remaining = removeDotS(substr($data[$pos["trafficleft"]],0,-3));
 
-		$generalMatches[0] = $used;
-		$generalMatches[1] = $remaining;
+		$generalMatches["used"] = $used;
+		$generalMatches["remaining"] = $remaining;
 
 		/* determine the date range */
 		$dateRange = explode(" ", $data[$pos["daterange"]]);

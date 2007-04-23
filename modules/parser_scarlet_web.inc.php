@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "7");
+define("_phptelemeter_parser_scarlet_web", "8");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -200,11 +200,11 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		}
 
 		/* total used - calculated by adding up the values above*/
-		$volume[] = $totalUsedVolume;
+		$volume["used"] = $totalUsedVolume;
 
 		/* remaining */
 		$temp = explode(" ", $data[$pos["total"]]);
-		$volume[] = $temp[10] * 1024 - $totalUsedVolume;
+		$volume["remaining"] = $temp[10] * 1024 - $totalUsedVolume;
 
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
