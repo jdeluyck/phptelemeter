@@ -2,10 +2,10 @@ What's new? Not much, but it's listed here.
 
 1.31
 ~~~~
-- Changed returncode to 0 instead of -1 (255)
+- Changed returncode to 0 instead of -1 (255) (noticed by Gh0sty)
 - Fixed stupid mistake when creating a new config file with -n
 - Fixed problem in telemeter4tools parser, it didn't output the right
-  value for the used info.
+  value for the used info (reported by Stijn Declercq)
 - Implemented login detail obfuscation in debug logs
   (feature request: 1681619)
 - Implemented warn-email sending. (feature request: 1693396)
