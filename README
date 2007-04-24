@@ -120,8 +120,8 @@ check_version=false			# Check the current version against
 
 publisher=plaintext			# The publisher module to use.
 					# Currently plaintext, machine,
-					# plaintext_graphonly and html are
-					# included.
+					# plaintext_graphonly, no_output and
+					# html are included.
 modulepath=/path/to/phptelemeter	# The path to where the modules
 					# directory is. Optional.
 
