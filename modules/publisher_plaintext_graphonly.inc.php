@@ -49,6 +49,8 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		/* general data, always shown */
 		$usage = calculateUsage($generalData, $isp);
+		
+		$returnStr = "";
 
 		if ($showGraph == true)
 		{
