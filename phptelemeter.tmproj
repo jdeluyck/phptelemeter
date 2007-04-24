@@ -2,97 +2,167 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>currentDocument</key>
+	<string>NEWS</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>AUTHORS</string>
-			<key>selected</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>ChangeLog</string>
-			<key>selected</key>
-			<true/>
+			<key>lastUsed</key>
+			<date>2007-04-24T17:51:15Z</date>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>docs</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
-			<key>selected</key>
-			<true/>
 			<key>sourceDirectory</key>
 			<string>docs</string>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>mkrelease.sh</string>
-			<key>selected</key>
-			<true/>
+			<key>lastUsed</key>
+			<date>2007-04-23T19:43:25Z</date>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>modules</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
-			<key>selected</key>
-			<true/>
 			<key>sourceDirectory</key>
 			<string>modules</string>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>NEWS</string>
-			<key>selected</key>
-			<true/>
+			<key>lastUsed</key>
+			<date>2007-04-24T17:51:15Z</date>
 		</dict>
 		<dict>
 			<key>name</key>
 			<string>patches</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
-			<key>selected</key>
-			<true/>
 			<key>sourceDirectory</key>
 			<string>patches</string>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.inc.php</string>
-			<key>selected</key>
-			<true/>
+			<key>lastUsed</key>
+			<date>2007-04-23T19:41:24Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.php</string>
-			<key>selected</key>
-			<true/>
+			<key>lastUsed</key>
+			<date>2007-04-23T19:41:22Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.webprj</string>
-			<key>selected</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>README</string>
-			<key>selected</key>
-			<true/>
+			<key>lastUsed</key>
+			<date>2007-04-23T19:41:27Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>TODO</string>
+			<key>lastUsed</key>
+			<date>2007-04-23T19:41:25Z</date>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>upgrade</string>
+			<key>regexFolderFilter</key>
+			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
 			<key>selected</key>
 			<true/>
+			<key>sourceDirectory</key>
+			<string>upgrade</string>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>200</integer>
 	<key>metaData</key>
-	<dict/>
+	<dict>
+		<key>ChangeLog</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>40</integer>
+				<key>line</key>
+				<integer>9</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>NEWS</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>modules/publisher_html.inc.php</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>45</integer>
+				<key>line</key>
+				<integer>5</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>modules/publisher_plaintext.inc.php</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>37</integer>
+				<key>line</key>
+				<integer>88</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>68</integer>
+		</dict>
+	</dict>
+	<key>openDocuments</key>
+	<array>
+		<string>modules/publisher_html.inc.php</string>
+		<string>modules/publisher_plaintext.inc.php</string>
+		<string>ChangeLog</string>
+		<string>NEWS</string>
+	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>

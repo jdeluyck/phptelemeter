@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext");
-define("_phptelemeter_publisher_version", "11");
+define("_phptelemeter_publisher_version", "12");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -86,33 +86,54 @@ class telemeterPublisher extends telemeterPublisher_shared
 		{
 			if (checkISPCompatibility($isp, "seperate_quota") == true)
 			{
-				if ($usage["download"]["left"] <= 0)
+				$totalDownloadString = $totalUploadString = "";
+				
+				if ($usage["download"]["left"] == 0)
 				{
-					$totalDownloadString = "\nYou have exceeded your download volume by %d MiB.";
-					$totalUploadString = "";
-				}
-				elseif ($usage["upload"]["left"] <= 0)
-				{
-					$totalDownloadString = "";
-					$totalUploadString = "\nYou have exceeded your upload volume by %d MiB.";
+					$totalDownloadString = "\nYou have used up your complete download volume.";
+					$returnStr .= $totalDownloadString;
 				}
 				else
 				{
-					$totalDownloadString = "\nYou can download %d MiB without exceeding your download volume.";
-					$totalUploadString = "\nYou can upload %d MiB without exceeding your upload volume.";
+					if ($usage["download"]["left"] < 0)
+						$totalDownloadString = "\nYou have exceeded your download volume by %d MiB.";
+					elseif ($usage["download"]["left"] > 0)
+						$totalDownloadString = "\nYou can download %d MiB without exceeding your download volume.";
+						
+					$returnStr .= sprintf($totalDownloadString, abs($usage["download"]["left"]));
 				}
-
-				$returnStr .= sprintf($totalDownloadString, abs($usage["download"]["left"]));
-				$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
+				
+				if ($usage["upload"]["left"] == 0)
+				{
+					$totalUploadString = "\nYou have used up your complete upload volume.";
+					$returnStr .= $totalUploadString;
+				}
+				else
+				{
+					if ($usage["upload"]["left"] < 0)
+						$totalUploadString = "\nYou have exceeded your upload volume by %d MiB.";
+					elseif ($usage["upload"]["left"] > 0)
+						$totalUploadString = "\nYou can upload %d MiB without exceeding your upload volume.";
+						
+					$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
+				}
 			}
 			else
 			{
-				if ($usage["total"]["left"] <= 0)
-					$totalString = "\nYou have exceeded your volume by %d MiB.";
+				if($usage["total"]["left"] == 0)
+				{
+					$totalString = "\nYou have used up your complete volume.";
+					$returnStr .= $totalString;
+				}
 				else
-					$totalString = "\nYou can transfer %d MiB without exceeding your volume.";
+				{
+					if ($usage["total"]["left"] < 0)
+						$totalString = "\nYou have exceeded your volume by %d MiB.";
+					elseif ($usage["total"]["left"] > 0)
+						$totalString = "\nYou can transfer %d MiB without exceeding your volume.";
 
-				$returnStr .= sprintf($totalString, abs($usage["total"]["left"]));
+					$returnStr .= sprintf($totalString, abs($usage["total"]["left"]));
+				}
 			}
 
 			$returnStr .= "\n";
