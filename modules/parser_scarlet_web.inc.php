@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "8");
+define("_phptelemeter_parser_scarlet_web", "9");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -95,6 +95,8 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 				$pos["daterange"] = $i;
 			elseif (stristr($data[$i], "Uw maandelijkse factuur wordt opgesteld op") !== false)
 				$pos["resetdate"] = $i;
+			elseif ($data[$i] == "Periode")
+				$pos["date"] = $i + $pos["data_interval"];
 			elseif ($data[$i] == "Download")
 				$pos["download"] = $i + $pos["data_interval"];
 			elseif ($data[$i] == "Upload")
@@ -141,6 +143,13 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		/* loop through it to get all the data */
 		for ($i = 1; $i <= $days; $i++)
 		{
+			/* check if we're in the 'shortly after midnight' area - fixes bug 1707175 */
+			if (stristr($data[$pos["date"]],"Totaal voor deze periode") === true)
+			{
+				$days--;
+				break;
+			}
+				
 			$dailyData[] = date("d/m/y", $start + (($i - 1) * 86400));
 
 			/* why oh why they insist on putting the data in 3 different possible weights, i don't know. */
@@ -186,6 +195,7 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 				"DOWNLOAD (pos: " . $pos["download"] . "): " . $data[$pos["download"]] . " - CAPTURED: " . $dailyData[count($dailyData) - 2] . "\n" .
 				"UPLOAD (pos: " . $pos["upload"] . "): " . $data[$pos["upload"]]. " - CAPTURED: " . $dailyData[count($dailyData) - 1] . "\n");
 
+			$pos["date"] += $pos["data_interval"];
 			$pos["upload"] += $pos["data_interval"];
 			$pos["download"] += $pos["data_interval"];
 

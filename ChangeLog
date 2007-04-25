@@ -7,6 +7,7 @@ What's new? Not much, but it's listed here.
 - Fixed problem in telemeter4tools parser, it didn't output the right
   value for the used info (reported by Stijn Declercq)
 - Fixed some more warnings in E_ALL mode
+- Fixed scarlet_web again (fixes: 1707175)
 - Changed publishers to show that you've used up all your quota instead of
   showing 0 MiB overuse (fixes: 1706094)
 - Implemented login detail obfuscation in debug logs
