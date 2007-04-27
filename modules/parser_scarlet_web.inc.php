@@ -146,10 +146,11 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 			/* check if we're in the 'shortly after midnight' area - fixes bug 1707175 */
 			if (stristr($data[$pos["date"]],"Totaal voor deze periode") === true)
 			{
+				dumpDebugInfo($this->debug, "Total entry found, reducing date count!");
 				$days--;
 				break;
 			}
-				
+
 			$dailyData[] = date("d/m/y", $start + (($i - 1) * 86400));
 
 			/* why oh why they insist on putting the data in 3 different possible weights, i don't know. */
@@ -191,7 +192,8 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 			$totalUsedVolume += $dailyData[count($dailyData) - 2] + $dailyData[count($dailyData) - 1];
 
 			dumpDebugInfo($this->debug,
-				"DATE: ". $dailyData[count($dailyData) - 3]. "\n" .
+			    "DAY: " . $i . "\n" .
+				"DATE: (pos: " . $pos["date"] . "): " . $data[$pos["date"]] . " - CAPTURED: ". $dailyData[count($dailyData) - 3]. "\n" .
 				"DOWNLOAD (pos: " . $pos["download"] . "): " . $data[$pos["download"]] . " - CAPTURED: " . $dailyData[count($dailyData) - 2] . "\n" .
 				"UPLOAD (pos: " . $pos["upload"] . "): " . $data[$pos["upload"]]. " - CAPTURED: " . $dailyData[count($dailyData) - 1] . "\n");
 
