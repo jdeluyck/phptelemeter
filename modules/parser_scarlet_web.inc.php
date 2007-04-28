@@ -144,7 +144,7 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		for ($i = 1; $i <= $days; $i++)
 		{
 			/* check if we're in the 'shortly after midnight' area - fixes bug 1707175 */
-			if (stristr($data[$pos["date"]],"Totaal voor deze periode") === true)
+			if ($data[$pos["date"]] == "Totaal voor deze periode")
 			{
 				dumpDebugInfo($this->debug, "Total entry found, reducing date count!");
 				$days--;

@@ -12,7 +12,9 @@
 			<key>filename</key>
 			<string>ChangeLog</string>
 			<key>lastUsed</key>
-			<date>2007-04-24T18:32:27Z</date>
+			<date>2007-04-27T18:04:44Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -45,8 +47,6 @@
 			<string>NEWS</string>
 			<key>lastUsed</key>
 			<date>2007-04-24T18:32:28Z</date>
-			<key>selected</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -60,7 +60,7 @@
 			<key>filename</key>
 			<string>phptelemeter.inc.php</string>
 			<key>lastUsed</key>
-			<date>2007-04-23T19:41:24Z</date>
+			<date>2007-04-24T20:09:37Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -76,7 +76,7 @@
 			<key>filename</key>
 			<string>README</string>
 			<key>lastUsed</key>
-			<date>2007-04-24T18:32:27Z</date>
+			<date>2007-04-24T20:09:37Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -94,12 +94,12 @@
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
-	<integer>200</integer>
+	<integer>269</integer>
 	<key>metaData</key>
 	<dict/>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{252, 0}, {1028, 778}}</string>
+	<string>{{359, 49}, {912, 688}}</string>
 </dict>
 </plist>
