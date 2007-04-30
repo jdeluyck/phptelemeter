@@ -112,17 +112,19 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 
 		/* reset date */
 		$temp = explode(" ", $data[$pos["resetdate"]]);
+		dumpDebugInfo($this->debug,"Reset date, prior to cheanup:\n");
+		dumpDebugInfo($this->debug, $temp);
 		$reset_date = $temp[22] . "/" . $this->months[$temp[23]] . "/" . date("Y");
+		dumpDebugInfo($this->debug, "Reset date: " . $reset_date . "\n");
 
-		/* date range */
+		/* date range - daily data */
 		$temp = explode (" ", $data[$pos["daterange"]]);
 
 		/* change the month */
 		$temp[3] = $this->months[$temp[3]];
 		$temp[7] = $this->months[$temp[7]];
 
-		if ($this->debug == true)
-			var_dump($temp);
+		dumpDebugInfo($this->debug, $temp);
 
 		/* what data do we have available? */
 		$start = mktime(0, 0, 0, $temp[3], $temp[2], $temp[4]);
@@ -146,7 +148,7 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 			/* check if we're in the 'shortly after midnight' area - fixes bug 1707175 */
 			if ($data[$pos["date"]] == "Totaal voor deze periode")
 			{
-				dumpDebugInfo($this->debug, "Total entry found, reducing date count!");
+				dumpDebugInfo($this->debug, "Total entry found, reducing date count!\n");
 				$days--;
 				break;
 			}

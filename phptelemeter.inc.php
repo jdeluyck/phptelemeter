@@ -651,7 +651,13 @@ function checkVersion($doCheck, $proxyInfo, $cryptEnabled)
 
 function calculateDaysLeft($resetDate)
 {
-	$returnValue = round(((mktime (0,0,0, substr($resetDate,3,2), substr($resetDate,0,2), substr($resetDate,6,4)) - mktime(0,0,0, date("m"), date("d"), date("Y"))) / 86400),0);
+	$temp = strpos($resetDate, "/");
+	$day = substr($resetDate, 0, $temp++);
+	$temp2 = strpos($resetDate, "/", $temp);
+	$month = substr($resetDate, $temp, ($temp2 - $temp));
+	$year = substr($resetDate, ++$temp2);
+	
+	$returnValue = round(((mktime (0,0,0, $month, $day, $year) - mktime(0,0,0, date("m"), date("d"), date("Y"))) / 86400),0);
 	return ($returnValue);
 }
 
