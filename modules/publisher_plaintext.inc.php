@@ -153,6 +153,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			else
 				$dateDiff = 2;
 
+			$returnStr .= "\n";
 			$returnStr .= "Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - $dateDiff] . "\n";
 			$returnStr .= "------------------------------------\n";
 			$returnStr .= "\n";
