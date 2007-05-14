@@ -380,9 +380,9 @@ function parseArgs($argv, $configuration)
 	/* set debug to false, we can correct it later if needed */
 	$configuration["general"]["debug"] = false;
 
-	foreach ($argv as $flag)
+	for($i = 0; $i < count($argv); $i++)
 	{
-		switch ($flag)
+		switch ($argv[$i])
 		{
 			case "--daily":
 			case "-d":
@@ -460,7 +460,7 @@ function parseArgs($argv, $configuration)
 			case "-e":
 			{
 				/* do encrypt */
-				$password = next($argv);
+				$password = $argv[++$i];
 				$encryptedPw = cryptPassword($password, "encrypt", true);
 				showVersion();
 				echo "Encrypted password: " . $encryptedPw . "\n";
@@ -472,11 +472,18 @@ function parseArgs($argv, $configuration)
 			case "-x":
 			{
 				/* do decrypt */
-				$password = next($argv);
+				$password = $argv[++$i];
 				$encryptedPw = cryptPassword($password, "decrypt",true);
 				showVersion();
 				echo "Decrypted password: " . $encryptedPw . "\n";
 				quit();
+				break;
+			}
+			
+			case "--publisher":
+			case "-p":
+			{
+				$configuration["general"]["publisher"] = $argv[++$i];
 				break;
 			}
 
@@ -495,6 +502,7 @@ function parseArgs($argv, $configuration)
 				echo "-h,\t--help\t\t\tShows this help message.\n";
 				echo "-i,\t--ignore-errors\t\tIgnores any errors that might occur and continue.\n";
 				echo "-n,\t--new-config\t\tMakes a new dummy config file in the current directory.\n";
+				echo "-p,\t--publisher <name>\tUses the supplied publisher\n";
 				echo "-r,\t--remaining\t\tShows your max traffic allotment for today.\n";
 				echo "-V,\t--version\t\tShows the version and exits.\n";
 				echo "-x,\t--decrypt <password>\tDecrypts the supplied password\n";
@@ -504,7 +512,7 @@ function parseArgs($argv, $configuration)
 				quit();
 			}
 		}
-		dumpDebugInfo($configuration["general"]["debug"], "ARG: $flag\n");
+		dumpDebugInfo($configuration["general"]["debug"], "ARG: " . $argv[$i] . "\n");
 	}
 
 	return ($configuration);

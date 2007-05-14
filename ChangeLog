@@ -3,7 +3,8 @@ What's new? Not much, but it's listed here.
 1.32
 ~~~~
 - Added parser simulators for single and separate quotas
-- 
+- Added option to change publisher at runtime without having to modify the
+  configuration
 
 1.31
 ~~~~

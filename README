@@ -68,6 +68,7 @@ Command line options
   * -h, --help - show help message
   * -i, --ignore-errors - ignores any runtime errors and tries to continue **
   * -n, --new-config - generates a new dummy config file on the spot
+  * -p, --publisher <name> - sets the output publisher to be used **
   * -r, --remaining - show the remaining quota **
   * -V, --version - shows the version and exits
   * -x, --decrypt <password> - decrypts the password given on the command line
