@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.32
+~~~~
+- Added a parser simulator
+
 1.31
 ~~~~
 - Changed returncode to 0 instead of -1 (255) (noticed by Gh0sty)
