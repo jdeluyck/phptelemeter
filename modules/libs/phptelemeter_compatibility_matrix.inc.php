@@ -56,4 +56,9 @@ $isp_compatibility_matrix["upccz"]["reset_date"] = true;
 $isp_compatibility_matrix["upccz"]["seperate_quota"] = false;
 $isp_compatibility_matrix["upccz"]["history"] = false;
 
+/* SIMULATOR */
+$isp_compatability_matrix["simulator"]["reset_date"] = true;
+$isp_compatibility_matrix["simulator"]["seperate_quota"] = true;
+$isp_compatibility_matrix["simulator"]["history"] = true;
+
 ?>
