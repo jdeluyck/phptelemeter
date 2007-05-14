@@ -26,7 +26,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.31");
+define("_version", "1.32-beta");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
@@ -649,6 +649,7 @@ function checkVersion($doCheck, $proxyInfo, $cryptEnabled)
 	return ($returnValue);
 }
 
+/* expects DAY/MONTH/YEAR notation => DD/MM/YY */
 function calculateDaysLeft($resetDate)
 {
 	$temp = strpos($resetDate, "/");

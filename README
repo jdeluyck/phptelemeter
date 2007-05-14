@@ -1,4 +1,4 @@
-phptelemeter v1.31 - Copyright (c) 2005 - 2007 by Jan De Luyck
+phptelemeter v1.32 - Copyright (c) 2005 - 2007 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -220,6 +220,11 @@ Extending phptelemeter
 - Extending phptelemeter is fairly easy. If you want to write a new parser,
   take a look at the existing parser_web_ files in the modules directory.
 - For publishers, look at the publisher_ files.
+- For ease of use, I've included two 'simulating' parsers: 
+  parser_simulator_single, which simulates a single-quota ISP, and
+  parser_simulator_separate, which simulates a separate-quota ISP. Both are
+  written with very little checks, so sometimes the output is a bit strange.
+  Just re-run, and you should get more usable data ;)
 
 Credits
 ~~~~~~~
