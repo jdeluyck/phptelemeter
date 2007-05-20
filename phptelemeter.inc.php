@@ -226,7 +226,7 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			";\n" .
 			"check_version=false\n" .
 			";\n" .
-			"; This can be set to either plaintext, plaintext_graph, machine, no_output or html,\n" .
+			"; This can be set to either plaintext, plaintext_graphonly, machine, no_output or html,\n" .
 			"; and the file needs to be present in the phptelemeter/modules directory!\n" .
 			"publisher=\"plaintext\"\n" .
 			";\n" .
