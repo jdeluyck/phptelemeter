@@ -26,6 +26,7 @@ Which ISP's are supported?
 | Dommel  | dommel_web        |      X     |   X   |         |
 | Skynet  | skynet_web        |      X     |   X   |         |
 | Scarlet | scarlet_web       |      X     |   X   |    X    |
+| EDPNet  | edpnet_web        |      X     |   X   |         |
 | UPC CZ  | upccz_web         |      X     |   X   |         |
 --------------------------------------------------------------
 
@@ -205,9 +206,9 @@ Known issues
   * it will only take the first ADSL account it finds in your "My Packages"
     page.
 
-- upccz_web, scarlet parsers:
-  * I have no accounts with these ISP's. If it breaks, please tell me so I can
-    investigate.
+- upccz_web, scarlet_web and edpnet_web parsers:
+  * I have no accounts with these ISP's. If it breaks, please drop me a mail
+    with a debug log so I can investigate.
 
 - password encryption:
   * The encryption used in phptelemeter is easily reversable, as the key
@@ -247,7 +248,8 @@ Credits
    * the hint of output publishers and account descriptions.
    * some serious help in bugfixing with 'Turbo' accounts
    * The idea for warn-emails
-- Gh0sty for testing the scarlet parser
+- Gh0sty for testing the scarlet_web parser
+- Zeon- for testing the edpnet_web parser
 
 Bugs
 ~~~~

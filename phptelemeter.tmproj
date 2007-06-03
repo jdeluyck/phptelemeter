@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>currentDocument</key>
-	<string>modules/parser_simulator_separate.inc.php</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -14,7 +12,7 @@
 			<key>filename</key>
 			<string>ChangeLog</string>
 			<key>lastUsed</key>
-			<date>2007-05-14T08:56:06Z</date>
+			<date>2007-05-14T17:15:33Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -60,13 +58,15 @@
 			<key>filename</key>
 			<string>phptelemeter.inc.php</string>
 			<key>lastUsed</key>
-			<date>2007-05-14T09:20:05Z</date>
+			<date>2007-05-14T17:11:35Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.php</string>
 			<key>lastUsed</key>
-			<date>2007-05-14T08:45:14Z</date>
+			<date>2007-05-14T17:15:33Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -76,7 +76,7 @@
 			<key>filename</key>
 			<string>README</string>
 			<key>lastUsed</key>
-			<date>2007-05-14T08:45:13Z</date>
+			<date>2007-05-14T17:15:32Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -96,185 +96,28 @@
 			<key>filename</key>
 			<string>modules/parser_simulator_separate.inc.php</string>
 			<key>lastUsed</key>
-			<date>2007-05-14T15:37:02Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2007-05-14T15:52:05Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>269</integer>
 	<key>metaData</key>
 	<dict>
-		<key>ChangeLog</key>
+		<key>modules/parser_simulator_separate.inc.php</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
 				<integer>2</integer>
 				<key>line</key>
-				<integer>5</integer>
+				<integer>88</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>README</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>18</integer>
-				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>modules/libs/phptelemeter_compatibility_matrix.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>71</integer>
-				<key>line</key>
-				<integer>60</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>30</integer>
-		</dict>
-		<key>modules/parser_scarlet_web.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>55</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>204</integer>
-		</dict>
-		<key>modules/parser_simulator_separate.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>47</integer>
-				<key>line</key>
-				<integer>28</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>modules/parser_simulator_single.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>29</integer>
-				<key>line</key>
-				<integer>7</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>47</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>90</integer>
-			</dict>
-		</dict>
-		<key>modules/parser_telemeter_web.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>154</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>127</integer>
-		</dict>
-		<key>modules/publisher_plaintext.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>22</integer>
-				<key>line</key>
-				<integer>155</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>139</integer>
-		</dict>
-		<key>phptelemeter.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>47</integer>
-				<key>line</key>
-				<integer>651</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>634</integer>
-		</dict>
-		<key>phptelemeter.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>126</integer>
+			<integer>63</integer>
 		</dict>
 	</dict>
-	<key>openDocuments</key>
-	<array>
-		<string>modules/libs/phptelemeter_compatibility_matrix.inc.php</string>
-		<string>modules/parser_simulator_single.inc.php</string>
-		<string>modules/parser_simulator_separate.inc.php</string>
-		<string>modules/publisher_plaintext.inc.php</string>
-		<string>modules/parser_telemeter_web.inc.php</string>
-		<string>modules/parser_scarlet_web.inc.php</string>
-		<string>ChangeLog</string>
-		<string>phptelemeter.inc.php</string>
-		<string>phptelemeter.php</string>
-		<string>README</string>
-	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
