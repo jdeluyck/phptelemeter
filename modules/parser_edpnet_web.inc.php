@@ -49,24 +49,6 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
-		/* fetch the page */
-/*		$data = $this->doCurl($this->url["login"], FALSE);
-		if ($this->checkForError($data) !== false)
-			return (false);
-*/		
-		/* find the __VIEWSTATE_ID value */
-/*		for ($i = 0; $i < count($data); $i++)
-		{
-			echo $i;
-			if (stristr($data[$i], "__VIEWSTATE_ID") !== false)
-			{
-				echo "BOO!",$data[$i], "\n";
-				$viewstate = substr($data[$i],49,-4);
-				$this->_postFields["__VIEWSTATE_ID"] = $viewstate;  
-				break;
-			}
-		}
-*/
 		/* log in & get initial data */
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
 		if ($this->checkForError($data) !== false)
@@ -83,9 +65,9 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		/* find the entry position */
 		for ($i = 0; $i < count($data); $i++)
 		{
-			if (stristr($data[$i], "Totaal") !== false)
+			if (stristr($data[$i], "Total") !== false)
 				$pos["used"] = $i + 1;
-			elseif(stristr($data[$i], "Toegestaan") !== false)
+			elseif(stristr($data[$i], "Allowed") !== false)
 				$pos["max"] = $i + 1;
 		}
 
