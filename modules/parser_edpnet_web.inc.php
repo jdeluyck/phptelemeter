@@ -38,7 +38,7 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("btnCheck" => "Check traffic");
+		$this->_postFields = array("btnCheck" => "Check traffic","__VIEWSTATE" => "", "__VIEWSTATE_ID" => "e6182fe9-b351-41b0-81d0-95327d9a7b4b");
 
 		$this->url["login"] = "http://www.edpnet.be/traffic2.aspx?R=1";
 		$this->url["details"] = "http://edpnet.be/traffic2_details.aspx";
@@ -49,17 +49,31 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
+		/* fetch the page */
+/*		$data = $this->doCurl($this->url["login"], FALSE);
+		if ($this->checkForError($data) !== false)
+			return (false);
+*/		
+		/* find the __VIEWSTATE_ID value */
+/*		for ($i = 0; $i < count($data); $i++)
+		{
+			echo $i;
+			if (stristr($data[$i], "__VIEWSTATE_ID") !== false)
+			{
+				echo "BOO!",$data[$i], "\n";
+				$viewstate = substr($data[$i],49,-4);
+				$this->_postFields["__VIEWSTATE_ID"] = $viewstate;  
+				break;
+			}
+		}
+*/
 		/* log in & get initial data */
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
-//		$data = file_get_contents("/var/www/phptelemeter/trunk/temp/adsllogin.htm");
-//		$data = file_get_contents("/tmp/adsllogin.htm");
 		if ($this->checkForError($data) !== false)
 			return (false);
 
 		/* get historical data */
 		$historicalData = $this->docurl($this->url["details"], FALSE);
-//		$historicalData = file_get_contents("/var/www/phptelemeter/trunk/temp/traffic2_details.aspx.htm");
-//		$historicalData = file_get_contents("/tmp/traffic2_details.aspx.htm");
 		if ($this->checkForError($historicalData) !== false)
 			return (false);
 
