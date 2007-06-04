@@ -204,6 +204,21 @@ class telemeterParser_web_shared
 
 		return ($output);
 	}
+
+	function prepareData($data)
+	{
+		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));
+		$data = explode("\n", $data);
+
+		for ($i = 0; $i < count($data); $i++)
+		{
+			$data[$i] = trim($data[$i]);
+			if (strlen($data[$i]) != 0)
+				$temp[] = $data[$i];
+		}
+
+		return($temp);
+	}
 }
 
 ?>

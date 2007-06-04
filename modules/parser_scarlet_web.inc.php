@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "9");
+define("_phptelemeter_parser_scarlet_web", "10");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -68,22 +68,10 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		/* logout */
 		$log = $this->doCurl($this->url["logout"], FALSE);
 
-		/* clean out the data a bit */
-		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));
-		$data = explode("\n", $data);
+		$data = $this->prepareData($data);
 
 		/* data interval */
 		$pos["data_interval"] = 4;
-
-		for ($i = 0; $i < count($data); $i++)
-		{
-			$data[$i] = trim($data[$i]);
-
-			if (strlen($data[$i]) != 0)
-				$temp[] = $data[$i];
-		}
-
-		$data = $temp;
 
 		dumpDebugInfo($this->debug, "DATA:\n");
 		dumpDebugInfo($this->debug, $data);
