@@ -259,8 +259,8 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"username=\"myuser\"\n" .
 			"password=\"mypassword\"\n" .
 			"; The parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
-			"; skynet_web, scarlet_web or upccz_web, and the file needs to be present\n" .
-			"; in the phptelemeter/modules directory!\n" .
+			"; skynet_web, scarlet_web, edpnet_web or upccz_web, and the file needs\n" .
+			"; to be present in the phptelemeter/modules directory!\n" .
 			"parser=\"aparser\"\n" .
 			"; The description is optional\n" .
 			";description=\"My first account\"\n" .

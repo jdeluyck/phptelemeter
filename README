@@ -26,7 +26,7 @@ Which ISP's are supported?
 | Dommel  | dommel_web        |      X     |   X   |         |
 | Skynet  | skynet_web        |      X     |   X   |         |
 | Scarlet | scarlet_web       |      X     |   X   |    X    |
-| EDPNet  | edpnet_web        |      X     |   X   |         |
+| EDPNet  | edpnet_web        |      X     |   X   |    X    |
 | UPC CZ  | upccz_web         |      X     |   X   |         |
 --------------------------------------------------------------
 
@@ -151,8 +151,8 @@ description=your description		# Description of account-1, if it is
 parser=a parser				# The parsing module to use for
 					# account-1. Currently telemeter4tools,
 					# telemeter_web, dommel_web, skynet_web,
-					# scarlet_web and upccz_web are
-					# included.
+					# scarlet_web, edpnet_web and upccz_web
+					# are included.
 warn_percentage=percentage		# Percentage when a warning email
 					# should be sent to the warn_email
 					# email address. Set percentage to 0
