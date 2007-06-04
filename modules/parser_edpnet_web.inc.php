@@ -49,94 +49,56 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
-		/* log in & get data */
-		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		/* log in & get initial data */
+//		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		$data = file_get_contents("/var/www/phptelemeter/trunk/temp/adsllogin.htm");
 		if ($this->checkForError($data) !== false)
 			return (false);
 
-		
-		/* go to the packages page, and get the serv_id and client_id */
-		$data2 = $this->docurl($this->url["details"], FALSE);
-		if ($this->checkForError($data2) !== false)
+		/* get historical data */
+//		$historicalData = $this->docurl($this->url["details"], FALSE);
+		$historicalData = file_get_contents("/var/www/phptelemeter/trunk/temp/traffic2_details.aspx.htm");
+		if ($this->checkForError($historicalData) !== false)
 			return (false);
 
-		$log = explode("\n", $log);
-
-echo "THIS DOES NOT WORK YET!!!";
-exit (-1);
-
-		/* figure out the stats exact url */
-		for ($i = 0; $i < count($log); $i++)
-		{
-			if ($log2 = strstr($log[$i], $this->url["stats"]))
-				break;
-		}
-
-		$this->url["stats"] = substr($log2,0,strpos($log2,"'"));
-
-		dumpDebugInfo($this->debug, "DEBUG: STATS URL: " . $this->url["stats"] . "\n");
-
-		/* and get the data */
-		$data = $this->doCurl($this->url["stats"], FALSE);
-		if ($this->checkForError($data) !== false)
-			return (false);
-
-		/* logout */
-		$log = $this->doCurl($this->url["logout"], FALSE);
-		if ($this->checkForError($log) !== false)
-			return (false);
-
-		$data = explode("\n", $data);
+		/* stats */
+		$data = $this->prepareData($data);
 
 		/* find the entry position */
 		for ($i = 0; $i < count($data); $i++)
 		{
-			if ($data2 = stristr($data[$i], "total traffic downloaded in broadband"))
-				break;
+			if (stristr($data[$i], "Totaal") !== false)
+				$pos["used"] = $i + 1;
+			elseif(stristr($data[$i], "Toegestaan") !== false)
+				$pos["max"] = $i + 1;
 		}
 
-		$data2 = explode("<br>", $data2);
-
-		/* set some default positions */
-		$pos["remaining"] = false;
-
-		dumpDebugInfo($this->debug, "DEBUG: \$data2, pre cleanup!\n");
-		dumpDebugInfo($this->debug, $data2);
-
-		/* position finding & data cleanup */
-		for ($i = 0; $i < count($data2); $i++)
-		{
-			$data2[$i] = strip_tags($data2[$i]);
-
-			if (stristr($data2[$i], "total traffic downloaded") !== false)
-				$pos["traffic"] = $i;
-			elseif (stristr($data2[$i], "next counter reset") !== false)
-				$pos["reset_date"] = $i;
-			elseif (stristr($data2[$i], "remaining") !== false)
-				$pos["remaining"] = $i;
-
-			/* data cleanup */
-			$data2[$i] = substr($data2[$i], strpos($data2[$i], ":") + 2);
-		}
-
-		dumpDebugInfo($this->debug, "DEBUG: \$data2\n");
-		dumpDebugInfo($this->debug, $data2);
+		dumpDebugInfo($this->debug, "DEBUG: \$data\n");
+		dumpDebugInfo($this->debug, $data);
 
 		dumpDebugInfo($this->debug, "POS:\n");
 		dumpDebugInfo($this->debug, $pos);
 
-		/* stats */
 		/* total used */
-		$volume["used"] = substr($data2[$pos["traffic"]],0,-3) * 1024;
+		$volume["used"] = substr($data[$pos["used"]],0,strlen($data[$pos["used"]]) - 2);
 
-		/* remaining, if exists? */
-		if ($pos["remaining"] !== false)
-			$volume["remaining"] = substr($data2[$pos["remaining"]],0,-3) * 1024;
-		else
-			$volume["remaining"] = 0;
+		/* remaining */
+		$volume["remaining"] = substr($data[$pos["max"]],0,strlen($data[$pos["max"]]) - 2) - $volume["used"];
+
+		/* daily historical stats */
+		/* cleanout */
+		$historicalData = $this->prepareData(str_replace(array("</td>","</tr>"),"\n",$historicalData));
+
+		array_shift($historicalData);
+		array_shift($historicalData);
+		array_shift($historicalData);
+
+		dumpDebugInfo($this->debug, "DEBUG; \$historicalData\n");
+		dumpDebugInfo($this->debug, $historicalData);
+
 
 		/* reset date */
-		$reset_date = substr($data2[$pos["reset_date"]],0,10);
+		$reset_date = 0;
 
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;

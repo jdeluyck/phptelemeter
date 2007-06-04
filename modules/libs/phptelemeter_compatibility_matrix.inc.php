@@ -58,7 +58,7 @@ $isp_compatibility_matrix["upccz"]["history"] = false;
 
 /* EDPNET */
 $isp_compatibility_matrix["edpnet"]["reset_date"] = true;
-$isp_compatibility_matrix["edpnet"]["seperate_quota"] = true;
+$isp_compatibility_matrix["edpnet"]["seperate_quota"] = false;
 $isp_compatibility_matrix["edpnet"]["history"] = true;
 
 /* SIMULATOR */
