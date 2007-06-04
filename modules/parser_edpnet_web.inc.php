@@ -50,14 +50,16 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 	function getData($userName, $password)
 	{
 		/* log in & get initial data */
-//		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
-		$data = file_get_contents("/var/www/phptelemeter/trunk/temp/adsllogin.htm");
+		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+//		$data = file_get_contents("/var/www/phptelemeter/trunk/temp/adsllogin.htm");
+//		$data = file_get_contents("/tmp/adsllogin.htm");
 		if ($this->checkForError($data) !== false)
 			return (false);
 
 		/* get historical data */
-//		$historicalData = $this->docurl($this->url["details"], FALSE);
-		$historicalData = file_get_contents("/var/www/phptelemeter/trunk/temp/traffic2_details.aspx.htm");
+		$historicalData = $this->docurl($this->url["details"], FALSE);
+//		$historicalData = file_get_contents("/var/www/phptelemeter/trunk/temp/traffic2_details.aspx.htm");
+//		$historicalData = file_get_contents("/tmp/traffic2_details.aspx.htm");
 		if ($this->checkForError($historicalData) !== false)
 			return (false);
 
@@ -80,10 +82,10 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug, $pos);
 
 		/* total used */
-		$volume["used"] = substr($data[$pos["used"]],0,strlen($data[$pos["used"]]) - 2);
+		$volume["used"] = substr($data[$pos["used"]],0,-2);
 
 		/* remaining */
-		$volume["remaining"] = substr($data[$pos["max"]],0,strlen($data[$pos["max"]]) - 2) - $volume["used"];
+		$volume["remaining"] = substr($data[$pos["max"]],0,-2) - $volume["used"];
 
 		/* daily historical stats */
 		/* cleanout */
@@ -96,11 +98,23 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug, "DEBUG; \$historicalData\n");
 		dumpDebugInfo($this->debug, $historicalData);
 
+		$temp = $historicalData[count($historicalData) - 3];
+		$reset_date = date("d/m/y", mktime(0,0,0,substr($temp,3,2)+1,substr($temp,0,2),substr($temp,-4)));
+		for ($i = count($historicalData) - 3; $i >= 0; $i--)
+		{
+			$dailyData[] = date("d/m/y", mktime(0,0,0,substr($historicalData[$i],3,2),substr($historicalData[$i],0,2),substr($historicalData[$i++],-4)));
+			$dailyData[] = round(floatval(str_replace(",",".",substr($historicalData[$i++],0,-2)))) + round(floatval(str_replace(",",".",substr($historicalData[$i],0,-2))));
 
-		/* reset date */
-		$reset_date = 0;
+			/* correct counter */
+			$i -= 4;
+		}
+
+		dumpDebugInfo($this->debug, "DEBUG; \$dailydata\n");
+		dumpDebugInfo($this->debug, $dailyData);
+
 
 		$returnValue["general"] = $volume;
+		$returnValue["daily"] = $dailyData;
 		$returnValue["isp"] = $this->_ISP;
 		$returnValue["reset_date"] = $reset_date;
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
