@@ -68,8 +68,11 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		if ($this->checkForError($data) !== false)
 			return (false);
 
+		/* now remove the first item from the _postFields array, and re-pass */
+		array_shift($this->_postFields);
+
 		/* get historical data */
-		$historicalData = $this->docurl($this->url["details"],false);
+		$historicalData = $this->docurl($this->url["details"],$this->createPostFields());
 		if ($this->checkForError($historicalData) !== false)
 			return (false);
 
