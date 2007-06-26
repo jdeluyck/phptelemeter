@@ -86,7 +86,6 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		/* daily historical stats */
 		/* cleanout */
 		$historicalData = $this->prepareData(str_replace(array("</td>","</tr>"),"\n",$historicalData));
-
 		array_shift($historicalData);
 		array_shift($historicalData);
 		array_shift($historicalData);
@@ -94,6 +93,7 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug, "DEBUG; \$historicalData\n");
 		dumpDebugInfo($this->debug, $historicalData);
 
+		/* loopke in vooruit van vanachter met 3 achteruit per loop :p */
 		$temp = $historicalData[count($historicalData) - 3];
 		$reset_date = date("d/m/y", mktime(0,0,0,substr($temp,3,2)+1,substr($temp,0,2),substr($temp,-4)));
 		for ($i = count($historicalData) - 3; $i >= 0; $i--)
