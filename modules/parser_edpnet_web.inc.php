@@ -82,9 +82,13 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 
 		dumpDebugInfo($this->debug, "----------\n");
 
+
+		curl_setopt($ch, CURLOPT_HTTPGET, 1);
 		/* get historical data */
 		//$historicalData = $this->docurl($this->url["details"],$this->createPostFields());
 		$historicalData = $this->execCurl($ch, $this->url["details"]);
+
+		$this->closeCurl($ch);
 
 		if ($this->checkForError($historicalData) !== false)
 			return (false);
