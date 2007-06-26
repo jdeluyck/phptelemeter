@@ -38,7 +38,7 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("btnCheck" => "Check traffic","__VIEWSTATE" => "", "__VIEWSTATE_ID" => "e6182fe9-b351-41b0-81d0-95327d9a7b4b");
+		$this->_postFields = array("btnCheck" => "Check traffic","__VIEWSTATE" => "");
 
 		$this->url["login"] = "http://www.edpnet.be/traffic2.aspx?R=1";
 		$this->url["details"] = "http://edpnet.be/traffic2_details.aspx";
@@ -49,13 +49,27 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
+		/* open login page, extract value for __VIEWSTATE_ID
+		<input type="hidden" name="__VIEWSTATE_ID" value="bba48a7f-be45-4694-bd6f-3be01f42f950" /> */
+
+		$data = $this->doCurl($this->url["login"], false);
+		$data = explode("\n", $data);
+		for ($i = 0; $i < count($data); $i++)
+		{
+			if (stristr($data[$i], "__VIEWSTATE_ID") !== false)
+			{
+				$this->_postFields["__VIEWSTATE_ID"] = substr($data[$i],50,-5);
+				break;
+			}
+		}
+
 		/* log in & get initial data */
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
 		if ($this->checkForError($data) !== false)
 			return (false);
 
 		/* get historical data */
-		$historicalData = $this->docurl($this->url["details"]);
+		$historicalData = $this->docurl($this->url["details"],false);
 		if ($this->checkForError($historicalData) !== false)
 			return (false);
 
