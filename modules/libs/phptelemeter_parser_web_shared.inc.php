@@ -221,57 +221,7 @@ class telemeterParser_web_shared
 
 		$ch = $this->initCurl($postFields);
 
-//		$ch = curl_init($URL);
-//
-//		/* any extra curl parameters to pass around? */
-//		if ($this->_curlParams !== false)
-//		{
-//			dumpDebugInfo($this->debug, "CURL: Extra settings:\n");
-//			dumpDebugInfo($this->debug, $this->_curlParams);
-//
-//			foreach ($this->_curlParams as $key => $value)
-//				curl_setopt($ch, $key, $value);
-//		}
-//
-//		if ($postFields !== false)
-//		{
-//			curl_setopt($ch, CURLOPT_POST, 1);
-//			curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-//			dumpDebugInfo($this->debug, "CURL: POST: $postFields\n");
-//		}
-//
-//		curl_setopt($ch, CURLOPT_HEADER, 0);
-//		curl_setopt($ch, CURLOPT_ENCODING , "gzip");
-/*		curl_setopt($ch, CURLOPT_COOKIEJAR, $this->_cookieFile);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, $this->_cookieFile);
-		curl_setopt($ch, CURLOPT_USERAGENT, $this->_userAgent);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-*/
-		/* check proxy */
-/*		if (strlen($this->proxyHost) != 0)
-		{
-			dumpDebugInfo($this->debug, "CURL: Enabling proxy: " . $this->proxyHost . ":" . $this->proxyPort . "\n");
-
-			curl_setopt($ch, CURLOPT_PROXY, $this->proxyHost . ":" . $this->proxyPort);
-
-			if ($this->proxyAuth == true)
-			{
-				dumpDebugInfo($this->debug, "CURL: Enabling proxy AUTH\n");
-				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxyUsername . ":" . $this->proxyPassword);
-			}
-		}
-*/
-
 		$output = $this->execCurl($ch, $URL);
-
-/*		$output = curl_exec($ch);
-		if (curl_errno($ch) != 0)
-			$output["curl_error"] = curl_error($ch);
-*/
-
-		//curl_close($ch);
 
 		$this->closeCurl($ch);
 
