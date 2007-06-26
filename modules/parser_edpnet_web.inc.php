@@ -63,6 +63,8 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 			}
 		}
 
+		dumpDebugInfo($this->debug, "__VIEWSTATE_ID: " . $this->_postFields["__VIEWSTATE_ID"]);
+
 		/* log in & get initial data */
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
 		if ($this->checkForError($data) !== false)
