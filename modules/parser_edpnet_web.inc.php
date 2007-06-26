@@ -63,7 +63,8 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 			}
 		}
 
-		dumpDebugInfo($this->debug, "__VIEWSTATE_ID: " . $this->_postFields["__VIEWSTATE_ID"]);
+		dumpDebugInfo($this->debug, "__VIEWSTATE_ID: " . $this->_postFields["__VIEWSTATE_ID"] . "\n");
+		dumpDebugInfo($this->debug, "----------\n");
 
 		/* log in & get initial data */
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
@@ -72,6 +73,8 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 
 		/* now remove the first item from the _postFields array, and re-pass */
 		array_shift($this->_postFields);
+
+		dumpDebugInfo($this->debug, "----------\n");
 
 		/* get historical data */
 		$historicalData = $this->docurl($this->url["details"],$this->createPostFields());
