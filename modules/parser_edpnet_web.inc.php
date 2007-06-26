@@ -52,8 +52,8 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		/* open login page, extract value for __VIEWSTATE_ID
 		<input type="hidden" name="__VIEWSTATE_ID" value="bba48a7f-be45-4694-bd6f-3be01f42f950" /> */
 
-		$ch = $this->initCurl($this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
-		$data = $this->execCurl($ch, $this->url["login"]);
+		//$ch = $this->initCurl($this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		$data = $this->doCurl($this->url["login"], FALSE);
 		var_dump($data);
 		//exit;
 
@@ -72,6 +72,7 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 
 		/* log in & get initial data */
 		//$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		$ch = $this->initCurl($this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
 		$data = $this->execCurl($ch, $this->url["login"]);
 		if ($this->checkForError($data) !== false)
 			return (false);
