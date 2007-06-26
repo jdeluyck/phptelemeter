@@ -84,7 +84,7 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 
 		/* get historical data */
 		//$historicalData = $this->docurl($this->url["details"],$this->createPostFields());
-		$historicalData = $this->execCurl($ch, $this->url["login"]);
+		$historicalData = $this->execCurl($ch, $this->url["details"]);
 
 		if ($this->checkForError($historicalData) !== false)
 			return (false);
