@@ -52,7 +52,11 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		/* open login page, extract value for __VIEWSTATE_ID
 		<input type="hidden" name="__VIEWSTATE_ID" value="bba48a7f-be45-4694-bd6f-3be01f42f950" /> */
 
-		$data = $this->doCurl($this->url["login"], false);
+		$ch = $this->initCurl($this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		$data = $this->execCurl($ch, $this->url["login"]);
+		var_dump($data);
+		//exit;
+
 		$data = explode("\n", $data);
 		for ($i = 0; $i < count($data); $i++)
 		{
@@ -67,7 +71,8 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug, "----------\n");
 
 		/* log in & get initial data */
-		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		//$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		$data = $this->execCurl($ch, $this->url["login"]);
 		if ($this->checkForError($data) !== false)
 			return (false);
 
@@ -77,7 +82,9 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug, "----------\n");
 
 		/* get historical data */
-		$historicalData = $this->docurl($this->url["details"],$this->createPostFields());
+		//$historicalData = $this->docurl($this->url["details"],$this->createPostFields());
+		$historicalData = $this->execCurl($ch, $this->url["login"]);
+
 		if ($this->checkForError($historicalData) !== false)
 			return (false);
 
