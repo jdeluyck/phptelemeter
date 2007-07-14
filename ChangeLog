@@ -5,6 +5,7 @@ What's new? Not much, but it's listed here.
 - Added parser simulators for single and separate quotas
 - Added option to change publisher at runtime without having to modify the
   configuration
+- Changed license to GPLv2 only
 - Added edpnet_web parser, thanks to Ze0n-!
 
 1.31
