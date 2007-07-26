@@ -873,5 +873,7 @@ function write_ini_file($path, $assoc_array)
         return false;
 
     fclose($handle);
+
     return true;
-} ?>
+}
+?>
