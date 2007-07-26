@@ -35,7 +35,7 @@ define("_key", "b?S3jLT+AB+SwQ,l2@0DrX}b!mL6}OeoDLHjiFKEGNxM}K*/dPbd4}.|");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email", "encrypt_passwords");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email", "encrypt_passwords", "cache_file");
 $configKeys["general"]["obsolete"] = array("style", "daily", "parser");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 
@@ -244,6 +244,9 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; (to get the encrypted value of a password, use --encrypt)\n" .
 			"encrypt_passwords=false\n" .
 			";\n" .
+			"; Where to save the cache/state information? This file has to be writeable by phptelemeter!\n" .
+			"cache_file=\"~/.phptelemeter.cache\"\n" .
+			";\n" .
 			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
 			"; If you set proxy_authenticate to true, you must fill the username\n" .
 			"; and password too.\n" .
@@ -301,10 +304,10 @@ function checkConfig($configuration, $configFile, $configKeys)
 	checkConfigurationForKeys($configuration, array("die"), true, "configuration not correct.", "Edit $configFile and remove the \n%MSG%line!", true);
 
 	/* verify general configuration */
-	checkConfigurationForKeys($configuration           , array("general", "proxy")         , false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease correct and rerun phptelemeter.", true);
-	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["required"], false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration           , array("general", "proxy")         , false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease check the README, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["required"], false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
 	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["obsolete"], true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
-	checkConfigurationForKeys($configuration["proxy"]  , $configKeys["proxy"]["required"]  , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["proxy"]  , $configKeys["proxy"]["required"]  , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
 
 	/* look for the modulepath */
 	if (! array_key_exists("modulepath", $configuration["general"]))
@@ -478,11 +481,18 @@ function parseArgs($argv, $configuration)
 				quit();
 				break;
 			}
-			
+
 			case "--publisher":
 			case "-p":
 			{
 				$configuration["general"]["publisher"] = $argv[++$i];
+				break;
+			}
+
+			case "--cache-file":
+			case "-C":
+			{
+				$configuration["general"]["cache_file"] = $argv[++$i];
 				break;
 			}
 
@@ -493,6 +503,7 @@ function parseArgs($argv, $configuration)
 				showVersion();
 				echo "phptelemeter [options] \n";
 				echo "-c\t--check-version\t\tChecks if your phptelemeter is the latest version\n";
+				echo "-C\t--cache-file <name>\t\tWhere to look for the cache file\n";
 				echo "-d,\t--daily\t\t\tShows statistics for current period\n";
 				echo "-D,\t--debug\t\t\tShows lots of debugging info\n";
 				echo "-e,\t--encrypt <password>\tEncrypts the supplied password\n";
@@ -664,7 +675,7 @@ function calculateDaysLeft($resetDate)
 	$temp2 = strpos($resetDate, "/", $temp);
 	$month = substr($resetDate, $temp, ($temp2 - $temp));
 	$year = substr($resetDate, ++$temp2);
-	
+
 	$returnValue = round(((mktime (0,0,0, $month, $day, $year) - mktime(0,0,0, date("m"), date("d"), date("Y"))) / 86400),0);
 	return ($returnValue);
 }

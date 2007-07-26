@@ -61,6 +61,7 @@ Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
   * -c, --check-version - checks the version online **
+  * -C, --cache-file <file> - sets the location of the cache file **
   * -d, --daily - show the 30day overview **
   * -D, --debug - shows some debugging stuff **
   * -e, --encrypt <password> - encrypts (obfuscates) the password given on the
@@ -135,6 +136,7 @@ ignore_errors=false			# Ignore any runtime errors that might
 email=your email			# What email address to use as From:
 					# when sending warning mails
 encrypt_passwords=false			# Encrypted passwords in the config
+cache_file=~/.phptelemeter.cache		# Where is the cache file?
 
 [proxy]
 proxy_host=				# Hostname of the proxy. Leave blank
@@ -225,7 +227,7 @@ Extending phptelemeter
 - Extending phptelemeter is fairly easy. If you want to write a new parser,
   take a look at the existing parser_web_ files in the modules directory.
 - For publishers, look at the publisher_ files.
-- For ease of use, I've included two 'simulating' parsers: 
+- For ease of use, I've included two 'simulating' parsers:
   parser_simulator_single, which simulates a single-quota ISP, and
   parser_simulator_separate, which simulates a separate-quota ISP. Both are
   written with very little checks, so sometimes the output is a bit strange.
