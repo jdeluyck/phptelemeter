@@ -735,28 +735,27 @@ function getAllCredentials($configuration)
 	return ($returnValue);
 }
 
-function sendWarnEmail($debug, $data, $description, $percentage, $fromAddress, $toAddress)
+function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, $toAddress)
 {
 	$sendMail = false;
-	$temp = calculateUsage($data["general"], $data["isp"]);
 
-	if (array_key_exists("total", $temp))
+	if (array_key_exists("total", $usage))
 	{
 		/* handle 'total' quota */
-		if ($temp["total"]["percent"] > $percentage)
+		if ($usage["total"]["percent"] > $percentage)
 		{
 			$sendMail = true;
-			$text = "You have used " . $temp["total"]["percent"] . "% (" . $temp["total"]["use"] . " MiB) of your total transfer quota of " . $temp["total"]["max"] . " MiB.";
+			$text = "You have used " . $usage["total"]["percent"] . "% (" . $usage["total"]["use"] . " MiB) of your total transfer quota of " . $usage["total"]["max"] . " MiB.";
 		}
 	}
 	else
 	{
 		/* handle seperate quotas */
-		if ($temp["download"]["percent"] > $percentage || $temp["upload"]["percent"] > $percentage)
+		if ($usage["download"]["percent"] > $percentage || $usage["upload"]["percent"] > $percentage)
 		{
 			$sendMail = true;
-			$text  = "You have used " . $temp["download"]["percent"] . "% (" . $temp["download"]["use"] . " MiB) of your download quota of " . $temp["download"]["max"] . " MiB.";
-			$text .= "You have used " . $temp["upload"]["percent"] . "% (" . $temp["upload"]["use"] . " MiB) of your upload quota of " . $temp["upload"]["max"] . " MiB.";
+			$text  = "You have used " . $usage["download"]["percent"] . "% (" . $usage["download"]["use"] . " MiB) of your download quota of " . $usage["download"]["max"] . " MiB.";
+			$text .= "You have used " . $usage["upload"]["percent"] . "% (" . $usage["upload"]["use"] . " MiB) of your upload quota of " . $usage["upload"]["max"] . " MiB.";
 		}
 	}
 
@@ -828,8 +827,51 @@ function loadCacheFile($debug, $cacheFile)
 	return ($cache);
 }
 
-function saveCacheFile($debug, $cacheFile)
+function saveCacheFile($debug, $cacheFile, $cache)
 {
+	dumpDebugInfo($debug, "Saving cache data:\n");
+	dumpDebugInfo($debug, $cache);
 
+	if (write_ini_file($cacheFile, $cache) === false)
+		doError ("error writing cache", "Error while writing cache " . $cacheFile. "\nPermission problem?", true);
 }
-?>
+
+/* function taken from php online manual */
+function write_ini_file($path, $assoc_array)
+{
+    $content = '';
+    $sections = '';
+
+    foreach ($assoc_array as $key => $item)
+    {
+        if (is_array($item))
+        {
+            $sections .= "\n[{$key}]\n";
+            foreach ($item as $key2 => $item2)
+            {
+                if (is_numeric($item2) || is_bool($item2))
+                    $sections .= "{$key2} = {$item2}\n";
+                else
+                    $sections .= "{$key2} = \"{$item2}\"\n";
+            }
+        }
+        else
+        {
+            if(is_numeric($item) || is_bool($item))
+                $content .= "{$key} = {$item}\n";
+            else
+                $content .= "{$key} = \"{$item}\"\n";
+        }
+    }
+
+    $content .= $sections;
+
+    if (!$handle = fopen($path, 'w'))
+        return false;
+
+    if (!fwrite($handle, $content))
+        return false;
+
+    fclose($handle);
+    return true;
+} ?>

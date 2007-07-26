@@ -77,7 +77,12 @@ require_once("modules/libs/phptelemeter_compatibility_matrix.inc.php");
 /* load the cache file */
 if ($configuration["general"]["use_cache"] == true)
 {
-	$cacheFile = findConfigFile($cacheFiles, $configuration["general"]["debug"]);
+	if (isset($configuration["general"]["cache_file"]))
+		$cacheFile = $configuration["general"]["cache_file"];
+	else
+		$cacheFile = findConfigFile($cacheFiles, $configuration["general"]["debug"]);
+
+	dumpDebugInfo($configuration["general"]["debug"], "Cache file: " . $cacheFile . "\n");
 	dumpDebugInfo($configuration["general"]["debug"], "Loading cache file, data:\n");
 	$cache = loadCacheFile($configuration["general"]["debug"], $cacheFile);
 	dumpDebugInfo($configuration["general"]["debug"], $cache);
@@ -134,19 +139,48 @@ foreach ($configuration["accounts"] as $key => $account)
 	if ($data === false)
 		continue;
 
-/* *******************************************************************************
- * TODO
- * Check state, save state
- * ******************************************************************************* */
 	/* send a mail? */
 	if ($account["warn_percentage"] > 0)
 	{
-		// check state & send if needed
-		sendWarnEmail($configuration["general"]["debug"], $data, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
-		if ($configuration["general"]["use_state"] == true)
+		if ($configuration["general"]["use_cache"] == true)
 		{
-		//saveState
+
+			/* check if the account exists in the cache, if not, add */
+			if (! array_key_exists($account["username"], $cache))
+				$cache[$account["username"]]["mail_sent"] = false;
+
+			$usage = calculateUsage($data["general"], $data["isp"]);
+
+			$sendMail = "crap";
+			$setSentFalse = false;
+
+			if (array_key_exists("total", $usage))
+			{
+				if ($usage["total"]["percent"] > $account["warn_percentage"])
+					$sendMail = true;
+				else
+					$sendMail = false;
+			}
+			else
+			{
+				if ($usage["download"]["percent"] > $percentage || $usage["upload"]["percent"] > $account["warn_percentage"])
+					$sendMail = true;
+				else
+					$sendMail = false;
+			}
+
+			dumpDebugInfo($configuration["general"]["debug"], "Send mail? : " . var_dump($sendMail) . "\n");
+
+			if ($sendMail == true && $cache[$account["username"]]["mail_sent"] == false)
+			{
+				sendWarnEmail($configuration["general"]["debug"], $usage, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
+				$cache[$account["username"]]["mail_sent"] = true;
+			}
+			elseif ($sendMail == false && $cache[$account["username"]]["mail_sent"] == true)
+				$cache[$account["username"]]["mail_sent"] = false;
 		}
+		else
+			sendWarnEmail($configuration["general"]["debug"], $usage, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
 	}
 
 	/* publish the info */
@@ -165,6 +199,9 @@ foreach ($configuration["accounts"] as $key => $account)
 	else
 		ob_end_flush();
 }
+
+if ($configuration["general"]["use_cache"] == true)
+	saveCacheFile($configuration["general"]["debug"], $cacheFile, $cache);
 
 if ($configuration["general"]["file_output"] == false)
 	echo $publisher->mainFooter();

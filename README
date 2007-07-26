@@ -61,6 +61,7 @@ Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
   * -c, --check-version - checks the version online **
+  * -C, --cache-file <name> - Where to look for the cache file **
   * -d, --daily - show the 30day overview **
   * -D, --debug - shows some debugging stuff **
   * -e, --encrypt <password> - encrypts (obfuscates) the password given on the
@@ -135,7 +136,8 @@ ignore_errors=false			# Ignore any runtime errors that might
 email=your email			# What email address to use as From:
 					# when sending warning mails
 encrypt_passwords=false			# Encrypted passwords in the config
-use_state=false			# use the state/cache file?
+use_cache=false			# use the cache file?
+cache_file=			# path to the cache file (optional) - overrides the detection
 
 [proxy]
 proxy_host=				# Hostname of the proxy. Leave blank
