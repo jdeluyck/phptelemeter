@@ -471,7 +471,7 @@ function parseArgs($argv, $configuration)
 			{
 				/* do encrypt */
 				$password = $argv[++$i];
-				$encryptedPw = cryptPassword($password, "encrypt", true);
+				$encryptedPw = cryptPassword($password, "encrypt", true, true);
 				showVersion();
 				echo "Encrypted password: " . $encryptedPw . "\n";
 				quit();
@@ -483,7 +483,7 @@ function parseArgs($argv, $configuration)
 			{
 				/* do decrypt */
 				$password = $argv[++$i];
-				$encryptedPw = cryptPassword($password, "decrypt",true);
+				$encryptedPw = cryptPassword($password, "decrypt", true, true);
 				showVersion();
 				echo "Decrypted password: " . $encryptedPw . "\n";
 				quit();
@@ -787,23 +787,32 @@ function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, 
 	}
 }
 
-function cryptPassword($input, $mode, $cryptEnabled)
+function cryptPassword($input, $mode, $cryptEnabled, $cliCall=false)
 {
 	if ($cryptEnabled == true)
 	{
 		checkModules(array("mcrypt"));
 
 		if (strlen($input) == 0)
-			doError("crypt string missing","You did not supply a string to " . $mode . "!", true);
+		{
+			/* only error out when we're called from the cli.
+  			   since the proxy pw can be blank, it's not good to quit then. */
+			if ($cliCall == true)
+				doError("crypt string missing","You did not supply a string to " . $mode . "!", true);
 
-		$td = mcrypt_module_open('blowfish', '', 'ecb', '');
-		$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
-		mcrypt_generic_init($td, _key, $iv);
-
-		if ($mode == "encrypt")
-			$returnValue = base64_encode(mcrypt_generic($td, $input));
-		elseif ($mode == "decrypt")
-			$returnValue = mdecrypt_generic($td, base64_decode($input));
+			$returnValue = $input;
+		} 
+		else
+		{
+			$td = mcrypt_module_open('blowfish', '', 'ecb', '');
+			$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+			mcrypt_generic_init($td, _key, $iv);
+	
+			if ($mode == "encrypt")
+				$returnValue = base64_encode(mcrypt_generic($td, $input));
+			elseif ($mode == "decrypt")
+				$returnValue = mdecrypt_generic($td, base64_decode($input));
+		}
 	}
 	else
 		$returnValue = $input;

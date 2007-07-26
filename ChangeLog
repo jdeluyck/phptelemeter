@@ -14,6 +14,8 @@ What's new? Not much, but it's listed here.
 
 1.31
 ~~~~
+- Bugfix: empty proxy passwords caused the encryption mode to
+  fail. (Thanks Ken on userbase.be for spotting this problem)
 - Changed returncode to 0 instead of -1 (255) (noticed by Gh0sty)
 - Fixed stupid mistake when creating a new config file with -n
 - Fixed problem in telemeter4tools parser, it didn't output the right
@@ -85,7 +87,7 @@ What's new? Not much, but it's listed here.
 1.23
 ~~~~
 - Added parser upccz_web for UPC in the Czech Republic
-  (written by Miroslav Suchý)
+  (written by Miroslav SuchÃ¿)
 - Made phptelemeter PHP5 compatible.
 - Added detection of positions in the webpage for the
   telemeter_web parser (less prone to error on page changes)
