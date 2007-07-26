@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext_graphonly");
-define("_phptelemeter_publisher_version", "4");
+define("_phptelemeter_publisher_version", "5");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -36,7 +36,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		telemeterPublisher_shared::telemeterPublisher_shared();
 	}
 
-	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate)
+	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate, $warnPercentage)
 	{
 		$data = $this->normalizeData($data);
 
@@ -48,7 +48,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		/* general data, always shown */
 		$usage = calculateUsage($generalData, $isp);
-		
+
 		$returnStr = "";
 
 		if ($showGraph == true)

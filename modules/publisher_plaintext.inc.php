@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext");
-define("_phptelemeter_publisher_version", "12");
+define("_phptelemeter_publisher_version", "13");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -52,7 +52,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 	}
 
 	/* EXTERNAL! */
-	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate)
+	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate, $warnPercentage)
 	{
 		$data = $this->normalizeData($data);
 
@@ -86,7 +86,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			if (checkISPCompatibility($isp, "seperate_quota") == true)
 			{
 				$totalDownloadString = $totalUploadString = "";
-				
+
 				if ($usage["download"]["left"] == 0)
 				{
 					$totalDownloadString = "\nYou have used up your complete download volume.";
@@ -98,10 +98,10 @@ class telemeterPublisher extends telemeterPublisher_shared
 						$totalDownloadString = "\nYou have exceeded your download volume by %d MiB.";
 					elseif ($usage["download"]["left"] > 0)
 						$totalDownloadString = "\nYou can download %d MiB without exceeding your download volume.";
-						
+
 					$returnStr .= sprintf($totalDownloadString, abs($usage["download"]["left"]));
 				}
-				
+
 				if ($usage["upload"]["left"] == 0)
 				{
 					$totalUploadString = "\nYou have used up your complete upload volume.";
@@ -113,7 +113,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 						$totalUploadString = "\nYou have exceeded your upload volume by %d MiB.";
 					elseif ($usage["upload"]["left"] > 0)
 						$totalUploadString = "\nYou can upload %d MiB without exceeding your upload volume.";
-						
+
 					$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
 				}
 			}
@@ -156,7 +156,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			$returnStr .= "Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - $dateDiff] . "\n";
 			$returnStr .= "------------------------------------\n";
 			$returnStr .= "\n";
-			
+
 			if (checkISPCompatibility($isp, "seperate_quota") == true)
 			{
 				$returnStr .= str_repeat("-", 42) . "\n";
@@ -184,7 +184,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 				else
 				{
 					$traffic = $dailyData[$i];
-					
+
 					$returnStr .= sprintf("| %8s | %6d MiB |\n", $date, $traffic);
 				}
 			}
@@ -193,7 +193,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 				$returnStr .= str_repeat("-", 42) . "\n\n";
 			else
 				$returnStr .= str_repeat("-", 25) . "\n\n";
-					
+
 		}
 
 		return ($returnStr);

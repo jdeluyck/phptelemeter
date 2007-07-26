@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "html");
-define("_phptelemeter_publisher_version", "12");
+define("_phptelemeter_publisher_version", "13");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -63,7 +63,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		return($returnStr);
 	}
 
-	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate)
+	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate, $warnPercentage)
 	{
 		$data = $this->normalizeData($data);
 
@@ -82,11 +82,38 @@ class telemeterPublisher extends telemeterPublisher_shared
 		{
 			if (checkISPCompatibility($isp, "seperate_quota") == true)
 			{
-				$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"]);
-				$returnStr .= sprintf("&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"]);
+				if ($usage["download"]["percent"] > $warnPercentage && $warnPercentage != 0)
+				{
+					$downloadColour["pre"] = "<font color='red'>";
+					$downloadColour["post"] = "</font>";
+				}
+				else
+					$downloadColour["pre"] = $downloadColour["post"] = "";
+
+				if( $usage["upload"]["percent"] > $warnPercentage && $warnPercentage != 0)
+				{
+					$uploadColour["pre"] = "<font color='red'>";
+					$uploadColour["post"] = "</font>";
+
+				}
+				else
+					$uploadColour["pre"] = $uploadColour["post"] = "";
+
+				$returnStr .= sprintf("%sDownload used: [%-20s] - %5d MiB (%2d%%)%s<br>\n", $downloadColour["pre"],str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"], $downloadColour["post"]);
+				$returnStr .= sprintf("%s&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)%s<br>\n", $uploadColour["pre"], str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"], $uploadColour["post"]);
 			}
 			else
-				$returnStr .= sprintf("Quota used: [%-20s] - %5d MiB (%2d%%)<br>\n", str_repeat("#", $usage["total"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["total"]["hashes"]),$usage["total"]["use"], $usage["total"]["percent"]);
+			{
+				if ($usage["total"]["percent"] > $warnPercentage && $warnPercentage != 0)
+				{
+					$totalColour["pre"] = "<font color='red'>";
+					$totalColour["post"] = "</font>";
+				}
+				else
+					$totalColour["pre"] = $totalColour["post"] = "";
+
+				$returnStr .= sprintf("%sQuota used: [%-20s] - %5d MiB (%2d%%)%s<br>\n", $totalColour["pre"], str_repeat("#", $usage["total"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["total"]["hashes"]),$usage["total"]["use"], $usage["total"]["percent"], $totalColour["post"]);
+			}
 		}
 
 		if ($showRemaining == true)
@@ -94,7 +121,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			if (checkISPCompatibility($isp, "seperate_quota") == true)
 			{
 				$totaldownloadString = $totalUploadString = "";
-				
+
 				if ($usage["download"]["left"] == 0)
 				{
 					$totaldownloadString = "\n<br>You have used up your complete download volume.";
@@ -102,16 +129,16 @@ class telemeterPublisher extends telemeterPublisher_shared
 				}
 				else
 				{
-					if($usage["download"]["left"] < 0)	
+					if($usage["download"]["left"] < 0)
 						$totaldownloadString = "\n<br>You have exceeded your download volume by %d MiB.";
 					elseif($usage["download"]["left"] > 0)
 						$totaldownloadString = "\n<br>You can download %d MiB without exceeding your download volume.";
-						
+
 					$returnStr .= sprintf($totaldownloadString, abs($usage["download"]["left"]));
 				}
-				
+
 				if ($usage["upload"]["left"] == 0)
-				{	
+				{
 					$totalUploadString = "\n<br>You have used up your complete upload volume.";
 					$returnStr .= $totalUploadString;
 				}
@@ -121,7 +148,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 						$totalUploadString = "\n<br>You have exceeded your upload volume by %d MiB.";
 					elseif($usage["upload"]["left"] > 0)
 						$totalUploadString = "\n<br>You can upload %d MiB without exceeding your upload volume.";
-						
+
 					$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
 				}
 			}
@@ -138,7 +165,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 						$totalString = "\n<br>You have exceeded your volume by %d MiB.";
 					elseif($usage["total"]["left"] > 0)
 						$totalString = "\n<br>You can transfer %d MiB without exceeding your volume.";
-						
+
 					$returnStr .= sprintf($totalString, abs($usage["total"]["left"]));
 				}
 			}
@@ -171,18 +198,18 @@ class telemeterPublisher extends telemeterPublisher_shared
 				}
 				else
 					$returnStr .= "	<th>Quota used</th>";
-					
+
 			$returnStr .= "</tr>";
 
 			for ($i = 0; $i < count($dailyData); $i++)
 			{
 				$date = $dailyData[$i++];
-				
+
 				if (checkISPCompatibility($isp, "seperate_quota") == true)
 				{
 					$download = $dailyData[$i++];
 					$upload = $dailyData[$i];
-					
+
 					$returnStr .= sprintf("<tr>\n<td> %8s </td>\n<td> %7d MiB </td>\n<td> %7d MiB </td>\n</tr>\n", $date, $download, $upload);
 				}
 				else

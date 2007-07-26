@@ -169,8 +169,6 @@ foreach ($configuration["accounts"] as $key => $account)
 					$sendMail = false;
 			}
 
-			dumpDebugInfo($configuration["general"]["debug"], "Send mail? : " . var_dump($sendMail) . "\n");
-
 			if ($sendMail == true && $cache[$account["username"]]["mail_sent"] == false)
 			{
 				sendWarnEmail($configuration["general"]["debug"], $usage, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
@@ -186,7 +184,7 @@ foreach ($configuration["accounts"] as $key => $account)
 	/* publish the info */
 	echo $publisher->accountFooter();
 
-	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["show_daily"], $configuration["general"]["show_graph"], $configuration["general"]["show_resetdate"]);
+	echo $publisher->publishData($data,$configuration["general"]["show_remaining"], $configuration["general"]["show_daily"], $configuration["general"]["show_graph"], $configuration["general"]["show_resetdate"], $account["warn_percentage"]);
 
 	if ($configuration["general"]["file_output"] == true)
 	{

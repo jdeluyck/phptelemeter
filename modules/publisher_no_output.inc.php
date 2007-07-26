@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "no_output");
-define("_phptelemeter_publisher_version", "1");
+define("_phptelemeter_publisher_version", "2");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -36,7 +36,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		telemeterPublisher_shared::telemeterPublisher_shared();
 	}
 
-	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate)
+	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate, $warnPercentage)
 	{
 		return ("");
 	}

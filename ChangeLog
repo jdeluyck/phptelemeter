@@ -7,6 +7,8 @@ What's new? Not much, but it's listed here.
   configuration
 - Changed license to GPLv2 only
 - Implemented state-tracking for emails (feature request: 1718771)
+- Implemented red-hilighting of the used-up quota in the HTML publisher
+  (feature request: 1718774)
 
 - Added edpnet_web parser, thanks to Ze0n-!
 
