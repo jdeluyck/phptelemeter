@@ -1,3 +1,15 @@
+phptelemeter 1.32
+~~~~~~~~~~~~~~~~~
+- New keys were added to the [general] section:
+  * use_cache
+
+Please update your configuration file, or generate a new one.
+For more details, see the README file.
+
+------------
+| OLD NEWS |
+------------
+
 phptelemeter 1.31
 ~~~~~~~~~~~~~~~~~
 - New keys were added to the [general] section:
@@ -7,13 +19,6 @@ phptelemeter 1.31
 - New keys were added to the [account-] sections:
   * warn_percentage
   * warn_email
-
-Please update your configuration file, or generate a new one.
-For more details, see the README file.
-
-------------
-| OLD NEWS |
-------------
 
 phptelemeter 1.30
 ~~~~~~~~~~~~~~~~~

@@ -1,6 +1,6 @@
 <!DOCTYPE webproject>
 <webproject>
-  <project usePreviewPrefix="0" previewPrefix="" type="Local" name="phptelemeter" encoding="iso 8859-15" >
+  <project usePreviewPrefix="0" type="Local" previewPrefix="" name="phptelemeter" encoding="iso 8859-15" >
     <upload/>
     <author/>
     <email/>
@@ -46,10 +46,9 @@
     <item url="AUTHORS" uploadstatus="1" />
     <item url="modules/publisher_plaintext_graphonly.inc.php" uploadstatus="1" />
     <item url="modules/libs/phptelemeter_publisher_shared.inc.php" uploadstatus="1" />
-    <item url="modules/parser_edpnet_web.inc.php" />
-    <item url="modules/parser_simulator.inc.php" />
-    <item url="modules/parser_simulator_separate.inc.php" />
-    <item url="modules/parser_simulator_single.inc.php" />
-    <item url="modules/publisher_no_output.inc.php" />
+    <item url="modules/parser_edpnet_web.inc.php" uploadstatus="1" />
+    <item url="modules/parser_simulator_separate.inc.php" uploadstatus="1" />
+    <item url="modules/parser_simulator_single.inc.php" uploadstatus="1" />
+    <item url="modules/publisher_no_output.inc.php" uploadstatus="1" />
   </project>
 </webproject>

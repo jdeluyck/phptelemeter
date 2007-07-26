@@ -61,7 +61,6 @@ Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
   * -c, --check-version - checks the version online **
-  * -C, --cache-file <file> - sets the location of the cache file **
   * -d, --daily - show the 30day overview **
   * -D, --debug - shows some debugging stuff **
   * -e, --encrypt <password> - encrypts (obfuscates) the password given on the
@@ -136,7 +135,7 @@ ignore_errors=false			# Ignore any runtime errors that might
 email=your email			# What email address to use as From:
 					# when sending warning mails
 encrypt_passwords=false			# Encrypted passwords in the config
-cache_file=~/.phptelemeter.cache		# Where is the cache file?
+use_state=false			# use the state/cache file?
 
 [proxy]
 proxy_host=				# Hostname of the proxy. Leave blank

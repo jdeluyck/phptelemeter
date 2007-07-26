@@ -40,10 +40,10 @@ checkPhpVersion();
 $configuration = parseArgs($argv, null);
 
 /* create defines according to the OS */
-checkOS($configuration, &$configFiles);
+checkOS($configuration, &$configFiles, &$cacheFiles);
 
 /* find the config file */
-$configFile = findConfigFile($configFiles, $configuration);
+$configFile = findConfigFile($configFiles, $configuration["general"]["debug"]);
 
 $configuration = readConfig($configFile);
 $configuration = parseArgs($argv, $configuration);
@@ -74,7 +74,14 @@ set_include_path($configuration["general"]["modulepath"]);
 /* load the compatibility matrix */
 require_once("modules/libs/phptelemeter_compatibility_matrix.inc.php");
 
-/* load the necessary modules */
+/* load the cache file */
+if ($configuration["general"]["use_cache"] == true)
+{
+	$cacheFile = findConfigFile($cacheFiles, $configuration["general"]["debug"]);
+	dumpDebugInfo($configuration["general"]["debug"], "Loading cache file, data:\n");
+	$cache = loadCacheFile($configuration["general"]["debug"], $cacheFile);
+	dumpDebugInfo($configuration["general"]["debug"], $cache);
+}
 
 /* load and configure the publisher */
 loadPublisher($configuration);
@@ -127,9 +134,20 @@ foreach ($configuration["accounts"] as $key => $account)
 	if ($data === false)
 		continue;
 
+/* *******************************************************************************
+ * TODO
+ * Check state, save state
+ * ******************************************************************************* */
 	/* send a mail? */
 	if ($account["warn_percentage"] > 0)
+	{
+		// check state & send if needed
 		sendWarnEmail($configuration["general"]["debug"], $data, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
+		if ($configuration["general"]["use_state"] == true)
+		{
+		//saveState
+		}
+	}
 
 	/* publish the info */
 	echo $publisher->accountFooter();

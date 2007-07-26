@@ -28,6 +28,7 @@ http://www.gnu.org/licenses/gpl.txt
 define("_version", "1.32-beta");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
+define("_cacheFileName", "phptelemeter.cache");
 define("_versionURL", "http://www.kcore.org/software/phptelemeter/VERSION");
 define("_phptelemeterURL", "http://phptelemeter.kcore.org/");
 define("_key", "b?S3jLT+AB+SwQ,l2@0DrX}b!mL6}OeoDLHjiFKEGNxM}K*/dPbd4}.|");
@@ -35,7 +36,7 @@ define("_key", "b?S3jLT+AB+SwQ,l2@0DrX}b!mL6}OeoDLHjiFKEGNxM}K*/dPbd4}.|");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email", "encrypt_passwords", "cache_file");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email", "encrypt_passwords", "use_cache");
 $configKeys["general"]["obsolete"] = array("style", "daily", "parser");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 
@@ -43,7 +44,7 @@ $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_au
 /* Functions, functions, functions! */
 /* -------------------------------- */
 /* define some constants, based on the OS */
-function checkOS($configuration, &$configFiles)
+function checkOS($configuration, &$configFiles, &$cacheFiles)
 {
 	$os = strtoupper(substr(PHP_OS, 0, 3));
 
@@ -75,6 +76,7 @@ function checkOS($configuration, &$configFiles)
 	define("_homedir", $home);
 
 	$configFiles = array($systemDir . "/" . _configFileName, _homedir . "/." . _configFileName);
+	$cacheFiles = array($systemDir . "/" . _cacheFileName, _homedir . "/." . _cacheFileName);
 
 	dumpDebugInfo($configuration["general"]["debug"],
 		"OS     : " . _os . "\n" .
@@ -84,6 +86,9 @@ function checkOS($configuration, &$configFiles)
 
 	dumpDebugInfo($configuration["general"]["debug"], "CONFIG FILES:\n");
 	dumpDebugInfo($configuration["general"]["debug"], $configFiles);
+
+	dumpDebugInfo($configuration["general"]["debug"], "CACHE FILES:\n");
+	dumpDebugInfo($configuration["general"]["debug"], $cacheFiles);
 }
 
 /* we require version >= 4.3.0 */
@@ -111,7 +116,7 @@ function findConfigFile($configFiles, $configuration)
 	if ($found == false)
 		$returnValue = $aConfigFile;
 
-	dumpDebugInfo($configuration["general"]["debug"], "CONFIG: $returnValue\n");
+	dumpDebugInfo($configuration, "CONFIG: $returnValue\n");
 
 	return ($returnValue);
 }
@@ -244,8 +249,11 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; (to get the encrypted value of a password, use --encrypt)\n" .
 			"encrypt_passwords=false\n" .
 			";\n" .
-			"; Where to save the cache/state information? This file has to be writeable by phptelemeter!\n" .
-			"cache_file=\"~/.phptelemeter.cache\"\n" .
+			"; Do you want phptelemeter to use a cache file for state tracking?\n" .
+			"; phptelemeter will look for / try to create it's cache file in \n" .
+			"; either your home directory, or the system directory.\n " .
+			"; This file has to be writeable by phptelemeter!\n" .
+			"use_cache=true\n" .
 			";\n" .
 			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
 			"; If you set proxy_authenticate to true, you must fill the username\n" .
@@ -802,5 +810,26 @@ function cryptPassword($input, $mode, $cryptEnabled)
 		$returnValue = $input;
 
 	return ($returnValue);
+}
+
+function loadCacheFile($debug, $cacheFile)
+{
+	/* if the file doesn't exist, create a dummy */
+	if (! file_exists($cacheFile))
+	{
+		dumpDebugInfo($debug, "Cache file does not exist, creating empty file...");
+		if (file_put_contents($cacheFile, "# Empty cache file for phptelemeter\n") === false)
+			doError("error while writing cache file", "Could not create " . $cacheFile . ". Permission problem?", true);
+	}
+
+	/* read the config */
+	$cache = parse_ini_file($cacheFile, true);
+
+	return ($cache);
+}
+
+function saveCacheFile($debug, $cacheFile)
+{
+
 }
 ?>
