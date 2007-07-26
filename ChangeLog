@@ -6,6 +6,8 @@ What's new? Not much, but it's listed here.
 - Added option to change publisher at runtime without having to modify the
   configuration
 - Changed license to GPLv2 only
+- Implemented state-tracking for emails (feature request: 1718771)
+
 - Added edpnet_web parser, thanks to Ze0n-!
 
 1.31
