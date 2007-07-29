@@ -234,29 +234,6 @@ Extending phptelemeter
   written with very little checks, so sometimes the output is a bit strange.
   Just re-run, and you should get more usable data ;)
 
-Credits
-~~~~~~~
-- The PHP team for creating php ;p
-- The CURL team for creating curl, which made my job easy
-- Robbie (creator of pytelemeter), for the hints on how to output the data.
-- My friends for just being there ;p
-- Haploc:
-   * for the idea on multiple-account support
-   * access to Dommel.com meter data for testing
-   * for the idea on the ignore_errors parameter
-- Telenet, for creating the Telemeter4Tools
-- NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
-- Eric Pollman for his XML Library
-  (http://eric.pollmann.net/work/public_domain/)
-- Cajmere on be.comp.os.linux for a valid point about not finding the modules
-  when it's installed systemwide
-- YvesDM on be.comp.os.linux for:
-   * the hint of output publishers and account descriptions.
-   * some serious help in bugfixing with 'Turbo' accounts
-   * The idea for warn-emails
-- Gh0sty for testing the scarlet_web parser
-- Zeon- for testing the edpnet_web parser
-
 Bugs
 ~~~~
 - What? Bugs? Nooo... can't be. I'm infallible. Or smthing. ;p
