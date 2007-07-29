@@ -139,17 +139,16 @@ foreach ($configuration["accounts"] as $key => $account)
 	if ($data === false)
 		continue;
 
-	/* send a mail? */
-	if ($account["warn_percentage"] > 0)
+	/* send a mail? ONLY if the warn email address is filled in and the percentage is > 0 */
+	if (strlen($account["warn_email"]) != 0 && $account["warn_percent"] > 0)
 	{
+		$usage = calculateUsage($data["general"], $data["isp"]);
+		
 		if ($configuration["general"]["use_cache"] == true)
 		{
-
 			/* check if the account exists in the cache, if not, add */
 			if (! array_key_exists($account["username"], $cache))
 				$cache[$account["username"]]["mail_sent"] = false;
-
-			$usage = calculateUsage($data["general"], $data["isp"]);
 
 			$sendMail = "crap";
 			$setSentFalse = false;

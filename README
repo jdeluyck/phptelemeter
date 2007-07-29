@@ -184,7 +184,7 @@ Include files
   statement. phptelemeter will read this file and insert it at the location
   where it was in the original file.
 - Recursive [include] statements are _not_ supported! (so don't use [include]
-  inside an [included] file!)
+  inside an [include]'d file!)
 
 Running on a webserver
 ~~~~~~~~~~~~~~~~~~~~~~

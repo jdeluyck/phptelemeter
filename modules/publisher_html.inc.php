@@ -38,29 +38,60 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 	function mainHeader()
 	{
-		$returnStr = "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>
-		<html>
-		<head>
-			<META http-equiv='Content-Type' content='text/html; charset=iso-8859-15'>
-			<title>phptelemeter - version " . _version . "</title>
-		</head>
-		<body>";
+		$returnStr = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">
+	<html xmlns=\"http://www.w3.org/1999/xhtml\">
+	<head>
+		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />
+		<title>phptelemeter-v" . _version . "</title>
+		<style type=\"text/css\">
+			body {
+				background-color: #666666;
+				font-family: Tahoma, Verdana, Arial;
+				font-size: 10px;
+				text-transform: lowercase;
+				color: #FFFFFF;
+				text-align: center;
+			}
+
+			hr {
+				height: 0px;
+				color: #FFFFFF;
+				width: 300px;
+				border: 1px solid #FFFFFF;
+			}
+
+			h1 {
+				margin-top: 40px;
+				padding: 0px;
+				font-size: 20px;
+				font-weight: bold;
+			}
+
+			h2 {
+				margin: 30px;
+				padding: 0px;
+				font-size: 14px;
+			}
+			
+			.hilight {
+				color: #ff0000;
+			}
+		</style>
+	</head>
+	<body>
+		<div>\n";
 
 		return ($returnStr);
 	}
 
 	function mainFooter()
 	{
-		$returnStr = "</body>
-		</html>";
-		return ($returnStr);
+		return("\t</div>\n</body>\n</html>");
 	}
 
 	function accountHeader($accountName)
 	{
-		$returnStr = "<h1>" . $accountName . "</h1><hr>\n";
-
-		return($returnStr);
+		return("\t<h1>" . $accountName . "</h1>\n\t<hr />\n");
 	}
 
 	function publishData($data, $showRemaining, $showDaily, $showGraph, $showResetDate, $warnPercentage)
@@ -76,7 +107,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		/* general data, always shown */
 		$usage = calculateUsage($generalData, $isp);
 
-		$returnStr = "<h2>Usage statistics on " . date("d/m/Y") . "</h2>\n";
+		$returnStr = "\t<h2>Usage statistics on " . date("d/m/Y") . "</h2>\n";
 
 		if ($showGraph == true)
 		{
@@ -84,35 +115,35 @@ class telemeterPublisher extends telemeterPublisher_shared
 			{
 				if ($usage["download"]["percent"] > $warnPercentage && $warnPercentage != 0)
 				{
-					$downloadColour["pre"] = "<font color='red'>";
-					$downloadColour["post"] = "</font>";
+					$downloadColour["pre"] = "<span class='hilight'>";
+					$downloadColour["post"] = "</span>";
 				}
 				else
 					$downloadColour["pre"] = $downloadColour["post"] = "";
 
 				if( $usage["upload"]["percent"] > $warnPercentage && $warnPercentage != 0)
 				{
-					$uploadColour["pre"] = "<font color='red'>";
-					$uploadColour["post"] = "</font>";
+					$uploadColour["pre"] = "<span class='hilight'>";
+					$uploadColour["post"] = "</span>";
 
 				}
 				else
 					$uploadColour["pre"] = $uploadColour["post"] = "";
 
-				$returnStr .= sprintf("%sDownload used: [%-20s] - %5d MiB (%2d%%)%s<br>\n", $downloadColour["pre"],str_repeat("#", $usage["download"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"], $downloadColour["post"]);
-				$returnStr .= sprintf("%s&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)%s<br>\n", $uploadColour["pre"], str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"], $uploadColour["post"]);
+				$returnStr .= sprintf("%sDownload used: [%-20s] - %5d MiB (%2d%%)%s<br />\n", $downloadColour["pre"],str_repeat("#", $usage["download"]["hashes"]) . str_repeat("=", 20 - $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"], $downloadColour["post"]);
+				$returnStr .= sprintf("%s&nbsp;&nbsp;Upload used: [%-20s] - %5d MiB (%2d%%)%s<br />\n", $uploadColour["pre"], str_repeat("#", $usage["upload"]["hashes"]) . str_repeat("=", 20 - $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"], $uploadColour["post"]);
 			}
 			else
 			{
 				if ($usage["total"]["percent"] > $warnPercentage && $warnPercentage != 0)
 				{
-					$totalColour["pre"] = "<font color='red'>";
-					$totalColour["post"] = "</font>";
+					$totalColour["pre"] = "<span class='hilight'>";
+					$totalColour["post"] = "</span>";
 				}
 				else
 					$totalColour["pre"] = $totalColour["post"] = "";
 
-				$returnStr .= sprintf("%sQuota used: [%-20s] - %5d MiB (%2d%%)%s<br>\n", $totalColour["pre"], str_repeat("#", $usage["total"]["hashes"]) . str_repeat("&nbsp", 20 - $usage["total"]["hashes"]),$usage["total"]["use"], $usage["total"]["percent"], $totalColour["post"]);
+				$returnStr .= sprintf("%sQuota used: [%-20s] - %5d MiB (%2d%%)%s<br />\n", $totalColour["pre"], str_repeat("#", $usage["total"]["hashes"]) . str_repeat("=", 20 - $usage["total"]["hashes"]),$usage["total"]["use"], $usage["total"]["percent"], $totalColour["post"]);
 			}
 		}
 
@@ -124,30 +155,30 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 				if ($usage["download"]["left"] == 0)
 				{
-					$totaldownloadString = "\n<br>You have used up your complete download volume.";
+					$totaldownloadString = "\t<br />\n\tYou have used up your complete download volume.";
 					$returnStr .= $totaldownloadString;
 				}
 				else
 				{
 					if($usage["download"]["left"] < 0)
-						$totaldownloadString = "\n<br>You have exceeded your download volume by %d MiB.";
+						$totaldownloadString = "\t<br />\n\tYou have exceeded your download volume by %d MiB.";
 					elseif($usage["download"]["left"] > 0)
-						$totaldownloadString = "\n<br>You can download %d MiB without exceeding your download volume.";
+						$totaldownloadString = "\t<br />\n\tYou can download %d MiB without exceeding your download volume.";
 
 					$returnStr .= sprintf($totaldownloadString, abs($usage["download"]["left"]));
 				}
 
 				if ($usage["upload"]["left"] == 0)
 				{
-					$totalUploadString = "\n<br>You have used up your complete upload volume.";
+					$totalUploadString = "\t<br />\n\tYou have used up your complete upload volume.";
 					$returnStr .= $totalUploadString;
 				}
 				else
 				{
 					if ($usage["upload"]["left"] < 0)
-						$totalUploadString = "\n<br>You have exceeded your upload volume by %d MiB.";
+						$totalUploadString = "\t<br />\n\tYou have exceeded your upload volume by %d MiB.";
 					elseif($usage["upload"]["left"] > 0)
-						$totalUploadString = "\n<br>You can upload %d MiB without exceeding your upload volume.";
+						$totalUploadString = "\t<br />\n\tYou can upload %d MiB without exceeding your upload volume.";
 
 					$returnStr .= sprintf($totalUploadString, abs($usage["upload"]["left"]));
 				}
@@ -156,27 +187,26 @@ class telemeterPublisher extends telemeterPublisher_shared
 			{
 				if ($usage["total"]["left"] == 0)
 				{
-					$totalString = "\n<br>You have used up your complete volume.";
+					$totalString = "\t<br />\n\tYou have used up your complete volume.";
 					$returnStr .= $totalString;
 				}
 				else
 				{
 					if ($usage["total"]["left"] < 0)
-						$totalString = "\n<br>You have exceeded your volume by %d MiB.";
+						$totalString = "\t<br />\n\tYou have exceeded your volume by %d MiB.";
 					elseif($usage["total"]["left"] > 0)
-						$totalString = "\n<br>You can transfer %d MiB without exceeding your volume.";
+						$totalString = "\t<br />\n\tYou can transfer %d MiB without exceeding your volume.";
 
 					$returnStr .= sprintf($totalString, abs($usage["total"]["left"]));
 				}
 			}
-			$returnStr .= "<br>";
+			$returnStr .= "<br />\n";
 		}
 
 		if ($showResetDate && checkISPCompatibility($isp, "reset_date") == true)
 		{
-			$returnStr .= "\n<br>";
-			$returnStr .= "Your quota will be reset on " . $resetDate . " (" . $daysLeft . " days left)<br>\n";
-
+			$returnStr .= "\t<br />\n";
+			$returnStr .= "\tYour quota will be reset on " . $resetDate . " (" . $daysLeft . " days left)<br />\n\t<br />\n\t<br />\n\t<br />\n";
 		}
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
@@ -186,7 +216,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			else
 				$dateDiff = 2;
 
-			$returnStr .= "<h2>Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - $dateDiff] . "</h2>";
+			$returnStr .= "\t<h2>Statistics from " . $dailyData[0] . " to " . $dailyData[count ($dailyData) - $dateDiff] . "</h2>";
 			$returnStr .= "
 			<table border='1'>
 			<tr>
@@ -228,7 +258,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 	function newVersion($versionNr)
 	{
-		return("<br>There's a new version available: v" . $versionNr . "<br>You can get it at <a href='" . _phptelemeterURL . "' target='_blank'>" . _phptelemeterURL . "</a>\n");
+		return("\t<br />There's a new version available: v" . $versionNr . "<br />You can get it at <a href='" . _phptelemeterURL . "' target='_blank'>" . _phptelemeterURL . "</a>\n");
 	}
 }
 
