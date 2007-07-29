@@ -252,8 +252,10 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"; Do you want phptelemeter to use a cache file for state tracking?\n" .
 			"; phptelemeter will look for / try to create it's cache file in \n" .
 			"; either your home directory, or the system directory.\n " .
+			"; you can override the path with the optional cache_file paramter.\n" .
 			"; This file has to be writeable by phptelemeter!\n" .
 			"use_cache=true\n" .
+			";cache_file=\n" .
 			";\n" .
 			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
 			"; If you set proxy_authenticate to true, you must fill the username\n" .
@@ -274,8 +276,9 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"parser=\"aparser\"\n" .
 			"; The description is optional\n" .
 			";description=\"My first account\"\n" .
-			"; The percentage when, if crossed, an email should be send to the address\n" .
-			"; specified in warn_email. To disable, set warn_percentage to 0.\n" .
+			"; The percentage when, if crossed, the publishers should mark the quota\n" . 
+			"; 'red', and optionally send an email. If you don't want an email, leave\n" . 
+			"; warn_email blank. To disable both, set warn_percentage to 0.\n" .
 			"warn_percentage=90\n" .
 			"warn_email=\"youraddress@domain.tld\"\n" .
 			";\n" .
