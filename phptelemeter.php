@@ -140,7 +140,7 @@ foreach ($configuration["accounts"] as $key => $account)
 		continue;
 
 	/* send a mail? ONLY if the warn email address is filled in and the percentage is > 0 */
-	if (strlen($account["warn_email"]) != 0 && $account["warn_percent"] > 0)
+	if (strlen($account["warn_email"]) != 0 && $account["warn_percentage"] > 0)
 	{
 		$usage = calculateUsage($data["general"], $data["isp"]);
 		
