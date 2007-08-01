@@ -73,11 +73,38 @@ class telemeterPublisher extends telemeterPublisher_shared
 			$returnStr .= "\n";
 			if (checkISPCompatibility($isp, "seperate_quota") == true)
 			{
-				$returnStr .= sprintf("Download used: [%-20s] - %5d MiB (%2d%%)\n", str_repeat("#", $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"]);
-				$returnStr .= sprintf("  Upload used: [%-20s] - %5d MiB (%2d%%)\n", str_repeat("#", $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"]);
+				if ($usage["download"]["percent"] > $warnPercentage && $warnPercentage != 0)
+				{
+					$downloadColour["pre"] = chr(27) . '[01;31m';
+					$downloadColour["post"] = chr(27) . '[00m';
+				}
+				else
+					$downloadColour["pre"] = $downloadColour["post"] = "";
+
+				if( $usage["upload"]["percent"] > $warnPercentage && $warnPercentage != 0)
+				{
+					$uploadColour["pre"] = chr(27) . '[01;31m';
+					$uploadColour["post"] = chr(27) . '[00m';
+
+				}
+				else
+					$uploadColour["pre"] = $uploadColour["post"] = "";
+
+				$returnStr .= sprintf("%sDownload used: [%-20s] - %5d MiB (%2d%%)%s\n", $downloadColour["pre"], str_repeat("#", $usage["download"]["hashes"]),$usage["download"]["use"], $usage["download"]["percent"], $downloadColour["post"]);
+				$returnStr .= sprintf("%s  Upload used: [%-20s] - %5d MiB (%2d%%)%s\n", $uploadColour["pre"], str_repeat("#", $usage["upload"]["hashes"]),$usage["upload"]["use"], $usage["upload"]["percent"], $uploadColour["post"]);
 			}
 			else
-				$returnStr .= sprintf("Quota used: [%-20s] - %5d MiB (%2d%%)\n", str_repeat("#", $usage["total"]["hashes"]),$usage["total"]["use"], $usage["total"]["percent"]);
+			{
+				if ($usage["total"]["percent"] > $warnPercentage && $warnPercentage != 0)
+				{
+					$totalColour["pre"] = chr(27) . '[01;31m';
+					$totalColour["post"] = chr(27) . '[00m';
+				}
+				else
+					$totalColour["pre"] = $totalColour["post"] = "";
+
+				$returnStr .= sprintf("%sQuota used: [%-20s] - %5d MiB (%2d%%)%s\n", $totalColour["pre"], str_repeat("#", $usage["total"]["hashes"]),$usage["total"]["use"], $usage["total"]["percent"], $totalColour["post"] );
+			}
 
 		}
 

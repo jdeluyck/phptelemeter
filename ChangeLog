@@ -7,8 +7,8 @@ What's new? Not much, but it's listed here.
   configuration
 - Changed license to GPLv2 only
 - Implemented state-tracking for emails (feature request: 1718771)
-- Implemented red-hilighting of the used-up quota in the HTML publisher
-  (feature request: 1718774)
+- Implemented red-hilighting of the used-up quota in the html and plaintext
+  publishers (feature request: 1718774)
 - publisher_html is now XHTML compliant, with a nice CSS theme, thanks to
   _rEuTeL_
 
