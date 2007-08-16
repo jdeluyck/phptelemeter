@@ -276,8 +276,8 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 			"parser=\"aparser\"\n" .
 			"; The description is optional\n" .
 			";description=\"My first account\"\n" .
-			"; The percentage when, if crossed, the publishers should mark the quota\n" . 
-			"; 'red', and optionally send an email. If you don't want an email, leave\n" . 
+			"; The percentage when, if crossed, the publishers should mark the quota\n" .
+			"; 'red', and optionally send an email. If you don't want an email, leave\n" .
 			"; warn_email blank. To disable both, set warn_percentage to 0.\n" .
 			"warn_percentage=90\n" .
 			"warn_email=\"youraddress@domain.tld\"\n" .
@@ -804,13 +804,13 @@ function cryptPassword($input, $mode, $cryptEnabled, $cliCall=false)
 				doError("crypt string missing","You did not supply a string to " . $mode . "!", true);
 
 			$returnValue = $input;
-		} 
+		}
 		else
 		{
 			$td = mcrypt_module_open('blowfish', '', 'ecb', '');
 			$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
 			mcrypt_generic_init($td, _key, $iv);
-	
+
 			if ($mode == "encrypt")
 				$returnValue = base64_encode(mcrypt_generic($td, $input));
 			elseif ($mode == "decrypt")
@@ -829,7 +829,13 @@ function loadCacheFile($debug, $cacheFile)
 	if (! file_exists($cacheFile))
 	{
 		dumpDebugInfo($debug, "Cache file does not exist, creating empty file...");
-		if (file_put_contents($cacheFile, "# Empty cache file for phptelemeter\n") === false)
+		$fp = fopen($cacheFile, "w");
+		if ($fp !== false)
+		{
+			fwrite($fp, "# Empty cache file for phptelemeter\n");
+			fclose($fp);
+		}
+		else
 			doError("error while writing cache file", "Could not create " . $cacheFile . ". Permission problem?", true);
 	}
 

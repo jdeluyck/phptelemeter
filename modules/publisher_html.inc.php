@@ -72,7 +72,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 				padding: 0px;
 				font-size: 14px;
 			}
-			
+
 			.hilight {
 				color: #ff0000;
 			}
@@ -211,7 +211,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
-			if (checkISPCompatability($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "seperate_quota") == true)
 				$dateDiff = 3;
 			else
 				$dateDiff = 2;
