@@ -206,93 +206,91 @@ function writeDummyConfig($configFile, $writeNewConfig=false)
 	$config = @fopen ($configFile, "w");
 	if ($config)
 	{
-		fwrite ($config,
-			"; This is a sample configuration file for phptelemeter\n" .
-			"; Comments start with ';'\n" .
-			";\n" .
-			"; The options show_daily, show_remaining and file_output can be overridden\n" .
-			"; on the command line. Use --help to see them all, or look in the README.\n" .
-			";\n" .
-			"; An explanation for all parameters can be found in the README file.\n" .
-			";\n" .
-			"; You can specify multiple accounts by making stanza's named\n" .
-			"; [account-1] through [account-" . _maxAccounts . "]. Atleast one account is REQUIRED!\n" .
-			";\n" .
-			"[general]\n" .
-			"show_daily=false\n" .
-			"show_remaining=false\n" .
-			"show_graph=true\n" .
-			"show_resetdate=false\n" .
-			";\n" .
-			"file_prefix=\"/tmp/phptelemeter_\"\n" .
-			"file_extension=\"txt\"\n" .
-			"file_output=false\n" .
-			";\n" .
-			"check_version=false\n" .
-			";\n" .
-			"; This can be set to either plaintext, plaintext_graphonly, machine, no_output or html,\n" .
-			"; and the file needs to be present in the phptelemeter/modules directory!\n" .
-			"publisher=\"plaintext\"\n" .
-			";\n" .
-			"; You can set this path if phptelemeter has trouble finding\n" .
-			"; it's modules. Point it to the directory that contains the\n" .
-			"; modules directory.\n" .
-			";modulepath=\"/usr/local/share/phptelemeter\"\n" .
-			";\n" .
-			"; Do you want to ignore any runtime errors that occur and continue instead?\n" .
-			"ignore_errors=false\n" .
-			";\n" .
-			"; What email address to use as the From: address when sending warning mails:\n" .
-			"email=\"youremail@domain.tld\"\n" .
-			";\n" .
-			"; Enable password encryption? Reminder: This is NOT SECURE!\n" .
-			"; (to get the encrypted value of a password, use --encrypt)\n" .
-			"encrypt_passwords=false\n" .
-			";\n" .
-			"; Do you want phptelemeter to use a cache file for state tracking?\n" .
-			"; phptelemeter will look for / try to create it's cache file in \n" .
-			"; either your home directory, or the system directory.\n " .
-			"; you can override the path with the optional cache_file paramter.\n" .
-			"; This file has to be writeable by phptelemeter!\n" .
-			"use_cache=true\n" .
-			";cache_file=\n" .
-			";\n" .
-			"; Proxy configuration. Leave proxy_host blank to not use a proxy.\n" .
-			"; If you set proxy_authenticate to true, you must fill the username\n" .
-			"; and password too.\n" .
-			"[proxy]\n" .
-			"proxy_host=\n" .
-			"proxy_port=8080\n" .
-			"proxy_authenticate=false\n" .
-			"proxy_username=\n" .
-			"proxy_password=\n" .
-			";\n" .
-			"[account-1]\n" .
-			"username=\"myuser\"\n" .
-			"password=\"mypassword\"\n" .
-			"; The parser can either be telemeter4tools, telemeter_web, dommel_web,\n" .
-			"; skynet_web, scarlet_web, edpnet_web or upccz_web, and the file needs\n" .
-			"; to be present in the phptelemeter/modules directory!\n" .
-			"parser=\"aparser\"\n" .
-			"; The description is optional\n" .
-			";description=\"My first account\"\n" .
-			"; The percentage when, if crossed, the publishers should mark the quota\n" .
-			"; 'red', and optionally send an email. If you don't want an email, leave\n" .
-			"; warn_email blank. To disable both, set warn_percentage to 0.\n" .
-			"warn_percentage=90\n" .
-			"warn_email=\"youraddress@domain.tld\"\n" .
-			";\n" .
-			";\n" .
-			";[account-2]\n" .
-			";username=\"myuser\"\n" .
-			";password=\"mypassword\"\n" .
-			";parser=\"aparser\"\n" .
-			";description=\"My second account\"\n" .
-			";warn_percentage=90\n" .
-			";warn_email=\"youraddress@domain.tld\"\n" .
-			";\n" .
-			"[die]\n"
-		);
+		$configData = "; This is a sample configuration file for phptelemeter
+; Comments start with ';'
+
+; The options show_daily, show_remaining and file_output can be overridden
+; on the command line. Use --help to see them all, or look in the README.
+
+; An explanation for all parameters can be found in the README file.
+
+; You can specify multiple accounts by making stanza's named
+; [account-1] through [account-" . _maxAccounts . "]. Atleast one account is REQUIRED!
+
+[general]
+show_daily=false
+show_remaining=false
+show_graph=true
+show_resetdate=false
+
+file_prefix=\"/tmp/phptelemeter_\"
+file_extension=\"txt\"
+file_output=false
+
+check_version=false
+
+; This can be set to either plaintext, plaintext_graphonly, machine, no_output
+; or html, and the file needs to be present in the modules directory!
+publisher=\"plaintext\"
+
+; You can set this path if phptelemeter has trouble finding its modules.
+; Point it to the directory that contains the modules directory.
+;modulepath=\"/usr/local/share/phptelemeter\"
+
+; Do you want to ignore any runtime errors that occur and continue instead?
+ignore_errors=false
+
+; What email address to use as the From: address when sending warning mails:
+email=\"youremail@domain.tld\"
+
+; Enable password encryption? Reminder: This is NOT SECURE!
+; (to get the encrypted value of a password, use --encrypt)
+encrypt_passwords=false
+
+; Do you want phptelemeter to use a cache file for state tracking?
+; phptelemeter will look for / try to create it's cache file in
+; either your home directory, or the system directory.
+; You can override the path with the optional cache_file parameter.
+; This file has to be writeable by phptelemeter!
+use_cache=true
+;cache_file=
+
+; Proxy configuration. Leave proxy_host blank to not use a proxy.
+; If you set proxy_authenticate to true, you must fill the username
+; and password too.
+[proxy]
+proxy_host=
+proxy_port=8080
+proxy_authenticate=false
+proxy_username=
+proxy_password=
+
+[account-1]
+username=\"myuser\"
+password=\"mypassword\"
+; The parser can either be telemeter4tools, telemeter_web, dommel_web,
+; skynet_web, scarlet_web, edpnet_web or upccz_web, and the file needs
+; to be present in the phptelemeter/modules directory!
+parser=\"aparser\"
+; The description is optional
+;description=\"My first account\"
+; The percentage when, if crossed, the publishers should mark the quota
+; 'red', and optionally send an email. If you don't want an email, leave
+; warn_email blank. To disable both, set warn_percentage to 0.
+warn_percentage=90
+warn_email=\"youraddress@domain.tld\"
+
+;[account-2]
+;username=\"myuser\"
+;password=\"mypassword\"
+;parser=\"aparser\"
+;description=\"My second account\"
+;warn_percentage=90
+;warn_email=\"youraddress@domain.tld\"
+
+[die]\n";
+
+		fwrite ($config, $configData);
 		fclose($config);
 
 		if ($writeNewConfig == true)
@@ -507,29 +505,56 @@ function parseArgs($argv, $configuration)
 				break;
 			}
 
+			case "--enable-cache":
+			case "-a":
+			{
+				$configuration["general"]["use_cache"] = true;
+				break;
+			}
+
+			case "--disable-cache":
+			case "-o":
+			{
+				$configuration["general"]["use_cache"] = false;
+				break;
+			}
+
 			case "--help":
 			case "-h":
 			default:
 			{
 				showVersion();
-				echo "phptelemeter [options] \n";
-				echo "-c\t--check-version\t\tChecks if your phptelemeter is the latest version\n";
-				echo "-C\t--cache-file <name>\t\tWhere to look for the cache file\n";
-				echo "-d,\t--daily\t\t\tShows statistics for current period\n";
-				echo "-D,\t--debug\t\t\tShows lots of debugging info\n";
-				echo "-e,\t--encrypt <password>\tEncrypts the supplied password\n";
-				echo "-f,\t--file-output\t\tActivates file output instead of screen output.\n";
-				echo "-g,\t--graph\t\t\tShows the usage graphs.\n";
-				echo "-h,\t--help\t\t\tShows this help message.\n";
-				echo "-i,\t--ignore-errors\t\tIgnores any errors that might occur and continue.\n";
-				echo "-n,\t--new-config\t\tMakes a new dummy config file in the current directory.\n";
-				echo "-p,\t--publisher <name>\tUses the supplied publisher\n";
-				echo "-r,\t--remaining\t\tShows your max traffic allotment for today.\n";
-				echo "-V,\t--version\t\tShows the version and exits.\n";
-				echo "-x,\t--decrypt <password>\tDecrypts the supplied password\n";
-				echo "-z,\t--resetdate\t\tShows the quota reset date.\n";
-				echo "\n";
-				echo "Options specified here override the configuration file.\n\n";
+				echo <<<EOM
+phptelemeter [options]
+
+General options:
+-c,	--check-version		Checks if your phptelemeter is the latest
+-D,	--debug			Shows lots of debugging info
+-h,	--help			Shows this help message
+-i,	--ignore-errors		Ignores any errors that might occur and continue
+-n,	--new-config		Makes a new dummy config file in the current dir
+-V,	--version		Shows the version and exits
+
+Encryption/decryption:
+-e,	--encrypt <password>	Encrypts the supplied password
+-x,	--decrypt <password>	Decrypts the supplied password
+
+Cache file:
+-C,	--cache-file <name>	Where to look for the cache file
+-a,	--enable-cache		Enables the cache file
+-o,	--disable-cache		Disables the cache file
+
+Output modifiers:
+-d,	--daily			Shows statistics for current period
+-f,	--file-output		Activates file output instead of screen output
+-g,	--graph			Shows the usage graphs
+-p,	--publisher <name>	Uses the supplied publisher
+-r,	--remaining		Shows your max traffic allotment for today
+-z,	--resetdate		Shows the quota reset date
+
+Options specified here override the configuration file.
+
+EOM;
 				quit();
 			}
 		}
