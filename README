@@ -36,7 +36,6 @@ Requirements
   with SSL support!
 - register_globals must be activated in php.ini
 - For the encryption, you also need the mcrypt extension
--
 - For Telemeter4Tools it requires the nusoap SOAP library, and the xmlparser
   XML library. Both are included in the package. Do _not_ update the nusoap
   library because it has been patched to work with phptelemeter.
@@ -60,24 +59,31 @@ Howto
 Command line options
 ~~~~~~~~~~~~~~~~~~~~
 - There are several options (you can view them with --help):
-  * -c, --check-version - checks the version online **
-  * -C, --cache-file <name> - Where to look for the cache file **
-  * -d, --daily - show the 30day overview **
-  * -D, --debug - shows some debugging stuff **
-  * -e, --encrypt <password> - encrypts (obfuscates) the password given on the
-                               command line. Put this value then in the config
-                               file.
-  * -f, --file-output - sets the output to file mode instead of screen
-                        (stdout) **
-  * -g, --graph - show the usage graph **
-  * -h, --help - show help message
-  * -i, --ignore-errors - ignores any runtime errors and tries to continue **
-  * -n, --new-config - generates a new dummy config file on the spot
-  * -p, --publisher <name> - sets the output publisher to be used **
-  * -r, --remaining - show the remaining quota **
-  * -V, --version - shows the version and exits
-  * -x, --decrypt <password> - decrypts the password given on the command line
-  * -z, --resetdate - shows the reset date **
+
+General options:
+-c,	--check-version			Checks if your phptelemeter is the latest **
+-D,	--debug					Shows lots of debugging info **
+-h,	--help					Shows this help message
+-i,	--ignore-errors			Ignores any errors that might occur and continue **
+-n,	--new-config			Makes a new dummy config file in the current dir
+-V,	--version				Shows the version and exits
+
+Encryption/decryption:
+-e,	--encrypt <password>	Encrypts the supplied password
+-x,	--decrypt <password>	Decrypts the supplied password
+
+Cache file:
+-C,	--cache-file <name>		Where to look for the cache file **
+-a,	--enable-cache			Enables the cache file **
+-o,	--disable-cache			Disables the cache file
+
+Output modifiers:
+-d,	--daily					Shows statistics for current period **
+-f,	--file-output			Activates file output instead of screen output **
+-g,	--graph					Shows the usage graphs **
+-p,	--publisher <name>		Uses the supplied publisher **
+-r,	--remaining				Shows your max traffic allotment for today **
+-z,	--resetdate				Shows the quota reset date **
 
 (Options market with '**' override the configuration file)
 
@@ -98,81 +104,81 @@ Configuration file location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - The configuration file is searched in two locations, in the following order
   (whichever is found first is used)
-  * /etc/phptelemeterrc (or %WINDIR/phptelemeterrc)
-  * ~/.phptelemeterrc (or %PROFILEDIR/.phptelemeterrc)
+  * /etc/phptelemeterrc (or %WINDIR%/phptelemeterrc)
+  * ~/.phptelemeterrc (or %PROFILEDIR%/.phptelemeterrc)
 - If no configuration file is found, the script will try to create a dummy in
-  ~/.phptelemeterrc.
+  ~/.phptelemeterrc. (or %PROFILEDIR%/.phptelemeterrc)
 
 Configuration file layout
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 [general]
 show_daily=true				# Show 30-day stats (true/false)
-show_remaining=true			# Show how much you have remaining
-					# (true/false)
+show_remaining=true			# Show how much you have remaining (true/false)
 show_graph=true				# Show the transfer graph (true/false)
-show_resetdate=false			# Shows the reset-date for your meter.
+show_resetdate=false		# Shows the reset-date for your meter.
 
 file_output=false			# Sets if file output should be used
-					# instead of screen (stdout)
-file_prefix=/tmp/phptelemeter_		# The path prefix to use for the
-					# output files
-file_extension=txt			# The extension to use for the output
-					# files
+							# instead of screen (stdout)
 
-check_version=false			# Check the current version against
-					# the latest upstream version, and
-					# report if there's a new version
-					# available.
+file_prefix=/tmp/phptelemeter_		# The path prefix to use for the
+									# output files
+
+file_extension=txt			# The extension to use for the output files
+
+check_version=false			# Check the current version against the latest
+							# upstream version, and report if there's a new
+							# version available.
 
 publisher=plaintext			# The publisher module to use.
-					# Currently plaintext, machine,
-					# plaintext_graphonly, no_output and
-					# html are included.
-modulepath=/path/to/phptelemeter	# The path to where the modules
-					# directory is. Optional.
+							# Currently plaintext, machine,
+							# plaintext_graphonly, no_output and html are
+							# included.
 
-ignore_errors=false			# Ignore any runtime errors that might
-					# occur.
-email=your email			# What email address to use as From:
-					# when sending warning mails
-encrypt_passwords=false			# Encrypted passwords in the config
-use_cache=false			# use the cache file?
-cache_file=			# path to the cache file (optional) - overrides the detection
+modulepath=/path/to/phptelemeter	# The path to where the modules directory
+									# is. Optional.
+
+ignore_errors=false			# Ignore any runtime errors that might occur.
+
+email=your email			# What email address to use as From: when
+							# sending warning mails
+
+encrypt_passwords=false		# Encrypted passwords in the config
+use_cache=false				# use the cache file?
+cache_file=					# path to the cache file (optional)
+							# (overrides the detection)
 
 [proxy]
-proxy_host=				# Hostname of the proxy. Leave blank
-					# to disable
+proxy_host=					# Hostname of the proxy. Leave blank to disable
 proxy_port=8080				# port of the proxy
-proxy_auth=false			# set to true to enable proxy
-					# authentication
+proxy_auth=false			# set to true to enable proxy authentication
 proxy_username=				# Proxy username
 proxy_password=				# Proxy password
 
 [account-1]
 username=youruser			# The username of account-1
-password=yourpassword			# The password of account-1
+password=yourpassword		# The password of account-1
 description=your description		# Description of account-1, if it is
-					# set it'll be used instead of the
-					# account name in the output
-parser=a parser				# The parsing module to use for
-					# account-1. Currently telemeter4tools,
-					# telemeter_web, dommel_web, skynet_web,
-					# scarlet_web, edpnet_web and upccz_web
-					# are included.
-warn_percentage=percentage		# Percentage when to make the output 
-					# "red" in the HTML publisher. Set to 0 to disable 
-					# this and the email sending
+									# set it'll be used instead of the account
+									# name in the output
+parser=a parser				# The parsing module to use for account-1.
+							# Currently telemeter4tools, telemeter_web,
+							# dommel_web, skynet_web, scarlet_web, edpnet_web
+							# and upccz_web are included.
+warn_percentage=percentage	# Percentage when to make the output "red" in the
+							# publishers. Set to 0 to disable this and the
+							# email sending
 warn_email=email address	# email address where to send warning email.
-					# leave empty to disable email-sending.
+							# leave empty to disable email-sending.
+
 ...
 
 [account-99]
 username=youruser			# The username of account-99
-password=yourpassword			# The password of account-99
+password=yourpassword		# The password of account-99
 description=your description		# Description of account-99
 parser=a parser				# Parser of account-99
-warn_percentage=percentage		# Warning percentage of account-99
-warn_email=email address		# Warning email address of account-99
+warn_percentage=percentage	# Warning percentage of account-99
+warn_email=email address	# Warning email address of account-99
 
 Include files
 ~~~~~~~~~~~~~
