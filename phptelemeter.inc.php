@@ -861,7 +861,7 @@ function loadCacheFile($debug, $cacheFile)
 			fclose($fp);
 		}
 		else
-			doError("error while writing cache file", "Could not create " . $cacheFile . ". Permission problem?", true);
+			doError("error while writing initial cache file", "Could not create " . $cacheFile . ". Permission problem?", true);
 	}
 
 	/* read the config */
