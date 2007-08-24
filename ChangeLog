@@ -2,6 +2,10 @@ What's new? Not much, but it's listed here.
 
 1.33
 ~~~~
+- Added red-hilighting support to plaintext_graphonly publisher
+-
+
+
 - Added edpnet_web parser, thanks to Ze0n-!
 
 1.32
