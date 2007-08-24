@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.33
+~~~~
+- Added edpnet_web parser, thanks to Ze0n-!
+
 1.32
 ~~~~
 - Added parser simulators for single and separate quotas
@@ -11,8 +15,6 @@ What's new? Not much, but it's listed here.
   publishers (feature request: 1718774)
 - publisher_html is now XHTML compliant, with a nice CSS theme, thanks to
   _rEuTeL_
-
-- Added edpnet_web parser, thanks to Ze0n-!
 
 1.31
 ~~~~
