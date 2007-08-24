@@ -909,10 +909,11 @@ function write_ini_file($path, $assoc_array)
 
     $content .= $sections;
 
-    if (!$handle = fopen($path, 'w'))
-        return false;
+	$handle = @fopen($path, "w");
+	if ($handle === false)
+		return false;
 
-    if (!fwrite($handle, $content))
+    if (fwrite($handle, $content) === false)
         return false;
 
     fclose($handle);
