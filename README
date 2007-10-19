@@ -26,7 +26,7 @@ Which ISP's are supported?
 | Dommel  | dommel_web        |      X     |   X   |         |
 | Skynet  | skynet_web        |      X     |   X   |         |
 | Scarlet | scarlet_web       |      X     |   X   |    X    |
-| EDPNet  | edpnet_web        |      X     |   X   |    X    |
+| EDPNet  | edpnet_web        |            |   X   |         |
 | UPC CZ  | upccz_web         |      X     |   X   |         |
 --------------------------------------------------------------
 
@@ -95,102 +95,14 @@ Notes on the version check
 - For all you paranoid people: the only thing phptelemeter does is load an
   URL when it's started. The url is:
   http://www.kcore.org/software/phptelemeter/VERSION
-  which contains nothing but a version number, of the latest upstream version.
+  which contains nothing but the version number of the latest upstream version.
 
 - If you set check_version=false, it won't bother doing that and as such won't
   do anything.
 
-Configuration file location
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- The configuration file is searched in two locations, in the following order
-  (whichever is found first is used)
-  * /etc/phptelemeterrc (or %WINDIR%/phptelemeterrc)
-  * ~/.phptelemeterrc (or %PROFILEDIR%/.phptelemeterrc)
-- If no configuration file is found, the script will try to create a dummy in
-  ~/.phptelemeterrc. (or %PROFILEDIR%/.phptelemeterrc)
-
-Configuration file layout
-~~~~~~~~~~~~~~~~~~~~~~~~~
-[general]
-show_daily=true				# Show 30-day stats (true/false)
-show_remaining=true			# Show how much you have remaining (true/false)
-show_graph=true				# Show the transfer graph (true/false)
-show_resetdate=false		# Shows the reset-date for your meter.
-
-file_output=false			# Sets if file output should be used
-							# instead of screen (stdout)
-
-file_prefix=/tmp/phptelemeter_		# The path prefix to use for the
-									# output files
-
-file_extension=txt			# The extension to use for the output files
-
-check_version=false			# Check the current version against the latest
-							# upstream version, and report if there's a new
-							# version available.
-
-publisher=plaintext			# The publisher module to use.
-							# Currently plaintext, machine,
-							# plaintext_graphonly, no_output and html are
-							# included.
-
-modulepath=/path/to/phptelemeter	# The path to where the modules directory
-									# is. Optional.
-
-ignore_errors=false			# Ignore any runtime errors that might occur.
-
-email=your email			# What email address to use as From: when
-							# sending warning mails
-
-encrypt_passwords=false		# Encrypted passwords in the config
-use_cache=false				# use the cache file?
-cache_file=					# path to the cache file (optional)
-							# (overrides the detection)
-
-[proxy]
-proxy_host=					# Hostname of the proxy. Leave blank to disable
-proxy_port=8080				# port of the proxy
-proxy_auth=false			# set to true to enable proxy authentication
-proxy_username=				# Proxy username
-proxy_password=				# Proxy password
-
-[account-1]
-username=youruser			# The username of account-1
-password=yourpassword		# The password of account-1
-description=your description		# Description of account-1, if it is
-									# set it'll be used instead of the account
-									# name in the output
-parser=a parser				# The parsing module to use for account-1.
-							# Currently telemeter4tools, telemeter_web,
-							# dommel_web, skynet_web, scarlet_web, edpnet_web
-							# and upccz_web are included.
-warn_percentage=percentage	# Percentage when to make the output "red" in the
-							# publishers. Set to 0 to disable this and the
-							# email sending
-warn_email=email address	# email address where to send warning email.
-							# leave empty to disable email-sending.
-
-...
-
-[account-99]
-username=youruser			# The username of account-99
-password=yourpassword		# The password of account-99
-description=your description		# Description of account-99
-parser=a parser				# Parser of account-99
-warn_percentage=percentage	# Warning percentage of account-99
-warn_email=email address	# Warning email address of account-99
-
-Include files
+Configuration
 ~~~~~~~~~~~~~
-- Starting version 1.31, phptelemeter supports using include files in the main
-  configuration file. This allows you to easily split up the configuration
-  in logical chunks.
-- To use this, you have to insert into phptelemeterrc an
-  [include /path/to/file]
-  statement. phptelemeter will read this file and insert it at the location
-  where it was in the original file.
-- Recursive [include] statements are _not_ supported! (so don't use [include]
-  inside an [include]'d file!)
+- Please see the supplied documentation file, titled "Configuration".
 
 Running on a webserver
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -207,6 +119,11 @@ Running on windows
   I implemented specific support for the windows platform, and I guess it
   _should_ work. Should you run it, and it works, please let me know.
   If it doesn't, feel free to file any and all bugs.
+
+Running on Mac OS X
+~~~~~~~~~~~~~~~~~~~
+- This script has been thoroughly tested on Mac OS X 10.4.8 and higher, and
+  works without any problems.
 
 Where to get it
 ~~~~~~~~~~~~~~~

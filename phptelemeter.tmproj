@@ -2,21 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>currentDocument</key>
-	<string>modules/parser_simulator_separate.inc.php</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>AUTHORS</string>
 			<key>lastUsed</key>
-			<date>2007-07-11T09:16:28Z</date>
+			<date>2007-07-29T15:34:40Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>ChangeLog</string>
 			<key>lastUsed</key>
-			<date>2007-07-11T09:16:27Z</date>
+			<date>2007-07-29T15:36:35Z</date>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -29,6 +27,8 @@
 		<dict>
 			<key>filename</key>
 			<string>mkrelease.sh</string>
+			<key>lastUsed</key>
+			<date>2007-07-29T15:33:56Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -57,12 +57,16 @@
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.inc.php</string>
+			<key>lastUsed</key>
+			<date>2007-07-29T15:41:02Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.php</string>
 			<key>lastUsed</key>
-			<date>2007-07-11T09:20:06Z</date>
+			<date>2007-07-29T15:31:35Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -74,7 +78,15 @@
 		</dict>
 		<dict>
 			<key>filename</key>
+			<string>credits</string>
+			<key>lastUsed</key>
+			<date>2007-07-29T15:34:39Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
 			<string>README</string>
+			<key>lastUsed</key>
+			<date>2007-07-29T15:37:46Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -94,26 +106,7 @@
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>245</integer>
 	<key>metaData</key>
-	<dict>
-		<key>modules/parser_simulator_separate.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>33</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>20</integer>
-		</dict>
-	</dict>
-	<key>openDocuments</key>
-	<array>
-		<string>modules/parser_simulator_separate.inc.php</string>
-	</array>
+	<dict/>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>

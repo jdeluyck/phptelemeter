@@ -5,7 +5,7 @@ if (! defined("_phptelemeter")) exit();
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
-publisher_shared.inc.php - file which contains the shared publisher infrastructure
+phptelemeter_publisher_shared.inc.php - file which contains the shared publisher infrastructure
 
 Copyright (C) 2005 - 2007 Jan De Luyck  <jan -at- kcore -dot- org>
 
@@ -31,6 +31,9 @@ class telemeterPublisher_shared
 
 	var $dataParts;
 
+	var $neededConfigKeys = "";
+	var $configKeys = "";
+	
 	function telemeterPublisher_shared()
 	{
 		$this->dataParts = array("general", "daily", "isp", "reset_date", "days_left");
@@ -49,6 +52,16 @@ class telemeterPublisher_shared
 	function getNeededModules()
 	{
 		return ($this->neededModules);
+	}
+	
+	function getNeededConfigKeys()
+	{
+		return($this->neededConfigKeys);
+	}
+	
+	function setConfigKey($key, $value)
+	{
+		$this->configKey[$key] = $value;
 	}
 
 	/* exit function for us. */

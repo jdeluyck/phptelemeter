@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "machine");
-define("_phptelemeter_publisher_version", "12");
+define("_phptelemeter_publisher_version", "13");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -34,6 +34,8 @@ class telemeterPublisher extends telemeterPublisher_shared
 	{
 		/* call parent constructor */
 		telemeterPublisher_shared::telemeterPublisher_shared();
+		
+		$this->neededConfigKeys = array("separator");
 	}
 
 	function accountHeader($accountName)
@@ -59,18 +61,19 @@ class telemeterPublisher extends telemeterPublisher_shared
 		/* general data, always shown */
 
 		$usage = calculateUsage($generalData, $isp);
-
+		$separator = $this->configKey["separator"];
+		
 		if (checkISPCompatibility($isp, "seperate_quota") == true)
 		{
-			$returnStr = "#DownlMax,DownlUsed,DownlPercent,DownlLeft\n";
-			$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["download"]["max"], $usage["download"]["use"], $usage["download"]["percent"], $usage["download"]["left"]);
-			$returnStr .= "#UplMax,UplUsed,UplPercent,UplLeft\n";
-			$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["upload"]["max"], $usage["upload"]["use"], $usage["upload"]["percent"], $usage["upload"]["left"]);
+			$returnStr = sprintf("#DownlMax%sDownlUsed%sDownlPercent%sDownlLeft\n", $separator, $separator, $separator);
+			$returnStr .= sprintf("%d%s%d%s%d%s%d\n", $usage["download"]["max"], $separator, $usage["download"]["use"], $separator, $usage["download"]["percent"], $separator, $usage["download"]["left"]);
+			$returnStr .= sprintf("#UplMax%sUplUsed%sUplPercent%sUplLeft\n", $separator, $separator, $separator);
+			$returnStr .= sprintf("%d%s%d%s%d%s%d\n", $usage["upload"]["max"], $separator, $usage["upload"]["use"], $separator, $usage["upload"]["percent"], $separator, $usage["upload"]["left"]);
 		}
 		else
 		{
-			$returnStr = "#TotMax,TotUsed,TotPercent,TotLeft\n";
-			$returnStr .= sprintf("%d,%d,%d,%d\n", $usage["total"]["max"], $usage["total"]["use"], $usage["total"]["percent"], $usage["total"]["left"]);
+			$returnStr = sprintf("#TotMax%sTotUsed%sTotPercent%sTotLeft\n", $separator, $separator, $separator);
+			$returnStr .= sprintf("%d%s%d%s%d%s%d\n", $usage["total"]["max"], $separator, $usage["total"]["use"], $separator, $usage["total"]["percent"], $separator, $usage["total"]["left"]);
 		}
 
 		$returnStr .= "\n";
@@ -78,9 +81,9 @@ class telemeterPublisher extends telemeterPublisher_shared
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
 			if (checkISPCompatibility($isp, "seperate_quota") == true)
-				$returnStr .= "#Date,DownlUsed,UplUsed\n";
+				$returnStr .= sprintf("#Date%sDownlUsed%sUplUsed\n", $separator, $separator);
 			else
-				$returnStr .= "#Date,QuotaUsed\n";
+				$returnStr .= sprintf("#Date%sQuotaUsed\n", $separator);
 
 			for ($i = 0; $i < count($dailyData); $i++)
 			{
@@ -91,13 +94,13 @@ class telemeterPublisher extends telemeterPublisher_shared
 					$download = $dailyData[$i++];
 					$upload = $dailyData[$i];
 
-					$returnStr .= sprintf("%s,%d,%d\n",$date, $download, $upload);
+					$returnStr .= sprintf("%s%s%d%s%d\n",$date, $separator, $download, $separator, $upload);
 				}
 				else
 				{
 					$traffic = $dailyData[$i];
 
-					$returnStr .= sprintf("%s,%d\n", $date, $traffic);
+					$returnStr .= sprintf("%s%s%d\n", $date, $separator, $traffic);
 				}
 			}
 		}

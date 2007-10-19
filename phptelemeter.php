@@ -92,6 +92,10 @@ if ($configuration["general"]["use_cache"] == true)
 loadPublisher($configuration);
 $publisher = new telemeterPublisher();
 checkModules($publisher->getNeededModules());
+checkConfigurationForPublisherKeys($configuration, $publisher->getNeededConfigKeys());
+
+/* set the necessary extra parameters, if any */
+setPublisherParameters(&$publisher, $configuration);
 
 /* set the debugging flag if needed */
 $publisher->setDebug($configuration["general"]["debug"]);

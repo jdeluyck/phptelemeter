@@ -36,9 +36,10 @@ define("_key", "b?S3jLT+AB+SwQ,l2@0DrX}b!mL6}OeoDLHjiFKEGNxM}K*/dPbd4}.|");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily"  , "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "publisher", "check_version", "ignore_errors", "email", "encrypt_passwords", "use_cache");
-$configKeys["general"]["obsolete"] = array("style", "daily", "parser");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily", "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "check_version", "ignore_errors", "email", "encrypt_passwords", "use_cache");
+$configKeys["general"]["obsolete"] = array("style", "daily", "parser", "publisher");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
+$configKeys["publisher"]["required"] = array("publisher");
 
 /* -------------------------------- */
 /* Functions, functions, functions! */
@@ -229,10 +230,6 @@ file_output=false
 
 check_version=false
 
-; This can be set to either plaintext, plaintext_graphonly, machine, no_output
-; or html, and the file needs to be present in the modules directory!
-publisher=\"plaintext\"
-
 ; You can set this path if phptelemeter has trouble finding its modules.
 ; Point it to the directory that contains the modules directory.
 ;modulepath=\"/usr/local/share/phptelemeter\"
@@ -264,6 +261,15 @@ proxy_port=8080
 proxy_authenticate=false
 proxy_username=
 proxy_password=
+
+; publisher configuration. This section can require additional parameters,
+; which are publisher-dependent.
+[publisher]
+; This can be set to either plaintext, plaintext_graphonly, machine, no_output
+; or html, and the file needs to be present in the modules directory!
+publisher=\"plaintext\"
+; The separator for the machine publisher
+separator=\",\"
 
 [account-1]
 username=\"myuser\"
@@ -301,6 +307,7 @@ warn_email=\"youraddress@domain.tld\"
 	else
 		doError("no write permissions", "No configuration file was found, and I was unable to create the dummy\nconfiguration file in $configFile.\nPlease check the permissions and rerun phptelemeter.\n", true);
 }
+
 function checkConfig($configuration, $configFile, $configKeys)
 {
 	/* ERROR CHECKING */
@@ -313,10 +320,11 @@ function checkConfig($configuration, $configFile, $configKeys)
 	checkConfigurationForKeys($configuration, array("die"), true, "configuration not correct.", "Edit $configFile and remove the \n%MSG%line!", true);
 
 	/* verify general configuration */
-	checkConfigurationForKeys($configuration           , array("general", "proxy")         , false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease check the README, correct and rerun phptelemeter.", true);
-	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["required"], false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
-	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["obsolete"], true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
-	checkConfigurationForKeys($configuration["proxy"]  , $configKeys["proxy"]["required"]  , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration           , array("general", "proxy", "publisher"), false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease check the README, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["required"]    , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["obsolete"]    , true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
+	checkConfigurationForKeys($configuration["proxy"]  , $configKeys["proxy"]["required"]      , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["publisher"], $configKeys["publisher"]["required"]  , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
 
 	/* look for the modulepath */
 	if (! array_key_exists("modulepath", $configuration["general"]))
@@ -381,6 +389,13 @@ function checkConfigurationForKeys($configurationSection, $keys, $keyThere, $err
 		$errorMsg = str_replace("%MSG%", $msg, $errorMsg);
 		doError($errorTitle, $errorMsg, $quit);
 	}
+}
+
+function checkConfigurationForPublisherKeys($configuration, $keys)
+{
+	/* if this ain't an array, we assume nothing was set. */
+	if (is_array($keys))
+		checkConfigurationForKeys($configuration["publisher"], $keys, false, "configuration not correct.", "The selected publisher requires the following extra fields:\n%MSG%in the [publisher] section. Please check the README, correct and rerun phptelemeter.", true);
 }
 
 /* Parses the command-line arguments and fits them in the configuration array */
@@ -494,7 +509,7 @@ function parseArgs($argv, $configuration)
 			case "--publisher":
 			case "-p":
 			{
-				$configuration["general"]["publisher"] = $argv[++$i];
+				$configuration["publisher"]["publisher"] = $argv[++$i];
 				break;
 			}
 
@@ -601,14 +616,14 @@ function loadParser($aParser, $configuration)
 
 function loadPublisher($configuration)
 {
-	$publisher = "modules/publisher_" . $configuration["general"]["publisher"] . ".inc.php";
+	$publisher = "modules/publisher_" . $configuration["publisher"]["publisher"] . ".inc.php";
 
 	dumpDebugInfo($configuration["general"]["debug"], "PUBLISHER: Trying to load " . $publisher . "\n");
 
 	require_once($publisher);
 
 	if (! defined("_phptelemeter_publisher"))
-		doError("Invalid publisher", "The publisher " . $configuration["general"]["publisher"] . " is not valid!", true);
+		doError("Invalid publisher", "The publisher " . $configuration["publisher"]["publisher"] . " is not valid!", true);
 
 	dumpDebugInfo($configuration["general"]["debug"], "PUBLISHER: Loaded publisher " . _phptelemeter_publisher . ", version " . _phptelemeter_publisher_version . "\n");
 }
@@ -733,6 +748,8 @@ function obfuscateLog($data, $credentialInfo)
 {
 	if (is_array($data))
 	{
+		$newdata = "";
+		
 		/* if it's an array, recurse */
 		foreach ($data as $key => $value)
 		{
@@ -919,5 +936,20 @@ function write_ini_file($path, $assoc_array)
     fclose($handle);
 
     return true;
+}
+
+function setPublisherParameters(&$publisher, $configuration)
+{
+	dumpDebugInfo($configuration["general"]["debug"], "Setting keys in publisher:\n");
+	$keys = $publisher->getNeededConfigKeys();
+	
+	if (is_array($keys))
+	{
+		foreach ($keys as $aKey)
+		{
+			dumpDebugInfo($configuration["general"]["debug"], $aKey . " => " . $configuration["publisher"][$aKey] . "\n");
+			$publisher->setConfigKey($aKey, $configuration["publisher"][$aKey]);
+		}
+	}
 }
 ?>

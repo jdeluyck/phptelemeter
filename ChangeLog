@@ -3,10 +3,12 @@ What's new? Not much, but it's listed here.
 1.33
 ~~~~
 - Added red-hilighting support to plaintext_graphonly publisher
--
-
-
-- Added edpnet_web parser, thanks to Ze0n-!
+- Moved the publisher parameter to a new [publisher] section, allowing for 
+  publisher-specific config settings
+- Splitted all config-related README items into a new document, Configuration
+- The machine publisher now has a configuration parameter, separator
+- Added a graphbar publisher (thanks to Nikon for the initial code!)
+- Added (incomplete) edpnet_web parser, thanks to Ze0n-!
 
 1.32
 ~~~~

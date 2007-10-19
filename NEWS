@@ -1,8 +1,7 @@
-phptelemeter 1.32
+phptelemeter 1.33
 ~~~~~~~~~~~~~~~~~
-- New keys were added to the [general] section:
-  * use_cache
-  * cache_file (optional key)
+- the publisher key was moved from the [general] section to a new
+  [publisher] section.
 
 Please update your configuration file, or generate a new one.
 For more details, see the README file.
@@ -10,6 +9,11 @@ For more details, see the README file.
 ------------
 | OLD NEWS |
 ------------
+phptelemeter 1.32
+~~~~~~~~~~~~~~~~~
+- New keys were added to the [general] section:
+  * use_cache
+  * cache_file (optional key)
 
 phptelemeter 1.31
 ~~~~~~~~~~~~~~~~~
