@@ -1,5 +1,4 @@
 <?php
-
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_parser_edpnet_web", "1");
@@ -74,33 +73,6 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		/* now remove the first item from the _postFields array, and re-pass */
 		array_shift($this->_postFields);
 
-		dumpDebugInfo($this->debug, "----------\n");
-
-
-		/* get historical data */
-		$historicalData = $this->docurl($this->url["details"],$this->createPostFields());
-
-		if ($this->checkForError($historicalData) !== false)
-			return (false);
-
-		/* stats */
-		$data = $this->prepareData($data);
-
-		/* find the entry position */
-		for ($i = 0; $i < count($data); $i++)
-		{
-			if (stristr($data[$i], "Total") !== false)
-				$pos["used"] = $i + 1;
-			elseif(stristr($data[$i], "Allowed") !== false)
-				$pos["max"] = $i + 1;
-		}
-
-		dumpDebugInfo($this->debug, "DEBUG: \$data\n");
-		dumpDebugInfo($this->debug, $data);
-
-		dumpDebugInfo($this->debug, "POS:\n");
-		dumpDebugInfo($this->debug, $pos);
-
 		/* total used */
 		$volume["used"] = substr($data[$pos["used"]],0,-2);
 
@@ -109,34 +81,34 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 
 		/* daily historical stats */
 		/* cleanout */
-		$historicalData = $this->prepareData(str_replace(array("</td>","</tr>"),"\n",$historicalData));
+/*		 $historicalData = $this->prepareData(str_replace(array("</td>","</tr>"),"\n",$historicalData));
 		array_shift($historicalData);
 		array_shift($historicalData);
 		array_shift($historicalData);
 
 		dumpDebugInfo($this->debug, "DEBUG; \$historicalData\n");
 		dumpDebugInfo($this->debug, $historicalData);
-
+*/
 		/* loopke in vooruit van vanachter met 3 achteruit per loop :p */
-		$temp = $historicalData[count($historicalData) - 3];
+/*		$temp = $historicalData[count($historicalData) - 3];
 		$reset_date = date("d/m/y", mktime(0,0,0,substr($temp,3,2)+1,substr($temp,0,2),substr($temp,-4)));
 		for ($i = count($historicalData) - 3; $i >= 0; $i--)
 		{
 			$dailyData[] = date("d/m/y", mktime(0,0,0,substr($historicalData[$i],3,2),substr($historicalData[$i],0,2),substr($historicalData[$i++],-4)));
 			$dailyData[] = round(floatval(str_replace(",",".",substr($historicalData[$i++],0,-2)))) + round(floatval(str_replace(",",".",substr($historicalData[$i],0,-2))));
-
+*/
 			/* correct counter */
-			$i -= 4;
+/*			$i -= 4;
 		}
 
 		dumpDebugInfo($this->debug, "DEBUG; \$dailydata\n");
 		dumpDebugInfo($this->debug, $dailyData);
-
+*/
 
 		$returnValue["general"] = $volume;
-		$returnValue["daily"] = $dailyData;
+//		$returnValue["daily"] = $dailyData;
 		$returnValue["isp"] = $this->_ISP;
-		$returnValue["reset_date"] = $reset_date;
+//		$returnValue["reset_date"] = $reset_date;
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
 		dumpDebugInfo($this->debug, $returnValue);
