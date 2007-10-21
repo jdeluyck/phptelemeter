@@ -66,6 +66,10 @@ General options:
 -h,	--help					Shows this help message
 -i,	--ignore-errors			Ignores any errors that might occur and continue **
 -n,	--new-config			Makes a new dummy config file in the current dir
+-N,	--no-config				Don't create a config file if none exists
+-t,	--add-option <section> <key> <value>
+							Adds the key=value to the [section] of the 
+							configuration **
 -V,	--version				Shows the version and exits
 
 Encryption/decryption:

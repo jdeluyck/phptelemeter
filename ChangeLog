@@ -7,8 +7,12 @@ What's new? Not much, but it's listed here.
   publisher-specific config settings
 - Splitted all config-related README items into a new document, Configuration
 - The machine publisher now has a configuration parameter, separator
-- Added a graphbar publisher (thanks to Nikon for the initial code!)
 - Added (incomplete) edpnet_web parser, thanks to Ze0n-!
+- Added --add-option parameter to add configuration options without changing 
+  the config file
+
+- Added a graphbar publisher (thanks to Nikon for the initial code!)
+
 
 1.32
 ~~~~

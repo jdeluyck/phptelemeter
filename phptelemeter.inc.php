@@ -401,6 +401,12 @@ function checkConfigurationForPublisherKeys($configuration, $keys)
 /* Parses the command-line arguments and fits them in the configuration array */
 function parseArgs($argv, $configuration)
 {
+	
+	/* short options in use:
+	-a -c -d -e -f -g -h -i -n -o -p -r -t -x -z
+	-C -D -N -V
+	*/
+	 
 	array_shift($argv);
 
 	/* set debug to false, we can correct it later if needed */
@@ -533,6 +539,19 @@ function parseArgs($argv, $configuration)
 				$configuration["general"]["use_cache"] = false;
 				break;
 			}
+			
+			case "--add-option":
+			case "-t":
+			{
+				$configuration[$argv[++$i]][$argv[++$i]] = $argv[++$i];
+				break;
+			}
+			
+			case "--no-config":
+			case "-N":
+			{
+				break;
+			}
 
 			case "--help":
 			case "-h":
@@ -548,6 +567,9 @@ General options:
 -h,	--help			Shows this help message
 -i,	--ignore-errors		Ignores any errors that might occur and continue
 -n,	--new-config		Makes a new dummy config file in the current dir
+-N,	--no-config			Don't create a config file if none exists
+-t,	--add-option <section> <key> <value>
+				Adds the key=value to the [section] of the configuration
 -V,	--version		Shows the version and exits
 
 Encryption/decryption:
