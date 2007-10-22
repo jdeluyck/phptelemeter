@@ -45,7 +45,7 @@ checkOS($configuration, &$configFiles, &$cacheFiles);
 /* find the config file */
 $configFile = findConfigFile($configFiles, $configuration["general"]["debug"]);
 
-$configuration = readConfig($configFile);
+$configuration = readConfig($configFile, $configuration);
 $configuration = parseArgs($argv, $configuration);
 
 if ($configuration["general"]["debug"] == true)

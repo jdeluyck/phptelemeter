@@ -158,21 +158,26 @@ function quit()
 
 /* Parses the config file and does some checking on the contents */
 
-function readConfig($configFile)
+function readConfig($configFile, $tempConfiguration)
 {
-	if (! file_exists($configFile))
+	if (! isset($tempConfiguration["general"]["no-config"]))
 	{
-		writeDummyConfig($configFile,true);
+		if (! file_exists($configFile))
+		{
+			writeDummyConfig($configFile,true);
 
-		$configuration = parse_ini_file($configFile, true);
-		$configuration["new"] = "temporary trigger value";
+			$configuration = parse_ini_file($configFile, true);
+			$configuration["new"] = "temporary trigger value";
+		}
+		else
+			$configuration = parse_ini_file($configFile, true);
+
+		/* if debugging parameter isn't set, set it. we want debugging ASAP activated. */
+		if (! array_key_exists("debug", $configuration["general"]))
+			$configuration["general"]["debug"] = false;
 	}
 	else
-		$configuration = parse_ini_file($configFile, true);
-
-	/* if debugging parameter isn't set, set it. we want debugging ASAP activated. */
-	if (! array_key_exists("debug", $configuration["general"]))
-		$configuration["general"]["debug"] = false;
+		$configuration = "";
 
 	return ($configuration);
 }
@@ -505,9 +510,9 @@ function parseArgs($argv, $configuration)
 			{
 				/* do decrypt */
 				$password = $argv[++$i];
-				$encryptedPw = cryptPassword($password, "decrypt", true, true);
+				$decryptedPw = cryptPassword($password, "decrypt", true, true);
 				showVersion();
-				echo "Decrypted password: " . $encryptedPw . "\n";
+				echo "Decrypted password: " . $decryptedPw . "\n";
 				quit();
 				break;
 			}
@@ -550,6 +555,7 @@ function parseArgs($argv, $configuration)
 			case "--no-config":
 			case "-N":
 			{
+				$configuration["general"]["no-config"] = true;
 				break;
 			}
 
@@ -567,7 +573,7 @@ General options:
 -h,	--help			Shows this help message
 -i,	--ignore-errors		Ignores any errors that might occur and continue
 -n,	--new-config		Makes a new dummy config file in the current dir
--N,	--no-config			Don't create a config file if none exists
+-N,	--no-config		Don't create a config file if none exists
 -t,	--add-option <section> <key> <value>
 				Adds the key=value to the [section] of the configuration
 -V,	--version		Shows the version and exits
