@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>documents</key>
@@ -14,9 +14,11 @@
 			<key>filename</key>
 			<string>ChangeLog</string>
 			<key>lastUsed</key>
-			<date>2007-07-29T15:36:35Z</date>
+			<date>2007-12-23T19:15:53Z</date>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>docs</string>
 			<key>regexFolderFilter</key>
@@ -44,7 +46,7 @@
 			<key>filename</key>
 			<string>NEWS</string>
 			<key>lastUsed</key>
-			<date>2007-07-11T09:16:27Z</date>
+			<date>2007-10-23T19:16:34Z</date>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -58,15 +60,13 @@
 			<key>filename</key>
 			<string>phptelemeter.inc.php</string>
 			<key>lastUsed</key>
-			<date>2007-07-29T15:41:02Z</date>
-			<key>selected</key>
-			<true/>
+			<date>2007-12-23T19:15:54Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.php</string>
 			<key>lastUsed</key>
-			<date>2007-07-29T15:31:35Z</date>
+			<date>2007-12-23T19:15:55Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -80,13 +80,19 @@
 			<key>filename</key>
 			<string>credits</string>
 			<key>lastUsed</key>
-			<date>2007-07-29T15:34:39Z</date>
+			<date>2007-12-23T19:15:56Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>configuration</string>
+			<key>lastUsed</key>
+			<date>2007-10-22T16:49:15Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>README</string>
 			<key>lastUsed</key>
-			<date>2007-07-29T15:37:46Z</date>
+			<date>2007-12-23T19:15:54Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -110,6 +116,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{347, 53}, {912, 688}}</string>
+	<string>{{295, 30}, {978, 731}}</string>
 </dict>
 </plist>
