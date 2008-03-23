@@ -47,9 +47,17 @@ cache_file=					# path to the cache file (optional)
 [publisher]
 publisher=plaintext			# The publisher module to use.
 							# Currently plaintext, machine,
-							# plaintext_graphonly, no_output and html are
+							# plaintext_graphonly, no_output, html and imgbar are
 							# included.
-separator=,					# Separator for the machine publisher
+
+# machine publisher#
+separator=,					# Field separator
+
+# imgbar publisher:
+image=path to image			# Background image to use (png only!)
+font_file=path to ttf file	# Font (Truetype) to use 
+font_color=RRGGBB			# Color to use for the text (RRGGBB style)
+font_size=12				# Font size to use
 
 [proxy]
 proxy_host=					# Hostname of the proxy. Leave blank to disable
@@ -91,6 +99,11 @@ Publisher parameters
 - Required parameters per publisher:
   * machine:
 		separator - the field separator
+  * imgbar:
+		image - path to the background image (png only)
+		font_file - path to the TrueType (.ttf) font file
+		font_siwe - font size to use
+		font_color - font color to use
 		
 Include files
 ~~~~~~~~~~~~~

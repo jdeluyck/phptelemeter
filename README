@@ -36,6 +36,7 @@ Requirements
   with SSL support!
 - register_globals must be activated in php.ini
 - For the encryption, you also need the mcrypt extension
+- For the imgbar publisher, you need the gd extension
 - For Telemeter4Tools it requires the nusoap SOAP library, and the xmlparser
   XML library. Both are included in the package. Do _not_ update the nusoap
   library because it has been patched to work with phptelemeter.
@@ -149,6 +150,7 @@ Known issues
     protecting your login credentials!
   * To change the key, modify the _key value at the top of
     phptelemeter.inc.php.
+
 
 Extending phptelemeter
 ~~~~~~~~~~~~~~~~~~~~~~

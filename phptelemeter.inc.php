@@ -686,9 +686,6 @@ function calculateUsage($data, $isp)
 	}
 	else
 	{
-		/*	0 = total used
-			1 = remaining
-		*/
 		$returnValue["total"]["use"] = $data["used"];
 		$returnValue["total"]["left"] = $data["remaining"];
 		$returnValue["total"]["max"] = $returnValue["total"]["use"] + $returnValue["total"]["left"];
@@ -979,5 +976,11 @@ function setPublisherParameters(&$publisher, $configuration)
 			$publisher->setConfigKey($aKey, $configuration["publisher"][$aKey]);
 		}
 	}
+}
+
+function checkForFile($aFile, $doExit)
+{
+		if (! file_exists($aFile))
+			doError("file not found", "Could not find file " . $aFile . "...", $doExit);
 }
 ?>
