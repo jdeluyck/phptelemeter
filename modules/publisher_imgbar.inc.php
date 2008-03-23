@@ -100,7 +100,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		$theColor = imagecolorallocate($imageHandler, hexdec(substr($fontColor,0,2)), hexdec(substr($fontColor,2,2)), hexdec(substr($fontColor,4,2)));
 
 		/* add text */
-		imagettftext($imageHandler, 10, 0, $xPos, $yPos, $theColor, $fontFile, $theText); 
+		imagettftext($imageHandler, $fontSize, 0, $xPos, $yPos, $theColor, $fontFile, $theText); 
 
 		/* show */ 
 		$returnStr = imagepng($imageHandler);
