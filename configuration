@@ -59,6 +59,13 @@ font_file=path to ttf file	# Font (Truetype) to use
 font_color=RRGGBB			# Color to use for the text (RRGGBB style)
 font_size=12				# Font size to use
 
+# mysql publisher:
+db_name
+db_hostname
+db_login
+db_password
+db_tablename
+
 [proxy]
 proxy_host=					# Hostname of the proxy. Leave blank to disable
 proxy_port=8080				# port of the proxy
