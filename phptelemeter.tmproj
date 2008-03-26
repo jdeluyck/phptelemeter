@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>modules/publisher_graphbar.inc.php</string>
+	<string>phptelemeter.php</string>
 	<key>documents</key>
 	<array>
 		<dict>
 			<key>filename</key>
 			<string>AUTHORS</string>
 			<key>lastUsed</key>
-			<date>2008-01-14T14:16:16Z</date>
+			<date>2008-03-23T20:33:41Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>docs/ChangeLog</string>
 			<key>lastUsed</key>
-			<date>2008-01-14T14:16:17Z</date>
+			<date>2008-03-23T21:00:48Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -62,13 +62,15 @@
 			<key>filename</key>
 			<string>phptelemeter.inc.php</string>
 			<key>lastUsed</key>
-			<date>2008-01-14T12:37:23Z</date>
+			<date>2008-03-23T21:00:08Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.php</string>
 			<key>lastUsed</key>
-			<date>2008-01-14T17:45:37Z</date>
+			<date>2008-03-24T19:21:29Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -82,19 +84,19 @@
 			<key>filename</key>
 			<string>credits</string>
 			<key>lastUsed</key>
-			<date>2008-01-14T14:15:13Z</date>
+			<date>2008-03-23T21:00:40Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>configuration</string>
 			<key>lastUsed</key>
-			<date>2008-01-14T14:21:46Z</date>
+			<date>2008-03-23T20:59:42Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>README</string>
 			<key>lastUsed</key>
-			<date>2008-01-14T12:39:07Z</date>
+			<date>2008-03-23T21:02:28Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -115,26 +117,26 @@
 	<integer>245</integer>
 	<key>metaData</key>
 	<dict>
-		<key>configuration</key>
+		<key>README</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>68</integer>
+				<integer>22</integer>
 				<key>line</key>
-				<integer>52</integer>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>46</integer>
+			<integer>138</integer>
 		</dict>
 		<key>credits</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>36</integer>
+				<integer>37</integer>
 				<key>line</key>
 				<integer>21</integer>
 			</dict>
@@ -148,58 +150,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>43</integer>
 				<key>line</key>
-				<integer>15</integer>
+				<integer>14</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
-		</dict>
-		<key>modules/publisher_graphbar.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>72</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>49</integer>
-		</dict>
-		<key>modules/publisher_machine.inc.php</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>37</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>11</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>47</integer>
-				<key>line</key>
-				<integer>37</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>37</integer>
-			</dict>
 		</dict>
 		<key>modules/publisher_mysql.inc.php</key>
 		<dict>
@@ -220,24 +178,22 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>7</integer>
+				<integer>23</integer>
 				<key>line</key>
-				<integer>3</integer>
+				<integer>23</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>55</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>configuration</string>
-		<string>modules/publisher_graphbar.inc.php</string>
 		<string>phptelemeter.php</string>
 		<string>credits</string>
 		<string>docs/ChangeLog</string>
-		<string>modules/publisher_machine.inc.php</string>
+		<string>README</string>
 		<string>modules/publisher_mysql.inc.php</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
