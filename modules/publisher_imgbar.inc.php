@@ -8,7 +8,7 @@ define("_phptelemeter_publisher_version", "1");
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
-publisher_imgbar.inc.php - file which contains the graphbar publisher
+publisher_imgbar.inc.php - file which contains the imgbar publisher
 
 Copyright (C) 2005 - 2008 Jan De Luyck  <jan -at- kcore -dot- org>
 
