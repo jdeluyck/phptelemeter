@@ -81,7 +81,8 @@ class telemeterParser_telemeter4tools
 		$this->errors_critical = array(
 			"SYSERR_00001" => "Unexpected system error.",
 			"ERRTLMTLS_00001" => "Unexpected system error.",
-			"ERRTLMTLS_00002" => "Invalid input. Login or password is empty."
+			"ERRTLMTLS_00002" => "Invalid input. Login or password is empty.",
+			"ERRLNGMGT_00017" => "Error occurred while fetching customer OID."
 		);
 
 		$this->errors_normal = array(
