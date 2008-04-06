@@ -150,7 +150,7 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		}
 
 		$endDate = $dailyMatches[count($dailyMatches) - 2];
-		$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
+		$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 2,substr($endDate,6)));
 
 
 		$returnValue["general"] = $generalMatches;
