@@ -30,6 +30,8 @@ require_once("libs/phptelemeter_publisher_shared.inc.php");
 
 class telemeterPublisher extends telemeterPublisher_shared
 {
+	var $accountName;
+	
 	function telemeterPublisher()
 	{
 		/* call parent constructor */
@@ -46,6 +48,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 	function accountHeader($accountName)
 	{
+		$this->accountName = $accountName;
 		return("");
 	}
 
@@ -75,6 +78,38 @@ class telemeterPublisher extends telemeterPublisher_shared
 		$dbPassword = $this->configKey["db_password"];
 		
 		/* insert values into db here */
+		/* fields
+			id
+			datetime
+			accountName
+			isp
+			uploadUsed
+			uploadMax
+			downloadUsed
+			downloadMax
+			TotalUsed
+			TotalMax
+			daysLeft
+			
+			CREATE TABLE `phptelemeter`.`phptelemeter` (
+			`id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+			`date_time` DATETIME NOT NULL ,
+			`account_name` TEXT NOT NULL ,
+			`isp` TEXT NOT NULL ,
+			`upload_used` FLOAT UNSIGNED NOT NULL ,
+			`upload_max` FLOAT UNSIGNED NOT NULL ,
+			`download_used` FLOAT UNSIGNED NOT NULL ,
+			`download_max` FLOAT UNSIGNED NOT NULL ,
+			`total_used` FLOAT UNSIGNED NOT NULL ,
+			`total_max` FLOAT UNSIGNED NOT NULL ,
+			`days_left` TINYINT UNSIGNED NOT NULL ,
+			PRIMARY KEY ( `id` ) 
+			) ENGINE = MYISAM
+			
+			
+			
+		*/
+			
 	}
 
 	function newVersion($versionNr)
