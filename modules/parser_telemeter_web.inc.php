@@ -90,7 +90,7 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		/* determine positions */
 		for ($i = 0; $i < count($data); $i++)
 		{
-			if (stristr($data[$i], "Detail facturatieperiode") !== false)
+			if (stristr($data[$i], "Detail aanrekeningsperiode") !== false)
 				$pos["daterange"] = $i;
 			elseif (stristr($data[$i], "Ontvangen (download) en verstuurde (upload) gegevens") !== false)
 			{
