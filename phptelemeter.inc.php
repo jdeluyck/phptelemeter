@@ -25,7 +25,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.33-beta");
+define("_version", "1.33");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_cacheFileName", "phptelemeter.cache");
@@ -275,6 +275,9 @@ proxy_password=
 publisher=\"plaintext\"
 ; The separator for the machine publisher
 separator=\",\"
+;
+
+
 
 [account-1]
 username=\"myuser\"
