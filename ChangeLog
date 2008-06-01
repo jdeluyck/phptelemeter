@@ -12,10 +12,10 @@ What's new? Not much, but it's listed here.
   the config file
 - Added --no-config option to make phptelemeter not generate a config file if
   none is present (can be used together with --add-option)
-
-
-- Added a graphbar publisher (thanks to Nikon for the initial code!)
-
+- Added a imgbar publisher (thanks to Nikon for the idea and concept code)
+- Fixed telemeter_web parser
+- Added more error codes to the telemeter4tools parser
+- Fixed scarlet parser
 
 1.32
 ~~~~
