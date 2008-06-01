@@ -1,4 +1,4 @@
-phptelemeter v1.33beta - Copyright (c) 2005 - 2008 by Jan De Luyck
+phptelemeter v1.33 - Copyright (c) 2005 - 2008 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -138,7 +138,7 @@ Known issues
 ~~~~~~~~~~~~
 - dommel_web parser:
   * it will only take the first ADSL account it finds in your "My Packages"
-    page.
+    page. I'm not even sure if it works on Cityconnect accounts...
 
 - upccz_web, scarlet_web and edpnet_web parsers:
   * I have no accounts with these ISP's. If it breaks, please drop me a mail

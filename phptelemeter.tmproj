@@ -14,7 +14,13 @@
 			<key>filename</key>
 			<string>docs/ChangeLog</string>
 			<key>lastUsed</key>
-			<date>2008-03-27T17:48:24Z</date>
+			<date>2008-06-01T16:32:40Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>docs/ChangeLog</string>
+			<key>lastUsed</key>
+			<date>2008-06-01T16:32:50Z</date>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -47,8 +53,6 @@
 			<string>NEWS</string>
 			<key>lastUsed</key>
 			<date>2008-03-27T17:48:24Z</date>
-			<key>selected</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -120,9 +124,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>74</integer>
+				<integer>22</integer>
 				<key>line</key>
-				<integer>14</integer>
+				<integer>17</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
