@@ -174,14 +174,14 @@ foreach ($configuration["accounts"] as $key => $account)
 
 			if ($sendMail == true && $cache[$account["username"]]["mail_sent"] == false)
 			{
-				sendWarnEmail($configuration["general"]["debug"], $usage, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
+				sendWarnEmail($configuration["general"]["debug"], $usage, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"], $data["reset_date"], $data["days_left"]);
 				$cache[$account["username"]]["mail_sent"] = true;
 			}
 			elseif ($sendMail == false && $cache[$account["username"]]["mail_sent"] == true)
 				$cache[$account["username"]]["mail_sent"] = false;
 		}
 		else
-			sendWarnEmail($configuration["general"]["debug"], $usage, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"]);
+			sendWarnEmail($configuration["general"]["debug"], $usage, $account["description"], $account["warn_percentage"], $configuration["general"]["email"], $account["warn_email"], $data["reset_date"], $data["days_left"]);
 	}
 
 	/* publish the info */

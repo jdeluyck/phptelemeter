@@ -25,7 +25,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.33");
+define("_version", "1.34");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_cacheFileName", "phptelemeter.cache");
@@ -808,7 +808,7 @@ function getAllCredentials($configuration)
 	return ($returnValue);
 }
 
-function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, $toAddress)
+function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, $toAddress, $resetDate, $daysLeft)
 {
 	$sendMail = false;
 
@@ -827,8 +827,8 @@ function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, 
 		if ($usage["download"]["percent"] > $percentage || $usage["upload"]["percent"] > $percentage)
 		{
 			$sendMail = true;
-			$text  = "You have used " . $usage["download"]["percent"] . "% (" . $usage["download"]["use"] . " MiB) of your download quota of " . $usage["download"]["max"] . " MiB.";
-			$text .= "You have used " . $usage["upload"]["percent"] . "% (" . $usage["upload"]["use"] . " MiB) of your upload quota of " . $usage["upload"]["max"] . " MiB.";
+			$text  = "You have used " . round($usage["download"]["percent"],2) . "% (" . $usage["download"]["use"] . " MiB) of your download quota of " . $usage["download"]["max"] . " MiB.";
+			$text .= "You have used " . round($usage["upload"]["percent"],2) . "% (" . $usage["upload"]["use"] . " MiB) of your upload quota of " . $usage["upload"]["max"] . " MiB.";
 		}
 	}
 
@@ -840,6 +840,8 @@ function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, 
 		$message  = "Hello,\n\n";
 		$message .= "This is a phptelemeter warning email for account: " . $description . ".\n\n";
 		$message .= $text;
+		$message .= "\n";
+		$message .= "Your quota will be reset on " . $resetDate . " (" . $daysLeft . " days left)";
 		$message .= "\n\n";
 		$message .= "This is a generated message - please do not reply to it.\n";
 
