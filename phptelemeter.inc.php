@@ -841,7 +841,7 @@ function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, 
 		$message .= "This is a phptelemeter warning email for account: " . $description . ".\n\n";
 		$message .= $text;
 		$message .= "\n";
-		$message .= "Your quota will be reset on " . $resetDate . " (" . $daysLeft . " days left)";
+		$message .= "Your quota will be reset on " . $resetDate . " (" . $daysLeft . " days left).";
 		$message .= "\n\n";
 		$message .= "This is a generated message - please do not reply to it.\n";
 
