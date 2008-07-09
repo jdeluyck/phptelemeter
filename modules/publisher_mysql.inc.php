@@ -27,7 +27,6 @@ http://www.gnu.org/licenses/gpl.txt
 */
 
 require_once("libs/phptelemeter_publisher_shared.inc.php");
-//require_once("libs/phptelemeter_dbwrapper.inc.php");
 
 class telemeterPublisher extends telemeterPublisher_shared
 {

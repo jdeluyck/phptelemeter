@@ -12,15 +12,11 @@
 		</dict>
 		<dict>
 			<key>filename</key>
-			<string>docs/ChangeLog</string>
+			<string>ChangeLog</string>
 			<key>lastUsed</key>
-			<date>2008-06-01T16:32:40Z</date>
-		</dict>
-		<dict>
-			<key>filename</key>
-			<string>docs/ChangeLog</string>
-			<key>lastUsed</key>
-			<date>2008-06-01T16:32:50Z</date>
+			<date>2008-06-01T17:53:54Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -52,7 +48,7 @@
 			<key>filename</key>
 			<string>NEWS</string>
 			<key>lastUsed</key>
-			<date>2008-03-27T17:48:24Z</date>
+			<date>2008-06-01T16:50:09Z</date>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -98,7 +94,7 @@
 			<key>filename</key>
 			<string>README</string>
 			<key>lastUsed</key>
-			<date>2008-03-27T17:48:17Z</date>
+			<date>2008-06-01T16:50:11Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -118,22 +114,7 @@
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>245</integer>
 	<key>metaData</key>
-	<dict>
-		<key>docs/ChangeLog</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>22</integer>
-				<key>line</key>
-				<integer>17</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-	</dict>
+	<dict/>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
