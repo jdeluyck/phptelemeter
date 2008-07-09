@@ -818,7 +818,7 @@ function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, 
 		if ($usage["total"]["percent"] > $percentage)
 		{
 			$sendMail = true;
-			$text = "You have used " . $usage["total"]["percent"] . "% (" . $usage["total"]["use"] . " MiB) of your total transfer quota of " . $usage["total"]["max"] . " MiB.";
+			$text = "You have used " . round($usage["total"]["percent"],2) . "% (" . $usage["total"]["use"] . " MiB) of your total transfer quota of " . $usage["total"]["max"] . " MiB.";
 		}
 	}
 	else
