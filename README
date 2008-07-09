@@ -1,4 +1,4 @@
-phptelemeter v1.33 - Copyright (c) 2005 - 2008 by Jan De Luyck
+phptelemeter v1.34 - Copyright (c) 2005 - 2008 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -130,6 +130,10 @@ Running on Mac OS X
 - This script has been thoroughly tested on Mac OS X 10.4.8 and higher, and
   works without any problems.
 
+Database publishers
+~~~~~~~~~~~~~~~~~~~
+- The database publishers will try to create the table if it doesn't exist.
+
 Where to get it
 ~~~~~~~~~~~~~~~
 - There's only one place: http://phptelemeter.kcore.org/
@@ -137,8 +141,8 @@ Where to get it
 Known issues
 ~~~~~~~~~~~~
 - dommel_web parser:
-  * it will only take the first ADSL account it finds in your "My Packages"
-    page. I'm not even sure if it works on Cityconnect accounts...
+  * it will only take the first xDSL account it finds in your "My Packages"
+    page. 
 
 - upccz_web, scarlet_web and edpnet_web parsers:
   * I have no accounts with these ISP's. If it breaks, please drop me a mail

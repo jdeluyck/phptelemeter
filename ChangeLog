@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.34
+~~~~
+- Added mysql publisher
+
 1.33
 ~~~~
 - Added red-hilighting support to plaintext_graphonly publisher

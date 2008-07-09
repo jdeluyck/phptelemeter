@@ -50,7 +50,7 @@ publisher=plaintext			# The publisher module to use.
 							# plaintext_graphonly, no_output, html and imgbar are
 							# included.
 
-# machine publisher#
+# machine publisher
 separator=,					# Field separator
 
 # imgbar publisher:
@@ -60,11 +60,11 @@ font_color=RRGGBB			# Color to use for the text (RRGGBB style)
 font_size=12				# Font size to use
 
 # mysql publisher:
-db_name
-db_hostname
-db_login
-db_password
-db_tablename
+db_name						# Database name
+db_hostname					# Database server hostname
+db_login					# Database username
+db_password					# Database password
+db_tablename				# Database Table Name
 
 [proxy]
 proxy_host=					# Hostname of the proxy. Leave blank to disable
