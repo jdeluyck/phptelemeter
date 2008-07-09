@@ -5,7 +5,8 @@ What's new? Not much, but it's listed here.
 - Added mysql publisher (feature request: 1671210)
 - Limited warn-percentage to 2 digits after the comma 
   (feature request: 1936213)
-- 
+- Added reset date to over-limit notification mails
+  (feature request: 1837559)
 
 1.33
 ~~~~
