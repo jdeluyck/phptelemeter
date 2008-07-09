@@ -27,6 +27,7 @@ http://www.gnu.org/licenses/gpl.txt
 */
 
 require_once("libs/phptelemeter_publisher_shared.inc.php");
+//require_once("libs/phptelemeter_dbwrapper.inc.php");
 
 class telemeterPublisher extends telemeterPublisher_shared
 {
@@ -67,6 +68,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		$isp         = $data["isp"];
 		$resetDate   = $data["reset_date"];
 		$daysLeft    = $data["days_left"];
+		$dateTime    = date("Y-m-d H:i:s");
 
 		/* general data, always shown */
 		$usage = calculateUsage($generalData, $isp);
@@ -77,21 +79,20 @@ class telemeterPublisher extends telemeterPublisher_shared
 		$dbLogin = $this->configKey["db_login"];
 		$dbPassword = $this->configKey["db_password"];
 		
-		/* insert values into db here */
-		/* fields
-			id
-			datetime
-			accountName
-			isp
-			uploadUsed
-			uploadMax
-			downloadUsed
-			downloadMax
-			TotalUsed
-			TotalMax
-			daysLeft
-			
-			CREATE TABLE `phptelemeter`.`phptelemeter` (
+		/* connect to the db */
+		$db = mysql_connect($dbHostName, $dbLogin, $dbPassword);
+		if (! $db) 	
+			doError("mysql error","Error connecting to database server: " . mysql_error(), true);
+
+		$db_selected = mysql_select_db($dbName, $db);
+		if (!$db_selected) 
+			doError ("mysql error", "Error connecting to database " . $dbName . ": ". mysql_error(), true);
+		
+		/* check if table exists */
+		if (mysql_num_rows( mysql_query("SHOW TABLES LIKE '" . $dbTableName . "'")) == 0)
+		{
+			doError ("Table doesn't exist","The table " . $dbTableName . " does not exist in the database, creating.", false);
+			$sql = "CREATE TABLE `" . $dbName . "`.`" . $dbTableName . "` (
 			`id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 			`date_time` DATETIME NOT NULL ,
 			`account_name` TEXT NOT NULL ,
@@ -104,12 +105,28 @@ class telemeterPublisher extends telemeterPublisher_shared
 			`total_max` FLOAT UNSIGNED NOT NULL ,
 			`days_left` TINYINT UNSIGNED NOT NULL ,
 			PRIMARY KEY ( `id` ) 
-			) ENGINE = MYISAM
+			) ENGINE = MYISAM";
 			
+			$result = mysql_query($sql, $db);
 			
-			
-		*/
-			
+			if ($result === false) 
+				doError("mysql error","Error creating table " . $dbTableName . ": " . mysql_error(), true);
+		}
+		
+		/* insert values into db */
+		if (checkISPCompatibility($isp, "seperate_quota") == true)
+			$usqge["total"]["max"] = $usage["total"]["use"] = 0;
+		else
+			$usage["download"]["max"] = $usage["download"]["use"] = $usage["upload"]["max"] = $usage["upload"]["use"] = 0;
+
+		$sql = "insert into " . $dbName . "." . $dbTableName . " values ('', '" . $dateTime . "', '" . $this->accountName . "', '" . 
+				$isp . "', " . $usage["upload"]["use"] . "," . $usage["upload"]["max"] . "," . 
+				$usage["download"]["use"] . "," . $usage["download"]["max"] . "," . $usage["total"]["use"] . "," . 
+				$usage["total"]["max"] . "," . $daysLeft . ");";
+
+		$result = mysql_query($sql, $db);
+		if ($result === false) 
+			doError("mysql error","Error when inserting into table " . $dbTableName . "\nSQL: " . $sql . "\nError: " . mysql_error(), true);
 	}
 
 	function newVersion($versionNr)
