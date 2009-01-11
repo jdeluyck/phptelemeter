@@ -219,7 +219,10 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 			$volume["remaining"] = $temp[10] * 1024 - $totalUsedVolume;
 		}
 		else
-			$volume["remaining"] = $totalUsedVolume*2;
+		{
+			/* Unlimited account, so we will perpetually put the percentage on 50% */
+			$volume["remaining"] = $totalUsedVolume;
+		}
 			
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
