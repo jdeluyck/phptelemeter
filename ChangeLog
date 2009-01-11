@@ -8,6 +8,7 @@ What's new? Not much, but it's listed here.
   (feature request: 1936213)
 - Added reset date to over-limit notification mails
   (feature request: 1837559)
+- Hacked in dirty support for the new scarlet unlimited accounts
 
 1.33
 ~~~~

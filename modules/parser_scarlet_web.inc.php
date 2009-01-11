@@ -2,14 +2,14 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "11");
+define("_phptelemeter_parser_scarlet_web", "12");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_scarlet_web.inc.php - file which contains the Scarlet web page parser module.
 
-Copyright (C) 2005 - 2008 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2009 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,6 +32,8 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 	var $_ISP = "scarlet";
 
 	var $months;
+	
+	var $unlimited = false;
 
 	function telemeterParser_scarlet_web()
 	{
@@ -89,7 +91,14 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 			elseif ($data[$i] == "Upload")
 				$pos["upload"] = $i + $pos["data_interval"];
 			elseif (stristr($data[$i], "limiet van uw on-line") !== false)
+			{
 				$pos["total"] = $i;
+				if (stristr($data[$i], "onbeperkt") !== false)
+				{
+					dumpDebugInfo($this->debug, "Unlimited account detected...");
+					$this->unlimited = true;
+				}
+			}				
 		}
 
 		dumpDebugInfo($this->debug, "POS:\n");
@@ -204,9 +213,14 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		$volume["used"] = $totalUsedVolume;
 
 		/* remaining */
-		$temp = explode(" ", $data[$pos["total"]]);
-		$volume["remaining"] = $temp[10] * 1024 - $totalUsedVolume;
-
+		if ($this->unlimited == false)
+		{
+			$temp = explode(" ", $data[$pos["total"]]);
+			$volume["remaining"] = $temp[10] * 1024 - $totalUsedVolume;
+		}
+		else
+			$volume["remaining"] = $totalUsedVolume*2;
+			
 		$returnValue["general"] = $volume;
 		$returnValue["isp"] = $this->_ISP;
 		$returnValue["reset_date"] = $reset_date;
