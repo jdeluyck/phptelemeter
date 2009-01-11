@@ -220,8 +220,8 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 		}
 		else
 		{
-			/* Unlimited account, so we will perpetually put the percentage on 50% */
-			$volume["remaining"] = $totalUsedVolume;
+			/* Unlimited account, so we will put such a huge value remaining that this should stay on 0% */
+			$volume["remaining"] = $totalUsedVolume * 10000;
 		}
 			
 		$returnValue["general"] = $volume;
