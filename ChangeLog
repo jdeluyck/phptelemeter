@@ -14,6 +14,8 @@ What's new? Not much, but it's listed here.
 - Spellingfix: changed 'seperate' to 'separate'
 - Added support for single-quota separate-info providers, needed the 
   daily output for the scarlet_web parser was broken.
+- Removed "text-transform: lowercase;" from the html publisher 
+  (bug report: 2197767) 
 
 1.33
 ~~~~
