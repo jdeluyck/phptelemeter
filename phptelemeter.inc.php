@@ -673,7 +673,7 @@ function checkISPCompatibility($isp, $function)
 
 function calculateUsage($data, $isp)
 {
-	if (checkISPCompatibility($isp, "seperate_quota") == true)
+	if (checkISPCompatibility($isp, "separate_quota") == true)
 	{
 		$returnValue["download"]["max"]     = $data["download_used"];
 		$returnValue["download"]["use"]     = $data["download_remaining"];
@@ -823,7 +823,7 @@ function sendWarnEmail($debug, $usage, $description, $percentage, $fromAddress, 
 	}
 	else
 	{
-		/* handle seperate quotas */
+		/* handle separate quotas */
 		if ($usage["download"]["percent"] > $percentage || $usage["upload"]["percent"] > $percentage)
 		{
 			$sendMail = true;

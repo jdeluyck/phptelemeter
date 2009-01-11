@@ -111,7 +111,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showGraph == true)
 		{
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_quota") == true)
 			{
 				if ($usage["download"]["percent"] > $warnPercentage && $warnPercentage != 0)
 				{
@@ -149,7 +149,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showRemaining == true)
 		{
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_quota") == true)
 			{
 				$totaldownloadString = $totalUploadString = "";
 
@@ -211,7 +211,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_quota") == true)
 				$dateDiff = 3;
 			else
 				$dateDiff = 2;
@@ -221,7 +221,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			<table border='1'>
 			<tr>
 				<th>Date</th>";
-				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				if (checkISPCompatibility($isp, "separate_day_info") == true)
 				{
 					$returnStr .= "	<th>Download used</th>
 									<th>Upload used</th>";
@@ -235,7 +235,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			{
 				$date = $dailyData[$i++];
 
-				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				if (checkISPCompatibility($isp, "separate_day_info") == true)
 				{
 					$download = $dailyData[$i++];
 					$upload = $dailyData[$i];

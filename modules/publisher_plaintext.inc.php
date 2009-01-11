@@ -71,7 +71,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		if ($showGraph == true)
 		{
 			$returnStr .= "\n";
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_quota") == true)
 			{
 				if ($usage["download"]["percent"] > $warnPercentage && $warnPercentage != 0)
 				{
@@ -110,7 +110,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showRemaining == true)
 		{
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_quota") == true)
 			{
 				$totalDownloadString = $totalUploadString = "";
 
@@ -174,7 +174,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_day_info") == true)
 				$dateDiff = 3;
 			else
 				$dateDiff = 2;
@@ -184,7 +184,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			$returnStr .= "------------------------------------\n";
 			$returnStr .= "\n";
 
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_day_info") == true)
 			{
 				$returnStr .= str_repeat("-", 42) . "\n";
 				$returnStr .= sprintf("| %-8s | %s | %s |\n", "Date", "Download used", "Upload used");
@@ -201,7 +201,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			{
 				$date = $dailyData[$i++];
 
-				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				if (checkISPCompatibility($isp, "separate_day_info") == true)
 				{
 					$download = $dailyData[$i++];
 					$upload = $dailyData[$i];
@@ -216,7 +216,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 				}
 			}
 
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_day_info") == true)
 				$returnStr .= str_repeat("-", 42) . "\n\n";
 			else
 				$returnStr .= str_repeat("-", 25) . "\n\n";

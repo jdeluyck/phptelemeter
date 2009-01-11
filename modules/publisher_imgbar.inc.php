@@ -85,7 +85,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			$fontColor = "000000";
 			
 		/* prepare text */
-		if (checkISPCompatibility($isp, "seperate_quota") == true)
+		if (checkISPCompatibility($isp, "separate_quota") == true)
 		{
 			$theText  = "D: " . $usage["download"]["percent"] . "% / U:" . $usage["upload"]["percent"] . "%";
 		}

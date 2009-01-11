@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "machine");
-define("_phptelemeter_publisher_version", "13");
+define("_phptelemeter_publisher_version", "14");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -63,7 +63,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		$usage = calculateUsage($generalData, $isp);
 		$separator = $this->configKey["separator"];
 		
-		if (checkISPCompatibility($isp, "seperate_quota") == true)
+		if (checkISPCompatibility($isp, "separate_quota") == true)
 		{
 			$returnStr = sprintf("#DownlMax%sDownlUsed%sDownlPercent%sDownlLeft\n", $separator, $separator, $separator);
 			$returnStr .= sprintf("%d%s%d%s%d%s%d\n", $usage["download"]["max"], $separator, $usage["download"]["use"], $separator, $usage["download"]["percent"], $separator, $usage["download"]["left"]);
@@ -80,7 +80,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showDaily == true && checkISPCompatibility($isp, "history") == true)
 		{
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_day_info") == true)
 				$returnStr .= sprintf("#Date%sDownlUsed%sUplUsed\n", $separator, $separator);
 			else
 				$returnStr .= sprintf("#Date%sQuotaUsed\n", $separator);
@@ -89,7 +89,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 			{
 				$date = $dailyData[$i++];
 
-				if (checkISPCompatibility($isp, "seperate_quota") == true)
+				if (checkISPCompatibility($isp, "separate_day_info") == true)
 				{
 					$download = $dailyData[$i++];
 					$upload = $dailyData[$i];

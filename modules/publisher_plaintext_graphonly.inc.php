@@ -53,7 +53,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 		if ($showGraph == true)
 		{
-			if (checkISPCompatibility($isp, "seperate_quota") == true)
+			if (checkISPCompatibility($isp, "separate_quota") == true)
 			{
 				if ($usage["download"]["percent"] > $warnPercentage && $warnPercentage != 0)
 				{

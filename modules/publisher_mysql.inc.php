@@ -113,7 +113,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 		}
 		
 		/* insert values into db */
-		if (checkISPCompatibility($isp, "seperate_quota") == true)
+		if (checkISPCompatibility($isp, "separate_quota") == true)
 			$usqge["total"]["max"] = $usage["total"]["use"] = 0;
 		else
 			$usage["download"]["max"] = $usage["download"]["use"] = $usage["upload"]["max"] = $usage["upload"]["use"] = 0;

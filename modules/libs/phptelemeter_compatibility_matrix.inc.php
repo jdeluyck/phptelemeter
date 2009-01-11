@@ -26,47 +26,56 @@ http://www.gnu.org/licenses/gpl.txt
 
 /*
 reset_date			can show the reset date
-seperate_quota		has seperate quota's for upstream and downstream
+separate_quota		has separate quota's for upstream and downstream
+separate_day_info	has separate per-day info for upstream and downstream (eg. scarlet has) 
 history				has a displayable history for the period
 */
 
 /* TELENET */
 $isp_compatibility_matrix["telenet"]["reset_date"] = true;
-$isp_compatibility_matrix["telenet"]["seperate_quota"] = false;
+$isp_compatibility_matrix["telenet"]["separate_quota"] = false;
+$isp_compatibility_matrix["telenet"]["separate_day_info"] = false;
 $isp_compatibility_matrix["telenet"]["history"] = true;
 
 /* DOMMEL */
 $isp_compatibility_matrix["dommel"]["reset_date"] = true;
-$isp_compatibility_matrix["dommel"]["seperate_quota"] = false;
+$isp_compatibility_matrix["dommel"]["separate_quota"] = false;
+$isp_compatibility_matrix["dommel"]["separate_day_info"] = false;
 $isp_compatibility_matrix["dommel"]["history"] = false;
 
 /* SKYNET */
 $isp_compatibility_matrix["skynet"]["reset_date"] = true;
-$isp_compatibility_matrix["skynet"]["seperate_quota"] = false;
+$isp_compatibility_matrix["skynet"]["separate_quota"] = false;
+$isp_compatibility_matrix["skynet"]["separate_day_info"] = false;
 $isp_compatibility_matrix["skynet"]["history"] = false;
 
 /* SCARLET */
 $isp_compatibility_matrix["scarlet"]["reset_date"] = true;
-$isp_compatibility_matrix["scarlet"]["seperate_quota"] = false;
+$isp_compatibility_matrix["scarlet"]["separate_quota"] = false;
+$isp_compatibility_matrix["scarlet"]["separate_day_info"] = true;
 $isp_compatibility_matrix["scarlet"]["history"] = true;
 
 /* UPC CZ */
 $isp_compatibility_matrix["upccz"]["reset_date"] = true;
-$isp_compatibility_matrix["upccz"]["seperate_quota"] = false;
+$isp_compatibility_matrix["upccz"]["separate_quota"] = false;
+$isp_compatibility_matrix["upccz"]["separate_day_info"] = false;
 $isp_compatibility_matrix["upccz"]["history"] = false;
 
 /* EDPNET */
 $isp_compatibility_matrix["edpnet"]["reset_date"] = false;
-$isp_compatibility_matrix["edpnet"]["seperate_quota"] = false;
+$isp_compatibility_matrix["edpnet"]["separate_quota"] = false;
+$isp_compatibility_matrix["edpnet"]["separate_day_info"] = false;
 $isp_compatibility_matrix["edpnet"]["history"] = false;
 
 /* SIMULATOR */
 $isp_compatability_matrix["simulator_single"]["reset_date"] = true;
-$isp_compatibility_matrix["simulator_single"]["seperate_quota"] = false;
+$isp_compatibility_matrix["simulator_single"]["separate_quota"] = false;
+$isp_compatibility_matrix["simulator_single"]["separate_day_info"] = false;
 $isp_compatibility_matrix["simulator_single"]["history"] = true;
 
 $isp_compatability_matrix["simulator_separate"]["reset_date"] = true;
-$isp_compatibility_matrix["simulator_separate"]["seperate_quota"] = true;
+$isp_compatibility_matrix["simulator_separate"]["separate_quota"] = true;
+$isp_compatibility_matrix["simulator_separate"]["separate_day_info"] = true;
 $isp_compatibility_matrix["simulator_separate"]["history"] = true;
 
 ?>

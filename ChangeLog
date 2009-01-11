@@ -9,6 +9,8 @@ What's new? Not much, but it's listed here.
 - Added reset date to over-limit notification mails
   (feature request: 1837559)
 - Added a check for the new scarlet unlimited accounts
+- Spellingfix: changed 'seperate' to 'separate'
+- Added support for single-quota separate-info providers
 
 1.33
 ~~~~
@@ -65,8 +67,8 @@ What's new? Not much, but it's listed here.
 - Replaced gregoriantojd() calls with something else, fixes phptelemeter
   if php is compiled without --enable-calendar. (feature request: 1684526)
 - Changed Telenet parsers: Telenet now has one fix quota instead of
-  seperate upload/download (fixes: 1671798)
-- Updated publishers to work with a history of one quota and seperate quotas
+  separate upload/download (fixes: 1671798)
+- Updated publishers to work with a history of one quota and separate quotas
   (also for Telenet)
 
 1.29
