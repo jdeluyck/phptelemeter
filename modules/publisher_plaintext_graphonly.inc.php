@@ -10,7 +10,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 publisher_plaintext_graphonly.inc.php - file which contains the plaintext publisher, graph only version
 
-Copyright (C) 2005 - 2007 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2009 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

@@ -9,7 +9,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_telemeter_web.inc.php - file which contains the Telemeter web page parser module.
 
-Copyright (C) 2005 - 2008 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2009 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
