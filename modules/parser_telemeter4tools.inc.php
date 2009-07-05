@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "13");
+define("_phptelemeter_parser_telemeter4tools", "14");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -174,24 +174,23 @@ class telemeterParser_telemeter4tools
 			else
 			{
 				/* now look for error messages */
-				$parser = new XMLParser($result, 'raw', 1);
-				$result = $parser->getTree();
-
-				dumpDebugInfo($this->debug, $result);
-
-				/* look at the status */
-				if ($this->checkStatus($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:STATUS"]["VALUE"]) === false)
+				if ($this->checkStatus($result) === false)
 				{
-					/* split off the global usage data */
-					$general["used"] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
-					$general["remaining"] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-UP"]["VALUE"] - $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
+				  $parser = new XMLParser($result, 'raw', 1);
+				  $result = $parser->getTree();
 
-					/* split off the daily data */
-					foreach ($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:USAGE"] as $key => $value)
-					{
-						$daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
-						$daily[] = $value["NS1:UP"]["VALUE"];
-					}
+				  dumpDebugInfo($this->debug, $result);
+
+				   /* split off the global usage data */
+				    $general["used"] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
+				    $general["remaining"] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-UP"]["VALUE"] - $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
+
+				    /* split off the daily data */
+				    foreach ($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:USAGE"] as $key => $value)
+				    {
+					  $daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
+					  $daily[] = $value["NS1:UP"]["VALUE"];
+				    }
 
 					$endDate = $daily[count($daily) - 2];
 					$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
