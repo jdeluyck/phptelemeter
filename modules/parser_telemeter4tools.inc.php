@@ -182,14 +182,14 @@ class telemeterParser_telemeter4tools
 				  dumpDebugInfo($this->debug, $result);
 
 				   /* split off the global usage data */
-				    $general["used"] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
-				    $general["remaining"] = $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:LIMITS"]["NS1:MAX-UP"]["VALUE"] - $result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:TOTALUSAGE"]["NS1:UP"]["VALUE"];
+				    $general["used"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
+				    $general["remaining"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["LIMITS"]["MAX-UP"]["VALUE"] - $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
 
 				    /* split off the daily data */
-				    foreach ($result["NS1:TELEMETER"]["NS1:USAGE-INFO"]["NS1:DATA"]["NS1:SERVICE"]["NS1:USAGE"] as $key => $value)
+				    foreach ($result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["USAGE"] as $key => $value)
 				    {
 					  $daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
-					  $daily[] = $value["NS1:UP"]["VALUE"];
+					  $daily[] = $value["UP"]["VALUE"];
 				    }
 
 					$endDate = $daily[count($daily) - 2];
