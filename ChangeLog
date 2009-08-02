@@ -1,5 +1,9 @@
 What's new? Not much, but it's listed here.
 
+1.34
+~~~~
+- Fixed telemeter4tools parser.
+
 1.34-beta2
 ~~~~~~~~~~
 - Added a check for the new scarlet unlimited accounts
