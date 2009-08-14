@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AllowNetworkAccess</key>
+	<true/>
+	<key>AllowSystem</key>
+	<true/>
+	<key>CFBundleDisplayName</key>
+	<string>Which</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.kcore.widget.phptelemeterwidget</string>
+	<key>CFBundleName</key>
+	<string>phpTelemeterWidget</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0</string>
+	<key>CFBundleVersion</key>
+	<string>2.0</string>
+	<key>MainHTML</key>
+	<string>phpTelemeterWidget.html</string>
+</dict>
+</plist>
