@@ -30,6 +30,7 @@ require_once("libs/phptelemeter_parser_web_shared.inc.php");
 class telemeterParser_dommel_web extends telemeterParser_web_shared
 {
 	var $_ISP = "dommel";
+	var $unlimited = false;
 
 	function telemeterParser_dommel_web()
 	{
@@ -44,7 +45,8 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 		$this->url["stats"] = "https://crm.schedom-europe.net/include/scripts/linked/dslinfo/dslinfo.php";
 		$this->url["logout"] = "https://crm.schedom-europe.net/index.php?op=logout";
 
-		$this->errors = array("your login is incorrect." => "Incorrect login");
+		$this->errors = array("your login is incorrect." => "Incorrect login",
+				      "no packages found that match your criteria." => "No valid packages found");
 	}
 
 	/* EXTERNAL! */
@@ -112,7 +114,14 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 			elseif (stristr($data2[$i], "next counter reset") !== false)
 				$pos["reset_date"] = $i;
 			elseif (stristr($data2[$i], "remaining") !== false)
+			{
 				$pos["remaining"] = $i;
+				if (stristr($data[$i], "unlimited") !== false)
+				{
+					dumpDebugInfo($this->debug, "Unlimited account detected...");
+					$this->unlimited = true;
+				}
+			}
 
 			/* data cleanup */
 			$data2[$i] = substr($data2[$i], strpos($data2[$i], ":") + 2);
@@ -130,7 +139,15 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 
 		/* remaining, if exists? */
 		if ($pos["remaining"] !== false)
-			$volume["remaining"] = substr($data2[$pos["remaining"]],0,-3) * 1024;
+		{
+			if ($this->unlimited == false)
+				$volume["remaining"] = substr($data2[$pos["remaining"]],0,-3) * 1024;
+			else
+			{
+				/* Unlimited account, so we will put such a huge value remaining that this should stay on 0% */
+				$volume["remaining"] = $volume["used"] * 10000;
+			}
+		}
 		else
 			$volume["remaining"] = 0;
 
