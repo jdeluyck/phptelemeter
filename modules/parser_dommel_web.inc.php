@@ -116,7 +116,7 @@ class telemeterParser_dommel_web extends telemeterParser_web_shared
 			elseif (stristr($data2[$i], "remaining") !== false)
 			{
 				$pos["remaining"] = $i;
-				if (stristr($data[$i], "unlimited") !== false)
+				if (stristr($data2[$i], "unlimited") !== false)
 				{
 					dumpDebugInfo($this->debug, "Unlimited account detected...");
 					$this->unlimited = true;
