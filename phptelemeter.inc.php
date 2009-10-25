@@ -25,7 +25,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.34");
+define("_version", "1.35");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_cacheFileName", "phptelemeter.cache");
@@ -283,8 +283,9 @@ separator=\",\"
 username=\"myuser\"
 password=\"mypassword\"
 ; The parser can either be telemeter4tools, telemeter_web, dommel_web,
-; skynet_web, scarlet_web, edpnet_web or upccz_web, and the file needs
-; to be present in the phptelemeter/modules directory!
+; skynet_web, scarlet_web, edpnet_web, upccz_web or mobilevikings_api,
+;  and the file needs to be present in the phptelemeter/modules
+;  directory!
 parser=\"aparser\"
 ; The description is optional
 ;description=\"My first account\"

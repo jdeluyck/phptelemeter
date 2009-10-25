@@ -50,10 +50,11 @@
     <item url="modules/parser_simulator_separate.inc.php" uploadstatus="1" />
     <item url="modules/parser_simulator_single.inc.php" uploadstatus="1" />
     <item url="modules/publisher_no_output.inc.php" uploadstatus="1" />
-    <item url="modules/publisher_imgbar.inc.php" />
-    <item url="modules/publisher_mysql.inc.php" />
-    <item url="configuration" />
-    <item url="credits" />
-    <item url="phptelemeter.tmproj" />
+    <item url="modules/publisher_imgbar.inc.php" uploadstatus="1" />
+    <item url="modules/publisher_mysql.inc.php" uploadstatus="1" />
+    <item url="configuration" uploadstatus="1" />
+    <item url="credits" uploadstatus="1" />
+    <item url="phptelemeter.tmproj" uploadstatus="1" />
+    <item url="modules/parser_mobilevikings_api.inc.php" />
   </project>
 </webproject>

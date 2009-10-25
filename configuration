@@ -81,8 +81,8 @@ description=your description		# Description of account-1, if it is
 									# name in the output
 parser=a parser				# The parsing module to use for account-1.
 							# Currently telemeter4tools, telemeter_web,
-							# dommel_web, skynet_web, scarlet_web, edpnet_web
-							# and upccz_web are included.
+							# dommel_web, skynet_web, scarlet_web, edpnet_web,
+							# upccz_web and mobilevikings_api are included.
 warn_percentage=percentage	# Percentage when to make the output "red" in the
 							# publishers. Set to 0 to disable this and the
 							# email sending

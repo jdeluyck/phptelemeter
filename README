@@ -1,4 +1,4 @@
-phptelemeter v1.34 - Copyright (c) 2005 - 2009 by Jan De Luyck
+phptelemeter v1.35 - Copyright (c) 2005 - 2009 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -18,17 +18,18 @@ What can it do?
 
 Which ISP's are supported?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
---------------------------------------------------------------
-| ISP     | Parser            | Reset Date | Quota | History |
---------------------------------------------------------------
-| Telenet | telemeter_web     |      X     |   X   |    X    |
-|         | telemeter4tools   |      X     |   X   |    X    |
-| Dommel  | dommel_web        |      X     |   X   |         |
-| Skynet  | skynet_web        |      X     |   X   |         |
-| Scarlet | scarlet_web       |      X     |   X   |    X    |
-| EDPNet  | edpnet_web        |            |   X   |         |
-| UPC CZ  | upccz_web         |      X     |   X   |         |
---------------------------------------------------------------
+----------------------------------------------------------------------
+| ISP             | Parser            | Reset Date | Quota | History |
+----------------------------------------------------------------------
+| Telenet         | telemeter_web     |      X     |   X   |    X    |
+|                 | telemeter4tools   |      X     |   X   |    X    |
+| Dommel          | dommel_web        |      X     |   X   |         |
+| Skynet          | skynet_web        |      X     |   X   |         |
+| Scarlet         | scarlet_web       |      X     |   X   |    X    |
+| EDPNet          | edpnet_web        |            |   X   |         |
+| UPC CZ          | upccz_web         |      X     |   X   |         |
+| Mobile Vikings  | mobilevikings_api |            |   X   |         |
+----------------------------------------------------------------------
 
 Requirements
 ~~~~~~~~~~~~
@@ -129,6 +130,9 @@ Running on Mac OS X
 ~~~~~~~~~~~~~~~~~~~
 - This script has been thoroughly tested on Mac OS X 10.4.8 and higher, and
   works without any problems.
+- On Mac OS X 10.6 (Snow Leopard), you need to set the timezone in php.ini.
+  for more info, check 
+  http://www.macosxhints.com/article.php?story=20090831101932728
 
 Database publishers
 ~~~~~~~~~~~~~~~~~~~
@@ -154,7 +158,6 @@ Known issues
     protecting your login credentials!
   * To change the key, modify the _key value at the top of
     phptelemeter.inc.php.
-
 
 Extending phptelemeter
 ~~~~~~~~~~~~~~~~~~~~~~
