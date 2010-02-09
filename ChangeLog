@@ -4,6 +4,7 @@ What's new? Not much, but it's listed here.
 ~~~~
 - Bumped required php version to 5.0.0
 - Replaced nusoap library with SoapClient class that comes with php5
+  (feature request: 2948630)
 
 1.35
 ~~~~
