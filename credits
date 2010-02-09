@@ -8,6 +8,7 @@
    * for the idea on the ignore_errors parameter
 - Telenet, for creating the Telemeter4Tools
 - NuSphere corporation for nusoap (http://dietrich.ganx4.com/nusoap/index.php)
+  (even though we no longer use it, phptelemeter <= 1.35 used this library)
 - Eric Pollman for his XML Library
   (http://eric.pollmann.net/work/public_domain/)
 - Cajmere on be.comp.os.linux for a valid point about not finding the modules
