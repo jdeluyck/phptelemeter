@@ -2,14 +2,14 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_mobistar_web", "12");
+define("_phptelemeter_parser_mobistar_web", "1");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_mobistar_web.inc.php - file which contains the Mobistar.be web page parser module.
 
-Copyright (C) 2005 - 2009 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,9 +40,14 @@ class telemeterParser_mobistar_web extends telemeterParser_web_shared
 		/* call parent constructor */
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
+		/* because mobistar uses a non-common CA, disable the CA check */
+		$this->_curlParams = array(CURLOPT_SSL_VERIFYPEER => 0);
+
 		/* do some var initialisation */
-		$this->url["login"] = "https://www.mobistar.be/nl/e-services/page/applicationAuthentication/09_ApplicationInformation/01_Descriptions/identify_yourself.xml";
-		$this->url["stats"] = "http://partners.mobistar.be/conso-iew-logged/index.cfm?lg=NL";
+		//$this->url["login"] = "https://www.mobistar.be/nl/e-services/page/applicationAuthentication/09_ApplicationInformation/01_Descriptions/identify_yourself.xml";
+//		$this->url["login"] = "https://www.mobistar.be/www/portal/public/residential?_nfpb=true&portlet_login_6_actionOverride=%2Fbe%2Fmobistar%2Fim%2Fprocess%2Fportlets%2Flogin001%2FprocessLogin&_windowLabel=portlet_login_6&_pageLabel=applicationAuthentication";
+	        $this->url["login"] = "https://www.mobistar.be/www/portal/public/residential?_nfpb=true&portlet_login_3_actionOverride=%2Fbe%2Fmobistar%2Fim%2Fprocess%2Fportlets%2Flogin001%2FprocessLogin&_windowLabel=portlet_login_3&_pageLabel=myac_index";
+$this->url["stats"] = "https://partners.mobistar.be/conso-iew-logged/index.cfm?lg=NL";
 		$this->url["logout"] = "http://www.mobistar.be/nl/e-services/page/logout";
 
 		$this->errors = array("Je gebruikersnaam is onjuist" => "Incorrect login",

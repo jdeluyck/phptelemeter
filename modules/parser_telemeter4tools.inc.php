@@ -2,14 +2,14 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "14");
+define("_phptelemeter_parser_telemeter4tools", "15");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_telemeter4tools.inc.php - file which contains the Telemeter4tools parser module.
 
-Copyright (C) 2005 - 2009 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,8 +25,7 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-/* okay, we require the nusoap and xmlparser libraries. Load them. */
-require_once("modules/libs/nusoap.inc.php");
+/* okay, we require the xmlparser library. Load it. */
 require_once("modules/libs/xmlparser.inc.php");
 
 class telemeterParser_telemeter4tools
@@ -43,7 +42,7 @@ class telemeterParser_telemeter4tools
 
 	var $debug = false;
 	var $ignoreErrors = false;
-	var $neededModules = "";
+	var $neededModules = "soap";
 
 	var $proxyHost;
 	var $proxyPort;
@@ -124,93 +123,84 @@ class telemeterParser_telemeter4tools
 		return ($returnValue);
 	}
 
-
 	/* EXTERNAL! */
 	function getData($userName, $password)
 	{
 		$returnValue = false;
+		$params["trace"] = 0;
+		$client = "";
 
 		if (strlen($this->proxyHost) != 0)
 		{
+			$params["proxy_host"] = $this->proxyHost;
+			$params["proxy_port"] = $this->proxyPort;
+
 			if ($this->proxyAuth == true)
-				$client = new phptelemeter_soapclient($this->url, true, $this->proxyHost, $this->proxyPort, $this->proxyUsername, $this->proxyPassword);
-			else
-				$client = new phptelemeter_soapclient($this->url, true, $this->proxyHost, $this->proxyPort);
+			{
+				$params["proxy_login"] = $this->proxyUsername;
+				$params["proxy_password"] = $this->proxyPassword;
+			}
 		}
-		else
-			$client = new phptelemeter_soapclient($this->url, true);
 
-		dumpDebugInfo($this->debug, $client->getDebug());
-
-		/* Check for an error */
-		$error = $client->getError();
-		if ($error)
-			doError("SOAP Error", $error, true, $this->ignoreErrors);
+		try 
+		{
+			$client = new soapclient($this->url, $params);
+		} 
+		catch (Exception $e)
+		{
+			doError("SOAP Error", $e, true, $this->ignoreErrors);
+		}
 
 		/* Do we need to override the endpoint url returned by the wdsl? */
 		if ($this->useEndpointUrl == true)
-			$client->setEndPoint($this->endpointUrl);
+			$client->__setLocation($this->endpointUrl);
 
-		$result = $client->call('getUsage', array($userName, $password));
-
-		dumpDebugInfo($this->debug, $client->getDebug());
-
-		/* Check for a fault */
-		if ($client->fault)
+		/* Call the getUsage function */
+		try
+		{
+			$result = $client->__soapCall('getUsage', array($userName, $password));
+		}
+		catch (Exception $e)
 		{
 			$returnValue = false;
 			doError("SOAP Fault", $result, true, $this->ignoreErrors);
 		}
-		else
+
+		/* now look for error messages */
+		if ($this->checkStatus($result) === false)
 		{
-			/* Check for errors */
-	    	$error = $client->getError();
+			$parser = new XMLParser($result, 'raw', 1);
+			$result = $parser->getTree();
 
-    		if ($error)
-    		{
-				doError("SOAP Error", $error, true, $this->ignoreErrors);
-				$returnValue = false;
-			}
-			else
+			dumpDebugInfo($this->debug, $result);
+
+			/* split off the global usage data */
+			$general["used"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
+			$general["remaining"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["LIMITS"]["MAX-UP"]["VALUE"] - $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
+
+			/* split off the daily data */
+			foreach ($result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["USAGE"] as $key => $value)
 			{
-				/* now look for error messages */
-				if ($this->checkStatus($result) === false)
-				{
-				  $parser = new XMLParser($result, 'raw', 1);
-				  $result = $parser->getTree();
-
-				  dumpDebugInfo($this->debug, $result);
-
-				   /* split off the global usage data */
-				    $general["used"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
-				    $general["remaining"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["LIMITS"]["MAX-UP"]["VALUE"] - $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
-
-				    /* split off the daily data */
-				    foreach ($result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["USAGE"] as $key => $value)
-				    {
-					  $daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
-					  $daily[] = $value["UP"]["VALUE"];
-				    }
-
-					$endDate = $daily[count($daily) - 2];
-					$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
-
-					$returnValue["general"] = $general;
-					$returnValue["daily"] = $daily;
-					$returnValue["isp"] = $this->_ISP;
-					$returnValue["reset_date"] = $resetDate;
-					$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
-				}
-				else
-					$returnValue = false;
+				$daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
+				$daily[] = $value["UP"]["VALUE"];
 			}
+
+			$endDate = $daily[count($daily) - 2];
+			$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
+
+			$returnValue["general"] = $general;
+			$returnValue["daily"] = $daily;
+			$returnValue["isp"] = $this->_ISP;
+			$returnValue["reset_date"] = $resetDate;
+			$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 		}
+		else
+			$returnValue = false;
 
 		dumpDebugInfo($this->debug, $returnValue);
 
 		return ($returnValue);
 	}
-
 }
 
 ?>

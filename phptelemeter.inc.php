@@ -6,7 +6,7 @@ if (! defined("_phptelemeter")) exit();
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
-Copyright (C) 2005 - 2009 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ http://www.gnu.org/licenses/gpl.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.35");
+define("_version", "1.36-beta1");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_cacheFileName", "phptelemeter.cache");
@@ -92,10 +92,10 @@ function checkOS($configuration, &$configFiles, &$cacheFiles)
 	dumpDebugInfo($configuration["general"]["debug"], $cacheFiles);
 }
 
-/* we require version >= 4.3.0 */
+/* we require version >= 5.0.0 */
 function checkPhpVersion()
 {
-	if (version_compare("4.3.0", phpversion()) >= 0)
+	if (version_compare("5.0.0", phpversion()) >= 0)
 		doError("PHP version too low","Please upgrade PHP to atleast 4.3.0", true);
 }
 

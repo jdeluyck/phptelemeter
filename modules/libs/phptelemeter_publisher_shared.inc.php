@@ -7,7 +7,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 phptelemeter_publisher_shared.inc.php - file which contains the shared publisher infrastructure
 
-Copyright (C) 2005 - 2009 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2005 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
