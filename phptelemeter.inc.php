@@ -322,7 +322,7 @@ function checkConfig($configuration, $configFile, $configKeys)
 	/* ERROR CHECKING */
 
 	/* check for the "new" section, if it's present the config has just been generated and we just bail out here. */
-	if (array_key_exists("new", &$configuration))
+	if (array_key_exists("new", $configuration))
 		quit();
 
 	/* protection against no-i-wont-edit-the-config users */
