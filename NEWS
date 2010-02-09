@@ -1,3 +1,10 @@
+phptelemeter 1.36
+~~~~~~~~~~~~~~~~~
+- This version requires PHP 5.0.0 or higher.
+
+------------
+| OLD NEWS |
+------------ 
 phptelemeter 1.33
 ~~~~~~~~~~~~~~~~~
 - the publisher key was moved from the [general] section to a new
@@ -7,9 +14,6 @@ phptelemeter 1.33
 Please update your configuration file, or generate a new one.
 For more details, see the README and the Configuration files.
 
-------------
-| OLD NEWS |
-------------
 phptelemeter 1.32
 ~~~~~~~~~~~~~~~~~
 - New keys were added to the [general] section:
