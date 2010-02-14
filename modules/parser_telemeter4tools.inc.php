@@ -171,8 +171,8 @@ class telemeterParser_telemeter4tools
 			dumpDebugInfo($this->debug, $xml);
 
 			/* split off the global usage data */
-			$general["used"] = (float)$xml->{'usage-info'}->data->service->totalusage->up;
-			$general["remaining"] = (float)$xml->{'usage-info'}->data->service->limits->{'max-up'} - $general["used"];
+			$general["used"] = $xml->{'usage-info'}->data->service->totalusage->up;
+			$general["remaining"] = $xml->{'usage-info'}->data->service->limits->{'max-up'} - $general["used"];
 
 			/* split off the daily data */
 			foreach ($xml->{'usage-info'}->data->service->usage as $key => $value)
