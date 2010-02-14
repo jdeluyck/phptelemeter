@@ -25,9 +25,6 @@ http://www.gnu.org/licenses/gpl.txt
 
 */
 
-/* okay, we require the xmlparser library. Load it. */
-require_once("modules/libs/xmlparser.inc.php");
-
 class telemeterParser_telemeter4tools
 {
 	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?WSDL";
@@ -42,7 +39,7 @@ class telemeterParser_telemeter4tools
 
 	var $debug = false;
 	var $ignoreErrors = false;
-	var $neededModules = "soap";
+	var $neededModules = array("soap", "simplexml");
 
 	var $proxyHost;
 	var $proxyPort;
@@ -169,20 +166,19 @@ class telemeterParser_telemeter4tools
 		/* now look for error messages */
 		if ($this->checkStatus($result) === false)
 		{
-			$parser = new XMLParser($result, 'raw', 1);
-			$result = $parser->getTree();
 
-			dumpDebugInfo($this->debug, $result);
+			$xml = new SimpleXMLElement($result);
+			dumpDebugInfo($this->debug, $xml);
 
 			/* split off the global usage data */
-			$general["used"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
-			$general["remaining"] = $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["LIMITS"]["MAX-UP"]["VALUE"] - $result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["TOTALUSAGE"]["UP"]["VALUE"];
+			$general["used"] = (float)$xml->{'usage-info'}->data->service->totalusage->up;
+			$general["remaining"] = (float)$xml->{'usage-info'}->data->service->limits->{'max-up'} - $general["used"];
 
 			/* split off the daily data */
-			foreach ($result["TELEMETER"]["USAGE-INFO"]["DATA"]["SERVICE"]["USAGE"] as $key => $value)
+			foreach ($xml->{'usage-info'}->data->service->usage as $key => $value)
 			{
-				$daily[] = substr($value["ATTRIBUTES"]["DAY"],6,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],4,2) . "/" . substr($value["ATTRIBUTES"]["DAY"],2,2);
-				$daily[] = $value["UP"]["VALUE"];
+				$daily[] = substr($value['day'],6,2) . "/" . substr($value['day'],4,2) . "/" . substr($value['day'],2,2);
+				$daily[] = $value->up;
 			}
 
 			$endDate = $daily[count($daily) - 2];
