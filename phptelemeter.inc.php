@@ -905,7 +905,7 @@ function loadCacheFile($debug, $cacheFile)
 		$fp = fopen($cacheFile, "w");
 		if ($fp !== false)
 		{
-			fwrite($fp, "# Empty cache file for phptelemeter\n");
+			fwrite($fp, "; Empty cache file for phptelemeter\n");
 			fclose($fp);
 		}
 		else
