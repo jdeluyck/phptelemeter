@@ -6,6 +6,7 @@ What's new? Not much, but it's listed here.
 - Replaced nusoap library with SoapClient class that comes with php5
   (feature request: 2948630)
 - Replaced the xmlparser library with the SimpleXML class of php5.
+- Updated gpl2 license link
 
 1.35
 ~~~~

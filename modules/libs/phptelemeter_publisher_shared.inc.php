@@ -19,7 +19,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 The full text of the license can be found here:
-http://www.gnu.org/licenses/gpl.txt
+http://www.gnu.org/licenses/gpl2.txt
 
 */
 
