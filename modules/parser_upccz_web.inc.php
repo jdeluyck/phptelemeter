@@ -9,7 +9,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_upccz_web.inc.php - file which contains the UPC CZ web page parser module.
 
-Copyright (C) 2005 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2004 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This parser is written by Miroslav Suchý <miroslav -at- suchy -dot- cz> and included
 with permission.

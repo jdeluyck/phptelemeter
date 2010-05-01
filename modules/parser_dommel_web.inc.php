@@ -9,7 +9,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_dommel_web.inc.php - file which contains the Dommel web page parser module.
 
-Copyright (C) 2005 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2004 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
