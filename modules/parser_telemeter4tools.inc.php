@@ -27,7 +27,7 @@ http://www.gnu.org/licenses/gpl2.txt
 
 class telemeterParser_telemeter4tools
 {
-	var $url = "https://telemeter4tools.services.telenet.be/TelemeterService?WSDL";
+	var $url = "https://telemeter4tools.telenet.be/TelemeterService?WSDL";
 
 	var $_ISP = "telenet";
 

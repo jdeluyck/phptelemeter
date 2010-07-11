@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "22");
+define("_phptelemeter_parser_telemeter_web", "23");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -39,18 +39,17 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("goto" => "http://www.telenet.be/sys/mijntelenet/index.page?locale=nl");
-		$this->url["login"] = "https://www.telenet.be/sys/sso/signon.jsp";
-		$this->url["telemeter"] = "https://services.telenet.be/lngtlm/telemeter/overview.html?identifier=";
-		$this->url["stats"] = "https://services.telenet.be/lngtlm/telemeter/detail.html";
-		$this->url["logout"] = "https://www.telenet.be/sys/sso/signoff.jsp";
+		$this->_postFields = array("goto" => "https://www.telenet.be/mijntelenet/navigation/navigation.do?family=DEFAULT&amp;identifier=DEFAULT");
+		$this->url["login"] = "https://www.telenet.be/sso/ext/signon.do";
+		$this->url["telemeter"] = "https://www.telenet.be/mijntelenet/telemeter/showUsage.do?identifier=";
+		$this->url["cookie"] = false;
+		$this->url["logout"] = "https://www.telenet.be/sso/ext/signoff.do";
 
 		$this->errors = array("sso.login.authfail.PasswordNOK" => "Incorrect password",
 							"sso.login.authfail.LoginDoesNotExist" => "Incorrect username.",
 							"sso.login.invaliduid" => "Invalid username",
 							"sso.jump.nocookie" => "No cookie detected");
 
-		$this->months = array("januari" => 1, "februari" => 2, "maart" => 3, "april" => 4, "mei" => 5, "juni" => 6, "juli" => 7, "augustus" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
 	}
 
 	/* EXTERNAL! */
@@ -60,12 +59,37 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		if ($this->checkForError($log) !== false)
 			return (false);
 
+		/* log on */
 		$log = $this->doCurl($this->url["telemeter"] . $userName, FALSE);
 		if ($this->checkForError($log) !== false)
 			return (false);
 
+		/* there's a <meta http-equiv="Refresh"> here that we need.  */
+		$log = explode("\n", str_replace("&nbsp;", " ", trim($log)));
+		for ($i = 0; $i < count($log); $i++)
+		{
+			$log[$i] = trim($log[$i]);
+			if (stristr($log[$i], '<meta http-equiv="Refresh" content="0; URL=') !== false)
+			{
+				$this->url["cookie"] = substr($log[$i], 43,-4);
+				break;
+			}
+		}
+		if (! $this->url["cookie"])
+		{	
+			echo "Could not detect refresh url!\n";
+			return (false);
+		}
+
+		dumpDebugInfo($this->debug,"REFRESH URL: " . $this->url["cookie"] . "\n");
+		
+		/* cookie monster! */
+		$log = $this->doCurl($this->url["cookie"] . $userName, FALSE);
+		if ($this->checkForError($log) !== false)
+			return (false);
+
 		/* get the data */
-		$data = $this->doCurl($this->url["stats"], FALSE);
+		$data = $this->doCurl($this->url["telemeter"] . $userName, FALSE);
 		if ($this->checkForError($data) !== false)
 			return (false);
 
@@ -90,13 +114,13 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		/* determine positions */
 		for ($i = 0; $i < count($data); $i++)
 		{
-			if (stristr($data[$i], "Detail aanrekeningsperiode") !== false)
-				$pos["daterange"] = $i;
-			elseif (stristr($data[$i], "Ontvangen (download) en verstuurde (upload) gegevens") !== false)
+			if (stristr($data[$i], "Herinneringen instellen") !== false)
+				$pos["daterange"] = $i + 1;
+			elseif (stristr($data[$i], "Je verbruikte volume wordt op 0 gezet op") !== false)
 			{
-				$pos["trafficused"] = $i + 17;
-				$pos["trafficleft"] = $i + 18;
-				$pos["trafficdetail"] = $i + 23;
+				$pos["trafficused"] = $i - 3;
+				$pos["trafficleft"] = $i - 2;
+				$pos["trafficdetail"] = $i + 49;
 			}
 		}
 
@@ -116,41 +140,29 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 
 		/* determine the date range */
 		$dateRange = explode(" ", $data[$pos["daterange"]]);
-
-		/* change the month */
-		$dateRange[3] = $this->months[$dateRange[3]];
-		$dateRange[7] = $this->months[$dateRange[7]];
-
+		dumpDebugInfo($this->debug, "DATERANGE:");
 		dumpDebugInfo($this->debug, $dateRange);
 
-		$start = mktime(0, 0, 0, $dateRange[3], $dateRange[2], $dateRange[4]);
-		$end = mktime(0, 0, 0, $dateRange[7], $dateRange[6], $dateRange[8]);
+		/* seems / in dates is interpreted als US dates, - is EU dates... go figure */
+		$start = strtotime(str_replace("/","-",$dateRange[0]));
+		$end   = strtotime(str_replace("/","-",$dateRange[4]));
 
 		$days = intval(($end - $start) / 86400) + 1;
 
 		dumpDebugInfo($this->debug,
-			"start: ", $start, " ", date("Y-m-d", $start), "\n" .
-			"end: ", $end, " ", date("Y-m-d", $end), "\n" .
-			"days: ", $days, " \n");
+			"start: ". $start. " (". date("Y-m-d", $start). ") -- " .
+			"end: ". $end. " (". date("Y-m-d", $end). ") -- " .
+			"days: ". $days);
 
 		/* now do the magic for getting the values of the days */
 		for ($i = 1; $i <= $days; $i++)
 		{
-
-			if ($data[$pos["trafficdetail"]] == "&gt;")
-			{
-				$pos["trafficdetail"]++;
-			}
-
 			$dailyMatches[] = date("d/m/y", $start + (($i - 1) * 86400));
-			$dailyMatches[] = removeDots($data[++$pos["trafficdetail"]]) + removeDots($data[++$pos["trafficdetail"]]);
-
-			/* increase pos by one, we don't care for the dates */
-			$pos["trafficdetail"]++;
+			$dailyMatches[] = substr(removeDots($data[$pos["trafficdetail"]]),16,-2) + substr(removeDots($data[$pos["trafficdetail"]++ + 30]),16,-2);
 		}
 
 		$endDate = $dailyMatches[count($dailyMatches) - 2];
-		$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 2,substr($endDate,6)));
+		$resetDate = date("d/m/Y", $end + 86400);
 
 
 		$returnValue["general"] = $generalMatches;
