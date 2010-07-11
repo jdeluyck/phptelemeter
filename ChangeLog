@@ -7,6 +7,8 @@ What's new? Not much, but it's listed here.
   (feature request: 2948630)
 - Replaced the xmlparser library with the SimpleXML class of php5.
 - Updated gpl2 license link
+- Fixed telemeter_web parser after Telenet updates. This will probably
+  need additional fixing for the new sortof unlimited accounts.
 
 1.35
 ~~~~
