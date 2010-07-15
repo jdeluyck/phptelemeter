@@ -37,6 +37,13 @@ $isp_compatibility_matrix["telenet"]["separate_quota"] = false;
 $isp_compatibility_matrix["telenet"]["separate_day_info"] = false;
 $isp_compatibility_matrix["telenet"]["history"] = true;
 
+/* TELENET STAGE METER */
+$isp_compatibility_matrix["telenet_stage"]["reset_date"] = false;
+$isp_compatibility_matrix["telenet_stage"]["separate_quota"] = false;
+$isp_compatibility_matrix["telenet_stage"]["separate_day_info"] = false;
+$isp_compatibility_matrix["telenet_stage"]["history"] = false;
+
+
 /* DOMMEL */
 $isp_compatibility_matrix["dommel"]["reset_date"] = true;
 $isp_compatibility_matrix["dommel"]["separate_quota"] = false;

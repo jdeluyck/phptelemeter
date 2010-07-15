@@ -169,25 +169,39 @@ class telemeterParser_telemeter4tools
 
 			dumpDebugInfo($this->debug, $result);
 
-			/* split off the global usage data */
-			$general["used"] = $result->Volume->TotalUsage;
-			$general["remaining"] = $result->Volume->Limit - $general["used"];
-
-			/* split off the daily data */
-			foreach ($result->Volume->DailyUsageList->DailyUsage as $key => $value)
+			/* is this a volume meter or a stage meter? */
+			if (isset($result->Volume))
 			{
-				$daily[] = date("d/m/y", strtotime($value->Day));
-				$daily[] = $value->Usage;
+				/* volume. Got it. */
+				/* split off the global usage data */
+				$general["used"] = $result->Volume->TotalUsage;
+				$general["remaining"] = $result->Volume->Limit - $general["used"];
+
+				/* split off the daily data */
+				foreach ($result->Volume->DailyUsageList->DailyUsage as $key => $value)
+				{
+					$daily[] = date("d/m/y", strtotime($value->Day));
+					$daily[] = $value->Usage;
+				}
+
+				$endDate = $daily[count($daily) - 2];
+				$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
+
+				/* return values */
+				$returnValue["daily"] = $daily;
+				$returnValue["reset_date"] = $resetDate;
+				$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 			}
-
-			$endDate = $daily[count($daily) - 2];
-			$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
-
+			else
+			{
+				/* it's one of those stage meters... */
+				$this->_ISP = "telenet_stage";
+				$general["used"] = $result->Stage->StageNumber;
+				$general["remaining"] = 9 - $general["used"];
+			}
+				
 			$returnValue["general"] = $general;
-			$returnValue["daily"] = $daily;
 			$returnValue["isp"] = $this->_ISP;
-			$returnValue["reset_date"] = $resetDate;
-			$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 		}
 		else
 			$returnValue = false;
