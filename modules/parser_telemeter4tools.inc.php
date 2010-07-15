@@ -145,7 +145,7 @@ class telemeterParser_telemeter4tools
 		} 
 		catch (Exception $e)
 		{
-			doError("SOAP Error during object creation", $e->getMessage(), true, $this->ignoreErrors);
+			doError("SOAP Error during object creation", $e->getMessage(), true, false);
 		}
 
 		/* Do we need to override the endpoint url returned by the wdsl? */
@@ -160,13 +160,11 @@ class telemeterParser_telemeter4tools
 		}
 		catch (Exception $e)
 		{
-			$returnValue = false;
-			doError("SOAP Fault with RetrieveUsageRequestType", $e->getMessage(), true, $this->ignoreErrors);
+			$returnValue = $this->checkStatus($e->getMessage());
 		}
 
 		/* now look for error messages */
-#		if ($this->checkStatus($result) === false)
-		if (1 == 1)
+		if ($returnValue === false)
 		{
 
 			dumpDebugInfo($this->debug, $result);
