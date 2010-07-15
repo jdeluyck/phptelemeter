@@ -38,7 +38,7 @@ Requirements
 - register_globals must be activated in php.ini
 - For the encryption, you also need the mcrypt extension
 - For the imgbar publisher, you need the gd extension
-- For Telemeter4Tools it requires the soap and simplexml extensions
+- For Telemeter4Tools it requires the soap extension
 
 Howto
 ~~~~~
