@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "15");
+define("_phptelemeter_parser_telemeter4tools", "16");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -27,7 +27,7 @@ http://www.gnu.org/licenses/gpl2.txt
 
 class telemeterParser_telemeter4tools
 {
-	var $url = "https://telemeter4tools.telenet.be/TelemeterService?WSDL";
+	var $url = "https://t4t.services.telenet.be/TelemeterService.wsdl";
 
 	var $_ISP = "telenet";
 
@@ -39,7 +39,7 @@ class telemeterParser_telemeter4tools
 
 	var $debug = false;
 	var $ignoreErrors = false;
-	var $neededModules = array("soap", "simplexml");
+	var $neededModules = array("soap");
 
 	var $proxyHost;
 	var $proxyPort;
@@ -145,40 +145,41 @@ class telemeterParser_telemeter4tools
 		} 
 		catch (Exception $e)
 		{
-			doError("SOAP Error", $e, true, $this->ignoreErrors);
+			doError("SOAP Error during object creation", $e->getMessage(), true, $this->ignoreErrors);
 		}
 
 		/* Do we need to override the endpoint url returned by the wdsl? */
 		if ($this->useEndpointUrl == true)
 			$client->__setLocation($this->endpointUrl);
 
-		/* Call the getUsage function */
+
+		/* Call the retrieveUsage function */
 		try
 		{
-			$result = $client->__soapCall('getUsage', array($userName, $password));
+			$result = $client->retrieveUsage(new SoapParam(array("UserId" => $userName, "Password" => $password), "RetrieveUsageRequestType"));
 		}
 		catch (Exception $e)
 		{
 			$returnValue = false;
-			doError("SOAP Fault", $result, true, $this->ignoreErrors);
+			doError("SOAP Fault with RetrieveUsageRequestType", $e->getMessage(), true, $this->ignoreErrors);
 		}
 
 		/* now look for error messages */
-		if ($this->checkStatus($result) === false)
+#		if ($this->checkStatus($result) === false)
+		if (1 == 1)
 		{
 
-			$xml = new SimpleXMLElement($result);
-			dumpDebugInfo($this->debug, $xml);
+			dumpDebugInfo($this->debug, $result);
 
 			/* split off the global usage data */
-			$general["used"] = $xml->{'usage-info'}->data->service->totalusage->up;
-			$general["remaining"] = $xml->{'usage-info'}->data->service->limits->{'max-up'} - $general["used"];
+			$general["used"] = $result->Volume->TotalUsage;
+			$general["remaining"] = $result->Volume->Limit - $general["used"];
 
 			/* split off the daily data */
-			foreach ($xml->{'usage-info'}->data->service->usage as $key => $value)
+			foreach ($result->Volume->DailyUsageList->DailyUsage as $key => $value)
 			{
-				$daily[] = substr($value['day'],6,2) . "/" . substr($value['day'],4,2) . "/" . substr($value['day'],2,2);
-				$daily[] = $value->up;
+				$daily[] = date("d/m/y", strtotime($value->Day));
+				$daily[] = $value->Usage;
 			}
 
 			$endDate = $daily[count($daily) - 2];
