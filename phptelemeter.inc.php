@@ -791,7 +791,7 @@ function obfuscateLog($data, $credentialInfo)
 		$data = $newdata;
 	}
 	else
-		$data = str_replace($credentialInfo, "-HIDDEN-", $data);
+		$data=$data;//$data = str_replace($credentialInfo, "-HIDDEN-", $data);
 
 	return ($data);
 }
