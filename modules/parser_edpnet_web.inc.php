@@ -36,10 +36,12 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("btnCheck" => "Check traffic","__VIEWSTATE" => "");
+		$this->_postFields = array("btnLogin" => "Login", "__VIEWSTATE" => "");
 
-		$this->url["login"] = "http://www.edpnet.be/traffic2.aspx?R=1";
-		$this->url["details"] = "http://edpnet.be/traffic2_details.aspx";
+		$this->url["login"]   = "http://extra.edpnet.net/login.aspx";
+		$this->url["dslinfo"] = "http://extra.edpnet.net/list_dslconnections.aspx";
+		$this->url["dsldetails"] = "http://extra.edpnet.be/maint_dslconnection.aspx?ID=";
+		$this->url["traffic"] = "http://extra.edpnet.net/TrafficDetail3.aspx";
 
 		$this->errors = array("Invalid username or password" => "Invalid username or password");
 	}
@@ -63,18 +65,65 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		}
 
 		dumpDebugInfo($this->debug, "__VIEWSTATE_ID: " . $this->_postFields["__VIEWSTATE_ID"] . "\n");
-		dumpDebugInfo($this->debug, "----------\n");
 
 		/* log in & get initial data */
-		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserName" => $userName, "tbPassword" => $password)));
+		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserID" => $userName, "tbPassword" => $password)));
 		if ($this->checkForError($data) !== false)
 			return (false);
 
 		/* now remove the first item from the _postFields array, and re-pass */
 		array_shift($this->_postFields);
 
+		/* now get the dsl connection link */
+		$data = $this->doCurl($this->url["dslinfo"], FALSE);
+
+		$data = explode("\n", $data);
+		for ($i = 0; $i < count($data); $i++)
+		{
+			if (stristr($data[$i], "maint_dslconnection.aspx") !== false)
+			{
+				$this->url["dsldetails"] .= substr(strrchr($data[$i],"="),1,-3);
+				break;
+			}
+		}
+		
+		/* now get the dsl connection info */
+		$data = $this->doCurl($this->url["dsldetails"], FALSE);
+		dumpDebugInfo($this->debug, $data);
+
+		/* try to get the start date for this period out */
+		$data = explode("\n", $data);
+
+		dumpDebugInfo($this->debug, "DATA:\n");
+		dumpDebugInfo($this->debug, $data);
+
+		/* find where the line might be */
+		for ($i = 0; $i < count($data); $i++)
+		{
+			if ($data2 = stristr($data[$i], "LblTitleUseTable"))
+				break;
+		}
+
+		$data2 = strip_tags($data2);
+		$data2 = explode(" ", $data2);
+
+		dumpDebugInfo($this->debug, "DATA2:\n");
+		dumpDebugInfo($this->debug, $data2);
+
+//				$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
+
+		$resetDate = date("d/m/Y", mktime(0,0,0,substr($data2[-substr($data2[8],-10);
+		
+		/* let's have a look at traffic */
+		$data = $this->doCurl($this->url["traffic"], FALSE);
+		dumpDebugInfo($this->debug, $data);
+		
+		$data = explode("\n", $data);
+
+		dumpDebugInfo($this->debug, $data);
+
 		/* total used */
-		$volume["used"] = substr($data[$pos["used"]],0,-2);
+		$volume["used"] = substr($data2[25],14);
 
 		/* remaining */
 		$volume["remaining"] = substr($data[$pos["max"]],0,-2) - $volume["used"];
@@ -108,7 +157,7 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		$returnValue["general"] = $volume;
 //		$returnValue["daily"] = $dailyData;
 		$returnValue["isp"] = $this->_ISP;
-//		$returnValue["reset_date"] = $reset_date;
+		$returnValue["reset_date"] = $reset_date;
 		$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 
 		dumpDebugInfo($this->debug, $returnValue);
