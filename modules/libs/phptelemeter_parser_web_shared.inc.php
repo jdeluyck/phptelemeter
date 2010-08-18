@@ -177,6 +177,7 @@ class telemeterParser_web_shared
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+		curl_setopt($ch, CURLOPT_MAXREDIRS, 100);
 
 		/* check proxy */
 		if (strlen($this->proxyHost) != 0)

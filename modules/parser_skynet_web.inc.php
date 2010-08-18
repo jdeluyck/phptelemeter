@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_skynet_web", "9");
+define("_phptelemeter_parser_skynet_web", "10");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -37,13 +37,13 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("Submit" => "Inloggen");
+		$this->_postFields = array("Submit2" => "Connect");
 
 		/* because skynet uses a non-common CA, disable the CA check */
 		$this->_curlParams = array(CURLOPT_SSL_VERIFYPEER => 0);
 
-		$this->url["login"] = "https://e-care.skynet.be/index.cfm?function=connection.getVolume";
-		$this->url["logout"] = "https://e-care.skynet.be/index.cfm?function=login.logoff";
+		$this->url["login"] = "https://admit.belgacom.be/ecare-slf/index.cfm?function=connection.getVolume#oldtimer";
+		$this->url["logout"] = "https://admit.belgacom.be/ecare-slf/index.cfm?function=login.logoff";
 
 		$this->errors = array("ese21Z-3" => "Technical problem or non-existant username.",
 					"ese21Z-2" => "Password incorrect.",
@@ -57,6 +57,11 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("form_login" => $userName, "form_password" => $password)));
 		if ($this->checkForError($data) !== false)
 			return (false);
+
+		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("form_login" => $userName, "form_password" => $password)));
+		if ($this->checkForError($data) !== false)
+			return (false);
+
 
 		/* logout */
 		$log = $this->doCurl($this->url["logout"], FALSE);
@@ -99,7 +104,7 @@ class telemeterParser_skynet_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug, $returnValue);
 
 		/* we need to unlink the cookiefile here, otherwise we get 'ghost' data. */
-		@unlink ($this->_cookieFile);
+		//@unlink ($this->_cookieFile);
 
 		return ($returnValue);
 	}
