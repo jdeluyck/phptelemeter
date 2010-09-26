@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_mobilevikings_api", "1");
+define("_phptelemeter_parser_mobilevikings_api", "2");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -32,6 +32,7 @@ class telemeterParser_mobilevikings_api extends telemeterParser_web_shared
 	var $_ISP = "mobilevikings";
 
 	var $protocol = "https";
+	var $maxTransfer = 2048;
 
 	function telemeterParser_mobilevikings_api()
 	{
@@ -63,13 +64,13 @@ class telemeterParser_mobilevikings_api extends telemeterParser_web_shared
 			if ($json["is_expired"] == true)
 			{
 				dumpDebugInfo($this->debug, "bundle expired! Setting used to 100%...");
-				$returnValue["general"]["used"] = 1024;
+				$returnValue["general"]["used"] = $this->maxTransfer;
 				$returnValue["general"]["remaining"] = 0;
 			}
 			else
 			{
-				$returnValue["general"]["used"] = $json["data"];
-				$returnValue["general"]["remaining"] = 1024 - $returnValue["general"]["used"];
+				$returnValue["general"]["remaining"] = ($json["data"] / 1048576);
+				$returnValue["general"]["used"] = $this->maxTransfer - $returnValue["general"]["remaining"];
 			}
 		
 
