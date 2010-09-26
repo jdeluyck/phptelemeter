@@ -106,13 +106,29 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 
 		$data2 = strip_tags($data2);
 		$data2 = explode(" ", $data2);
-
+		
+		$datePos = -1;
+		/* clean that out a bitty */
+		for ($i = 0; $i < count($data2); $i++)
+		{
+			$data2[$i] = trim($data2[$i]);
+			if (stristr($data2[$i], "depuis") !== false)
+				$datePos = $i;
+		}
+		
 		dumpDebugInfo($this->debug, "DATA2:\n");
 		dumpDebugInfo($this->debug, $data2);
 
-//				$resetDate = date("d/m/Y", mktime(0,0,0,substr($endDate,3,2),substr($endDate,0,2) + 1,substr($endDate,6)));
-
-		$resetDate = date("d/m/Y", mktime(0,0,0,substr($data2[-substr($data2[8],-10);
+		if ($datePos < 0)
+		{
+			dumpDebugInfo($this->debug, "Date string not found!\n");
+			return (false);
+		}
+		
+		
+		$resetDate = date("d/m/Y", mktime(0,0,0,substr($data2[8],-7,2), substr($data2[8],-10,2),substr($data2[8],-4)));
+		
+		dumpDebugInfo($this->debug, "STARTDATE: " . $resetDate . "\n");
 		
 		/* let's have a look at traffic */
 		$data = $this->doCurl($this->url["traffic"], FALSE);

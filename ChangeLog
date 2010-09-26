@@ -9,6 +9,8 @@ What's new? Not much, but it's listed here.
 - Updated gpl2 license link
 - Fixed telemeter_web parser after Telenet updates. 
 - Fixed telemeter4tools parser after API updates. 
+- Fixed Mobile Vikings quota calculation
+
 
 1.35
 ~~~~
