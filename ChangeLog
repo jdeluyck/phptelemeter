@@ -1,5 +1,10 @@
 What's new? Not much, but it's listed here.
 
+1.36-beta2
+~~~~~~~~~~
+- Added support to set timezone from the application as opposed to
+  systemwide via php.ini
+
 1.36-beta1
 ~~~~~~~~~~
 - Bumped required php version to 5.0.0
