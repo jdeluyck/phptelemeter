@@ -44,6 +44,9 @@ use_cache=false				# use the cache file?
 cache_file=					# path to the cache file (optional)
 							# (overrides the detection)
 
+timezone=yourtimezone			# Timezone to use, check http://www.php.net/manual/en/timezones.php
+					# for a list of supported timezones
+
 [publisher]
 publisher=plaintext			# The publisher module to use.
 							# Currently plaintext, machine, mysql

@@ -25,7 +25,7 @@ http://www.gnu.org/licenses/gpl2.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.36-beta1");
+define("_version", "1.36-beta2");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_cacheFileName", "phptelemeter.cache");
@@ -36,7 +36,7 @@ define("_key", "b?S3jLT+AB+SwQ,l2@0DrX}b!mL6}OeoDLHjiFKEGNxM}K*/dPbd4}.|");
 $configuration = array();
 
 /* keys in the general section */
-$configKeys["general"]["required"] = array("show_resetdate", "show_daily", "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "check_version", "ignore_errors", "email", "encrypt_passwords", "use_cache");
+$configKeys["general"]["required"] = array("show_resetdate", "show_daily", "show_remaining", "show_graph", "file_prefix", "file_output", "file_extension", "check_version", "ignore_errors", "email", "encrypt_passwords", "use_cache","timezone");
 $configKeys["general"]["obsolete"] = array("style", "daily", "parser", "publisher");
 $configKeys["proxy"]["required"]   = array("proxy_host", "proxy_port", "proxy_authenticate", "proxy_username", "proxy_password");
 $configKeys["publisher"]["required"] = array("publisher");
@@ -256,6 +256,10 @@ encrypt_passwords=false
 ; This file has to be writeable by phptelemeter!
 use_cache=true
 ;cache_file=
+
+; Timezone to use. Check http://www.php.net/manual/en/timezones.php
+; for a list of supported timezones
+timezone=Europe/Brussels
 
 ; Proxy configuration. Leave proxy_host blank to not use a proxy.
 ; If you set proxy_authenticate to true, you must fill the username
