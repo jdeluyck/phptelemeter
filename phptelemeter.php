@@ -65,6 +65,10 @@ $configuration = checkConfig($configuration, $configFile, $configKeys);
 /* needed for debug log obfuscation */
 $credentialInfo = getAllCredentials($configuration);
 
+/* set the default timezone */
+if (! date_default_timezone_set($configuration["general"]["timezone"]))
+	doError("timezone not valid", "The timezone " . $configuration["general"]["timezone"] . " is not valid.", ! $configuration["general"]["ignore_errors"]);
+
 /* do a version check if it's asked */
 $newVersion = checkVersion($configuration["general"]["check_version"], $configuration["proxy"], $configuration["general"]["encrypt_passwords"]);
 
