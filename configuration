@@ -46,6 +46,7 @@ cache_file=					# path to the cache file (optional)
 
 timezone=yourtimezone			# Timezone to use, check http://www.php.net/manual/en/timezones.php
 					# for a list of supported timezones
+					# defaults to Belgium/Brussels
 
 [publisher]
 publisher=plaintext			# The publisher module to use.
