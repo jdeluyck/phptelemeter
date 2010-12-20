@@ -4,6 +4,8 @@ What's new? Not much, but it's listed here.
 ~~~~~~~~~~
 - Added support to set timezone from the application as opposed to
   systemwide via php.ini
+- Removed call-time pass-by-reference function calls
+  (deprecated in php 5.3)
 
 1.36-beta1
 ~~~~~~~~~~

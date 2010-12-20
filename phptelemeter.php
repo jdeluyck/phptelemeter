@@ -40,7 +40,7 @@ checkPhpVersion();
 $configuration = parseArgs($argv, null);
 
 /* create defines according to the OS */
-checkOS($configuration, &$configFiles, &$cacheFiles);
+checkOS($configuration, $configFiles, $cacheFiles);
 
 /* find the config file */
 $configFile = findConfigFile($configFiles, $configuration["general"]["debug"]);
@@ -99,7 +99,7 @@ checkModules($publisher->getNeededModules());
 checkConfigurationForPublisherKeys($configuration, $publisher->getNeededConfigKeys());
 
 /* set the necessary extra parameters, if any */
-setPublisherParameters(&$publisher, $configuration);
+setPublisherParameters($publisher, $configuration);
 
 /* set the debugging flag if needed */
 $publisher->setDebug($configuration["general"]["debug"]);
