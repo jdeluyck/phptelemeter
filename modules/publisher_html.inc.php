@@ -10,7 +10,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 publisher_html.inc.php - file which contains the HTML publisher
 
-Copyright (C) 2004 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2004 - 2011 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

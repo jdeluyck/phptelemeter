@@ -8,7 +8,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 phptelemeter_parser_web_shared.inc.php - file which contains the general class for phptelemeter webbased parsers
 
-Copyright (C) 2004 - 2010 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2004 - 2011 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
