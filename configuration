@@ -17,61 +17,61 @@ Configuration file layout
 show_daily=true				# Show 30-day stats (true/false)
 show_remaining=true			# Show how much you have remaining (true/false)
 show_graph=true				# Show the transfer graph (true/false)
-show_resetdate=false		# Shows the reset-date for your meter.
+show_resetdate=false			# Shows the reset-date for your meter.
 
 file_output=false			# Sets if file output should be used
-							# instead of screen (stdout)
+					# instead of screen (stdout)
 
 file_prefix=/tmp/phptelemeter_		# The path prefix to use for the
-									# output files
+					# output files
 
 file_extension=txt			# The extension to use for the output files
 
 check_version=false			# Check the current version against the latest
-							# upstream version, and report if there's a new
-							# version available.
+					# upstream version, and report if there's a new
+					# version available.
 
 modulepath=/path/to/phptelemeter	# The path to where the modules directory
-									# is. Optional.
+					# is. Optional.
 
 ignore_errors=false			# Ignore any runtime errors that might occur.
 
 email=your email			# What email address to use as From: when
-							# sending warning mails
+					# sending warning mails
 
-encrypt_passwords=false		# Encrypted passwords in the config
+encrypt_passwords=false			# Encrypted passwords in the config
 use_cache=false				# use the cache file?
-cache_file=					# path to the cache file (optional)
-							# (overrides the detection)
+cache_file=				# path to the cache file (optional)
+					# (overrides the detection)
 
 timezone=yourtimezone			# Timezone to use, check http://www.php.net/manual/en/timezones.php
-					# for a list of supported timezones
+					# for a list of supported timezones.
 					# defaults to Belgium/Brussels
 
 [publisher]
 publisher=plaintext			# The publisher module to use.
-							# Currently plaintext, machine, mysql
-							# plaintext_graphonly, no_output, html and imgbar are
-							# included.
+					# Currently plaintext, machine, mysql
+					# plaintext_graphonly, no_output, html and imgbar are
+					# included.
 
 # machine publisher
-separator=,					# Field separator
+separator=,				# Field separator
 
 # imgbar publisher:
 image=path to image			# Background image to use (png only!)
-font_file=path to ttf file	# Font (Truetype) to use 
+font_file=path to ttf file		# Font (Truetype) to use 
 font_color=RRGGBB			# Color to use for the text (RRGGBB style)
 font_size=12				# Font size to use
 
 # mysql publisher:
-db_name						# Database name
-db_hostname					# Database server hostname
-db_login					# Database username
-db_password					# Database password
+db_name					# Database name
+db_hostname				# Database server hostname
+db_login				# Database username
+db_password				# Database password
 db_tablename				# Database Table Name
 
 [proxy]
-proxy_host=					# Hostname of the proxy. Leave blank to disable
+proxy_host=				# Hostname of the proxy. Leave blank to disable
 proxy_port=8080				# port of the proxy
 proxy_auth=false			# set to true to enable proxy authentication
 proxy_username=				# Proxy username
@@ -79,29 +79,35 @@ proxy_password=				# Proxy password
 
 [account-1]
 username=youruser			# The username of account-1
-password=yourpassword		# The password of account-1
+password=yourpassword			# The password of account-1
 description=your description		# Description of account-1, if it is
-									# set it'll be used instead of the account
-									# name in the output
+					# set it'll be used instead of the account
+					# name in the output
+
 parser=a parser				# The parsing module to use for account-1.
-							# Currently telemeter4tools, telemeter_web,
-							# dommel_web, skynet_web, scarlet_web, edpnet_web,
-							# upccz_web and mobilevikings_api are included.
-warn_percentage=percentage	# Percentage when to make the output "red" in the
-							# publishers. Set to 0 to disable this and the
-							# email sending
-warn_email=email address	# email address where to send warning email.
-							# leave empty to disable email-sending.
+					# Currently telemeter4tools, telemeter_web,
+					# dommel_web, skynet_web, scarlet_web, edpnet_web,
+					# upccz_web and mobilevikings_api are included.
+
+subaccount=sub account identifier	# The sub account to get the info for, in case there are 
+					# several accounts linked to the same login
+
+warn_percentage=percentage		# Percentage when to make the output "red" in the
+					# publishers. Set to 0 to disable this and the
+					# email sending
+warn_email=email address		# email address where to send warning email.
+					# leave empty to disable email-sending.
 
 ...
 
 [account-99]
 username=youruser			# The username of account-99
-password=yourpassword		# The password of account-99
+password=yourpassword			# The password of account-99
 description=your description		# Description of account-99
 parser=a parser				# Parser of account-99
-warn_percentage=percentage	# Warning percentage of account-99
-warn_email=email address	# Warning email address of account-99
+subaccount=sub account id		# Sub account of account-99
+warn_percentage=percentage		# Warning percentage of account-99
+warn_email=email address		# Warning email address of account-99
 
 Publisher parameters
 ~~~~~~~~~~~~~~~~~~~~

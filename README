@@ -1,4 +1,4 @@
-phptelemeter v1.36-beta1 - Copyright (c) 2004 - 2011 by Jan De Luyck
+phptelemeter v1.36-beta2 - Copyright (c) 2004 - 2011 by Jan De Luyck
 
 What is it?
 ~~~~~~~~~~~
@@ -33,12 +33,11 @@ Which ISP's are supported?
 
 Requirements
 ~~~~~~~~~~~~
-- It requires PHP >= 5.0.0 and the PHP CURL extension, compiled
-  with SSL support!
-- register_globals must be activated in php.ini
+- It requires PHP >= 5.0.0 and the PHP CURL extension, compiled with SSL support!
 - For the encryption, you also need the mcrypt extension
 - For the imgbar publisher, you need the gd extension
 - For Telemeter4Tools it requires the soap extension
+- It requires allow_url_fopen to be set to 'On' in php.ini
 
 Howto
 ~~~~~

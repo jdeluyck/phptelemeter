@@ -3,7 +3,7 @@
 if (! defined("_phptelemeter")) exit();
 
 define("_phptelemeter_publisher", "plaintext");
-define("_phptelemeter_publisher_version", "13");
+define("_phptelemeter_publisher_version", "14");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -48,7 +48,7 @@ class telemeterPublisher extends telemeterPublisher_shared
 
 	function accountFooter()
 	{
-		return("done!\n\n");
+		return(" done!\n\n");
 	}
 
 	/* EXTERNAL! */

@@ -41,7 +41,7 @@ class telemeterParser_upccz_web extends telemeterParser_web_shared
 	}
 
 	/* EXTERNAL! */
-	function getData($userName, $password)
+	function getData($userName, $password, $subaccount)
 	{
 		$data = $this->doCurl("https://kraken.dkm.cz/", $this->createPostFields(array("login" => $userName, "pass" => $password)));
 		if ($this->checkForError($data) !== false)

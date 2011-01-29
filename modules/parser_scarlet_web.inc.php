@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_scarlet_web", "12");
+define("_phptelemeter_parser_scarlet_web", "13");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -54,7 +54,7 @@ class telemeterParser_scarlet_web extends telemeterParser_web_shared
 	}
 
 	/* EXTERNAL! */
-	function getData($userName, $password)
+	function getData($userName, $password, $subaccount)
 	{
 		/* log in */
 		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("username" => $userName, "password" => $password)));

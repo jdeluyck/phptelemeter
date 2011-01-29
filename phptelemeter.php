@@ -69,6 +69,10 @@ $credentialInfo = getAllCredentials($configuration);
 if (! date_default_timezone_set($configuration["general"]["timezone"]))
 	doError("timezone not valid", "The timezone " . $configuration["general"]["timezone"] . " is not valid.", ! $configuration["general"]["ignore_errors"]);
 
+/* Check allow_url_fopen - we need it */
+if (ini_get("allow_url_fopen") != "1")
+  doError("allow_url_fopen is off", "The parameter 'allow_url_fopen' is set to 'Off' in your php configuration.\nphptelemeter needs this to be set to 'On'.", ! $configuration["general"]["ignore_errors"]);
+
 /* do a version check if it's asked */
 $newVersion = checkVersion($configuration["general"]["check_version"], $configuration["proxy"], $configuration["general"]["encrypt_passwords"]);
 
@@ -138,11 +142,11 @@ foreach ($configuration["accounts"] as $key => $account)
 
 	/* pipe through the proxy info */
 	$parser->setProxy($configuration["proxy"]["proxy_host"], $configuration["proxy"]["proxy_port"],
-						$configuration["proxy"]["proxy_authenticate"], $configuration["proxy"]["proxy_username"],
-						cryptPassword($configuration["proxy"]["proxy_password"],"decrypt", $configuration["general"]["encrypt_passwords"]));
+		$configuration["proxy"]["proxy_authenticate"], $configuration["proxy"]["proxy_username"],
+		cryptPassword($configuration["proxy"]["proxy_password"],"decrypt", $configuration["general"]["encrypt_passwords"]));
 
 	/* run the parser getData() routine */
-	$data = $parser->getData($account["username"], cryptPassword($account["password"], "decrypt", $configuration["general"]["encrypt_passwords"]));
+	$data = $parser->getData($account["username"], cryptPassword($account["password"], "decrypt", $configuration["general"]["encrypt_passwords"]), $account["subaccount"]);
 
 	if ($data === false)
 		continue;

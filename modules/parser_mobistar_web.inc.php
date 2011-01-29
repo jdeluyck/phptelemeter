@@ -57,7 +57,7 @@ $this->url["stats"] = "https://partners.mobistar.be/conso-iew-logged/index.cfm?l
 	}
 
 	/* EXTERNAL! */
-	function getData($userName, $password)
+	function getData($userName, $password, $subaccount)
 	{
 		/* log in */
 		$log = $this->doCurl($this->url["login"], $this->createPostFields(array("portlet_login_6{actionForm.login}" => $userName, "portlet_login_6{actionForm.password}" => $password)));

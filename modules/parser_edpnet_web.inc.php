@@ -47,7 +47,7 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 	}
 
 	/* EXTERNAL! */
-	function getData($userName, $password)
+	function getData($userName, $password, $subaccount)
 	{
 		/* open login page, extract value for __VIEWSTATE_ID
 		<input type="hidden" name="__VIEWSTATE_ID" value="bba48a7f-be45-4694-bd6f-3be01f42f950" /> */

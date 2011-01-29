@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_simulator_single", "1");
+define("_phptelemeter_parser_simulator_single", "2");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -38,7 +38,7 @@ class telemeterParser_simulator_single extends telemeterParser_web_shared
 	}
 
 	/* EXTERNAL! */
-	function getData($userName, $password)
+	function getData($userName, $password, $subaccount)
 	{
 		/* min - max values for data randomisation */
 		$day_min = 1;	

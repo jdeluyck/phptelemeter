@@ -96,7 +96,7 @@ function checkOS($configuration, &$configFiles, &$cacheFiles)
 function checkPhpVersion()
 {
 	if (version_compare("5.0.0", phpversion()) >= 0)
-		doError("PHP version too low","Please upgrade PHP to atleast 4.3.0", true);
+		doError("PHP version too low","Please upgrade PHP to atleast 5.0.0", true);
 }
 
 function findConfigFile($configFiles, $configuration)
@@ -291,6 +291,9 @@ password=\"mypassword\"
 ;  and the file needs to be present in the phptelemeter/modules
 ;  directory!
 parser=\"aparser\"
+; The subaccount selects the actual account in case there are multiple.
+; If this parameter is not set, phptelemeter will take the first one.
+;subaccount=\"The actual account identifier\"
 ; The description is optional
 ;description=\"My first account\"
 ; The percentage when, if crossed, the publishers should mark the quota
@@ -303,6 +306,7 @@ warn_email=\"youraddress@domain.tld\"
 ;username=\"myuser\"
 ;password=\"mypassword\"
 ;parser=\"aparser\"
+;subaccount=\"subaccount\"
 ;description=\"My second account\"
 ;warn_percentage=90
 ;warn_email=\"youraddress@domain.tld\"
@@ -366,10 +370,17 @@ function checkConfig($configuration, $configFile, $configKeys)
 				$configuration["accounts"][count($configuration["accounts"]) - 1]["parser"] = $configuration[$accName]["parser"];
 				$configuration["accounts"][count($configuration["accounts"]) - 1]["warn_percentage"] = $configuration[$accName]["warn_percentage"];
 				$configuration["accounts"][count($configuration["accounts"]) - 1]["warn_email"] = $configuration[$accName]["warn_email"];
-				if (array_key_exists("description", $configuration[$accName]))
-					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] =  $configuration[$accName]["description"];
+
+				if (! array_key_exists("subaccount", $configuration[$accName]))
+					$configuration["accounts"][count($configuration["accounts"]) - 1]["subaccount"] = "";
 				else
-					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] =  $configuration[$accName]["username"];
+					$configuration["accounts"][count($configuration["accounts"]) - 1]["subaccount"] = $configuration[$accName]["subaccount"];
+
+				if (array_key_exists("description", $configuration[$accName]))
+					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] = $configuration[$accName]["description"];
+				else
+					$configuration["accounts"][count($configuration["accounts"]) - 1]["description"] = $configuration[$accName]["username"] . ($configuration["accounts"][count($configuration["accounts"]) - 1]["subaccount"] != "" ? " (subaccount: " . $configuration["accounts"][count($configuration["accounts"]) - 1]["subaccount"] . ")":"");
+					
 			}
 			unset($configuration[$accName]);
 		}

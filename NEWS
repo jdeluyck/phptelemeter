@@ -2,7 +2,9 @@ phptelemeter 1.36-beta2
 ~~~~~~~~~~~~~~~~~~~~~~~
 - This version requires PHP 5.0.0 or higher.
 - A new key was added to the [general] section:
-  * timezone
+  * timezone (required)
+- A new key was added to the [account-] sections:
+  * subaccount (optional)
 
 ------------
 | OLD NEWS |

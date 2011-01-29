@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_mobilevikings_api", "2");
+define("_phptelemeter_parser_mobilevikings_api", "3");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -40,15 +40,20 @@ class telemeterParser_mobilevikings_api extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->url["sim_balance"] = "mobilevikings.com/api/1.0/rest/mobilevikings/sim_balance.json";
-		$this->errors = array("Authorization Required" => "Incorrect username/password");
+		$this->url["sim_balance"] = "mobilevikings.com/api/2.0/basic/sim_balance.json";
+		$this->errors = array("Authorization Required" => "Incorrect username/password",
+				      "503 SERVICE UNAVAILABLE" => "Maximum of logins exceeded. Please try again later.");
 	}
 
 	/* EXTERNAL! */
-	function getData($userName, $password)
+	function getData($userName, $password, $subaccount)
 	{
 		/* this should return a json */
-		$log = file_get_contents($this->protocol . "://" . $userName . ":" . $password . "@" .$this->url["sim_balance"]);
+		$log = @file_get_contents($this->protocol . "://" . $userName . ":" . $password . "@" . $this->url["sim_balance"] . ($subaccount != ""?"?msisdn=" . $subaccount:""));
+  
+		/* check that we haven't been throttled */
+		if ($this->checkForError($http_response_header[0]) !== false)
+			return (false);
 
 		if ($this->checkForError($log) !== false)
 			return (false);
