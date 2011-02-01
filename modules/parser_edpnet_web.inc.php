@@ -36,10 +36,11 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("btnLogin" => "Login", "__VIEWSTATE" => "");
+		$this->_postFields = array('ctl00$MainContent$btnLogin' => "Login »");// "__VIEWSTATE" => "");
+		$this->viewstate = "";
 
-		$this->url["login"]   = "http://extra.edpnet.net/login.aspx";
-		$this->url["dslinfo"] = "http://extra.edpnet.net/list_dslconnections.aspx";
+		$this->url["login"]   = "http://extra.edpnet.net/src/Login.aspx";
+		$this->url["dslinfo"] = "http://extra.edpnet.net/src/list_dslconnections.aspx";
 		$this->url["dsldetails"] = "http://extra.edpnet.be/maint_dslconnection.aspx?ID=";
 		$this->url["traffic"] = "http://extra.edpnet.net/TrafficDetail3.aspx";
 
@@ -55,29 +56,36 @@ class telemeterParser_edpnet_web extends telemeterParser_web_shared
 		$data = $this->doCurl($this->url["login"], FALSE);
 
 		$data = explode("\n", $data);
+
 		for ($i = 0; $i < count($data); $i++)
 		{
-			if (stristr($data[$i], "__VIEWSTATE_ID") !== false)
+			if (stristr($data[$i], "__VIEWSTATE") !== false)
 			{
-				$this->_postFields["__VIEWSTATE_ID"] = substr($data[$i],50,-5);
+				$temp = strpos($data[$i], "value=");
+				$this->viewstate = substr($data[$i], $temp + 7, -4);
 				break;
 			}
 		}
 
-		dumpDebugInfo($this->debug, "__VIEWSTATE_ID: " . $this->_postFields["__VIEWSTATE_ID"] . "\n");
+		dumpDebugInfo($this->debug, "__VIEWSTATE: " . $this->viewstate . "\n");
+
 
 		/* log in & get initial data */
-		$data = $this->doCurl($this->url["login"], $this->createPostFields(array("tbUserID" => $userName, "tbPassword" => $password)));
+		$data = $this->doCurl($this->url["login"], $this->createPostFields(array('ctl00$MainContent$tbUserID' => $userName, 'ctl00$MainContent$tbPassword' => $password)));
 		if ($this->checkForError($data) !== false)
 			return (false);
 
-		/* now remove the first item from the _postFields array, and re-pass */
+
+		/* now drop the Login button identifier from the array */
 		array_shift($this->_postFields);
 
 		/* now get the dsl connection link */
-		$data = $this->doCurl($this->url["dslinfo"], FALSE);
-
+		$data = $this->doCurl($this->url["dslinfo"], $this->createPostFields(array('__VIEWSTATE' => $this->viewstate)));
 		$data = explode("\n", $data);
+
+		dumpDebugInfo($this->debug, "DSL CONNECTION INFO:\n");
+		dumpDebugInfo($this->debug, $data);
+
 		for ($i = 0; $i < count($data); $i++)
 		{
 			if (stristr($data[$i], "maint_dslconnection.aspx") !== false)
