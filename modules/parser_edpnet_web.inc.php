@@ -24,6 +24,10 @@ http://www.gnu.org/licenses/gpl2.txt
 
 */
 
+/* This parser is disabled for now. */
+echo "Sorry, the edpnet_web parser is disabled for now.\n";
+exit();
+
 require_once("libs/phptelemeter_parser_web_shared.inc.php");
 
 class telemeterParser_edpnet_web extends telemeterParser_web_shared
