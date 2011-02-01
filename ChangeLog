@@ -10,6 +10,8 @@ What's new? Not much, but it's listed here.
 - Added subaccount parameter to account section, to select the actual
   account in case there are multiple under the same login
 - Updated mobilevikings_api parser to new API (2.0)
+- The edpnet_web parser is dropped for now - I haven't been able to figure 
+  out sofar how to make it work again against their new AJAX-drive site
 
 1.36-beta1
 ~~~~~~~~~~
