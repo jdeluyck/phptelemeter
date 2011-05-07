@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "17");
+define("_phptelemeter_parser_telemeter4tools", "18");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -31,8 +31,8 @@ class telemeterParser_telemeter4tools
 
 	var $_ISP = "telenet";
 
-	var $useEndpointUrl = false;
-	var $endpointUrl = "";
+	var $useEndpointUrl = true;
+	var $endpointUrl = "https://t4t.services.telenet.be/TelemeterService";
 
 	var $errors_critical;
 	var $errors_normal;

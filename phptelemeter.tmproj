@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>currentDocument</key>
+	<string>mkrelease.sh</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -30,7 +32,9 @@
 			<key>filename</key>
 			<string>mkrelease.sh</string>
 			<key>lastUsed</key>
-			<date>2007-07-29T15:33:56Z</date>
+			<date>2011-04-16T05:24:22Z</date>
+			<key>selected</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>expanded</key>
@@ -60,13 +64,13 @@
 			<key>filename</key>
 			<string>phptelemeter.inc.php</string>
 			<key>lastUsed</key>
-			<date>2008-09-09T16:40:36Z</date>
+			<date>2011-04-16T05:24:22Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>phptelemeter.php</string>
 			<key>lastUsed</key>
-			<date>2008-07-09T19:29:26Z</date>
+			<date>2011-04-03T01:52:46Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
@@ -112,36 +116,74 @@
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>245</integer>
 	<key>metaData</key>
-	<dict/>
-	<key>showFileHierarchyDrawer</key>
-	<false/>
-	<key>showFileHierarchyPanel</key>
-	<true/>
-	<key>treeState</key>
 	<dict>
-		<key>docs</key>
+		<key>mkrelease.sh</key>
 		<dict>
-			<key>isExpanded</key>
-			<true/>
-			<key>subItems</key>
-			<dict/>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>21</integer>
+				<key>line</key>
+				<integer>5</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
-		<key>modules</key>
+		<key>modules/parser_telemeter4tools.inc.php</key>
 		<dict>
-			<key>isExpanded</key>
-			<true/>
-			<key>subItems</key>
-			<dict/>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>36</integer>
+				<key>line</key>
+				<integer>17</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>174</integer>
 		</dict>
-		<key>upgrade</key>
+		<key>phptelemeter.inc.php</key>
 		<dict>
-			<key>isExpanded</key>
-			<true/>
-			<key>subItems</key>
-			<dict/>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>16</integer>
+				<key>line</key>
+				<integer>808</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>789</integer>
+		</dict>
+		<key>phptelemeter.php</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>169</integer>
 		</dict>
 	</dict>
+	<key>openDocuments</key>
+	<array>
+		<string>modules/parser_telemeter4tools.inc.php</string>
+		<string>phptelemeter.php</string>
+		<string>phptelemeter.inc.php</string>
+		<string>mkrelease.sh</string>
+	</array>
+	<key>showFileHierarchyDrawer</key>
+	<true/>
 	<key>windowFrame</key>
-	<string>{{47, 0}, {1233, 778}}</string>
+	<string>{{306, 0}, {964, 778}}</string>
 </dict>
 </plist>
