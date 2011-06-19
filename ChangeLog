@@ -13,6 +13,7 @@ What's new? Not much, but it's listed here.
 - The edpnet_web parser is dropped for now - I haven't been able to figure 
   out sofar how to make it work again against their new AJAX-drive site
 - Fixed telemeter4tools parser, telenet's WSDL is faulty... 
+- Added reset_date to mobilevikings_api parser
 
 1.36-beta1
 ~~~~~~~~~~

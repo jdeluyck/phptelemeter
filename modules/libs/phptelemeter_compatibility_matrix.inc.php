@@ -86,7 +86,7 @@ $isp_compatibility_matrix["simulator_separate"]["separate_day_info"] = true;
 $isp_compatibility_matrix["simulator_separate"]["history"] = true;
 
 /* MOBILE VIKINGS */
-$isp_compatibility_matrix["mobilevikings"]["reset_date"] = false;
+$isp_compatibility_matrix["mobilevikings"]["reset_date"] = true;
 $isp_compatibility_matrix["mobilevikings"]["separate_quota"] = false;
 $isp_compatibility_matrix["mobilevikings"]["separate_day_info"] = false;
 $isp_compatibility_matrix["mobilevikings"]["history"] = false;

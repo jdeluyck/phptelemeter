@@ -77,8 +77,9 @@ class telemeterParser_mobilevikings_api extends telemeterParser_web_shared
 				$returnValue["general"]["remaining"] = ($json["data"] / 1048576);
 				$returnValue["general"]["used"] = $this->maxTransfer - $returnValue["general"]["remaining"];
 			}
-		
 
+			$returnValue["reset_date"] = substr($json["valid_until"],8,2) . "/" . substr($json["valid_until"],5,2) . "/" . substr($json["valid_until"],0,4);
+			$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 			$returnValue["isp"] = $this->_ISP;
 		}
 		else
