@@ -337,11 +337,11 @@ function checkConfig($configuration, $configFile, $configKeys)
 	checkConfigurationForKeys($configuration, array("die"), true, "configuration not correct.", "Edit $configFile and remove the \n%MSG%line!", true);
 
 	/* verify general configuration */
-	checkConfigurationForKeys($configuration           , array("general", "proxy", "publisher"), false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease check the README, correct and rerun phptelemeter.", true);
-	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["required"]    , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration           , array("general", "proxy", "publisher"), false, "configuration not correct.", "A configuration file was found, but it did not contain a valid\n%MSG%section.\nPlease check the README and NEWS, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["required"]    , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README and NEWS, correct and rerun phptelemeter.", true);
 	checkConfigurationForKeys($configuration["general"], $configKeys["general"]["obsolete"]    , true, "obsolete key found in configuration", "The following obsolete keys were found in your configuration:\n%MSG%Please refer to the NEWS file for important changes to the \nconfiguration file.", false);
-	checkConfigurationForKeys($configuration["proxy"]  , $configKeys["proxy"]["required"]      , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
-	checkConfigurationForKeys($configuration["publisher"], $configKeys["publisher"]["required"]  , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["proxy"]  , $configKeys["proxy"]["required"]      , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README and NEWS, correct and rerun phptelemeter.", true);
+	checkConfigurationForKeys($configuration["publisher"], $configKeys["publisher"]["required"]  , false, "configuration not correct.", "A configuration file was found, but it was missing the\n%MSG%fields. Please check the README and NEWS, correct and rerun phptelemeter.", true);
 
 	/* look for the modulepath */
 	if (! array_key_exists("modulepath", $configuration["general"]))
@@ -419,11 +419,11 @@ function checkConfigurationForPublisherKeys($configuration, $keys)
 {
 	/* if this ain't an array, we assume nothing was set. */
 	if (is_array($keys))
-		checkConfigurationForKeys($configuration["publisher"], $keys, false, "configuration not correct.", "The selected publisher requires the following extra fields:\n%MSG%in the [publisher] section. Please check the README, correct and rerun phptelemeter.", true);
+		checkConfigurationForKeys($configuration["publisher"], $keys, false, "configuration not correct.", "The selected publisher requires the following extra fields:\n%MSG%in the [publisher] section. Please check the README and NEWS, correct and rerun phptelemeter.", true);
 }
 
 /* Parses the command-line arguments and fits them in the configuration array */
-function parseArgs($argv, $configuration)
+function parseArgs($argv=array(), $configuration)
 {
 	
 	/* short options in use:
