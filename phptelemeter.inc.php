@@ -25,7 +25,7 @@ http://www.gnu.org/licenses/gpl2.txt
 /* -------------------------------- */
 /* General settings - do not touch! */
 /* -------------------------------- */
-define("_version", "1.36-beta2");
+define("_version", "1.36-beta3");
 define("_maxAccounts", 99);
 define("_configFileName", "phptelemeterrc");
 define("_cacheFileName", "phptelemeter.cache");

@@ -6,6 +6,9 @@ phptelemeter 1.36-beta2
 - A new key was added to the [account-] sections:
   * subaccount (optional)
 
+Please update your configuration file, or generate a new one.
+For more details, see the README and the Configuration files.
+
 ------------
 | OLD NEWS |
 ------------ 
@@ -14,9 +17,6 @@ phptelemeter 1.33
 - the publisher key was moved from the [general] section to a new
   [publisher] section.
 - Publishers now may have separate configuration parameters.
-
-Please update your configuration file, or generate a new one.
-For more details, see the README and the Configuration files.
 
 phptelemeter 1.32
 ~~~~~~~~~~~~~~~~~

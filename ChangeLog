@@ -1,5 +1,11 @@
 What's new? Not much, but it's listed here.
 
+1.36-beta3
+~~~~~~~~~~
+- Added the NEWS file to the files to check if there's a configuration issue
+- Added a default for argv=empty array if not set, to avoid another warning
+  (Thanks to jorgo from userbase.be)
+
 1.36-beta2
 ~~~~~~~~~~
 - Added support to set timezone from the application as opposed to
