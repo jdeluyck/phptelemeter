@@ -539,14 +539,20 @@ function parseArgs($argv=array(), $configuration)
 			case "--publisher":
 			case "-p":
 			{
-				$configuration["publisher"]["publisher"] = $argv[++$i];
+				if (count($argv) > ++$i)
+				    $configuration["publisher"]["publisher"] = $argv[$i];
+				else
+				    doError("missing parameter","The publisher name is missing.", true);
 				break;
 			}
 
 			case "--cache-file":
 			case "-C":
 			{
-				$configuration["general"]["cache_file"] = $argv[++$i];
+				if (count($argv) > ++$i)
+				    $configuration["general"]["cache_file"] = $argv[$i];
+				else
+				    doError("missing parameter","The cache file name is missing.", true);
 				break;
 			}
 
