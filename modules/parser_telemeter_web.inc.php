@@ -39,7 +39,7 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		telemeterParser_web_shared::telemeterParser_web_shared();
 
 		/* do some var initialisation */
-		$this->_postFields = array("goto" => "https://www.telenet.be/mijntelenet/navigation/navigation.do?family=DEFAULT&amp;identifier=DEFAULT");
+		$this->_postFields = array("goto" => "https://www.telenet.be/mijntelenet/telemeter.do");
 		$this->url["login"] = "https://www.telenet.be/sso/ext/signon.do";
 		$this->url["telemeter"] = "https://www.telenet.be/mijntelenet/telemeter/showUsage.do?identifier=";
 		$this->url["cookie"] = false;
