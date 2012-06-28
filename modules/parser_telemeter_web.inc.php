@@ -41,7 +41,9 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		/* do some var initialisation */
 		$this->_postFields = array("goto" => "https://www.telenet.be/mijntelenet/telemeter.do");
 		$this->url["login"] = "https://www.telenet.be/sso/ext/signon.do";
-		$this->url["telemeter"] = "https://www.telenet.be/mijntelenet/telemeter/showUsage.do?identifier=";
+		$this->url["telemeter"] = "https://www.telenet.be/mijntelenet/telemeter/telemeter.do?identifier="; 
+/*		$this->url["telemeter_fup"] = "https://www.telenet.be/mijntelenet/telemeter/showFupUsage.do?identifier=";
+		$this->url["telemeter_volume"] = "https://www.telenet.be/mijntelenet/telemeter/showUsage.do?identifier=";*/
 		$this->url["cookie"] = false;
 		$this->url["logout"] = "https://www.telenet.be/sso/ext/signoff.do";
 
@@ -84,12 +86,12 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug,"REFRESH URL: " . $this->url["cookie"] . "\n");
 		
 		/* cookie monster! */
-		$log = $this->doCurl($this->url["cookie"] . $userName, FALSE);
+		$log = $this->doCurl($this->url["cookie"], FALSE);
 		if ($this->checkForError($log) !== false)
 			return (false);
 
 		/* get the data */
-		$data = $this->doCurl($this->url["telemeter"] . $userName, FALSE);
+		$data = $this->doCurl($this->url["telemeter"], FALSE);
 		if ($this->checkForError($data) !== false)
 			return (false);
 
