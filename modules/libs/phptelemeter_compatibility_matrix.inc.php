@@ -8,7 +8,7 @@ phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 phptelemeter_compatibility_matrix.inc.php - file which contains the compatibility matrix
 
-Copyright (C) 2004 - 2011 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2004 - 2012 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,11 +37,11 @@ $isp_compatibility_matrix["telenet"]["separate_quota"] = false;
 $isp_compatibility_matrix["telenet"]["separate_day_info"] = false;
 $isp_compatibility_matrix["telenet"]["history"] = true;
 
-/* TELENET STAGE METER */
-$isp_compatibility_matrix["telenet_stage"]["reset_date"] = false;
-$isp_compatibility_matrix["telenet_stage"]["separate_quota"] = false;
-$isp_compatibility_matrix["telenet_stage"]["separate_day_info"] = false;
-$isp_compatibility_matrix["telenet_stage"]["history"] = false;
+/* TELENET FUP METER */
+$isp_compatibility_matrix["telenet_fup"]["reset_date"] = true;
+$isp_compatibility_matrix["telenet_fup"]["separate_quota"] = false;
+$isp_compatibility_matrix["telenet_fup"]["separate_day_info"] = false;
+$isp_compatibility_matrix["telenet_fup"]["history"] = false;
 
 
 /* DOMMEL */

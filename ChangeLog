@@ -6,6 +6,7 @@ What's new? Not much, but it's listed here.
 - Added a default for argv=empty array if not set, to avoid another warning
   (Thanks to jorgo from userbase.be)
 - Updated telemeter_web (updated website)
+- Fixed telemeter4tools for FUP meters
 
 1.36-beta2
 ~~~~~~~~~~

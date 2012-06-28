@@ -2,14 +2,14 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter4tools", "18");
+define("_phptelemeter_parser_telemeter4tools", "19");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
 
 parser_telemeter4tools.inc.php - file which contains the Telemeter4tools parser module.
 
-Copyright (C) 2004 - 2011 Jan De Luyck  <jan -at- kcore -dot- org>
+Copyright (C) 2004 - 2012 Jan De Luyck  <jan -at- kcore -dot- org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -169,7 +169,7 @@ class telemeterParser_telemeter4tools
 
 			dumpDebugInfo($this->debug, $result);
 
-			/* is this a volume meter or a stage meter? */
+			/* is this a volume meter or a FUP meter? */
 			if (isset($result->Volume))
 			{
 				/* volume. Got it. */
@@ -190,16 +190,18 @@ class telemeterParser_telemeter4tools
 				/* return values */
 				$returnValue["daily"] = $daily;
 				$returnValue["reset_date"] = $resetDate;
-				$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
 			}
 			else
 			{
-				/* it's one of those stage meters... */
-				$this->_ISP = "telenet_stage";
-				$general["used"] = $result->Stage->StageNumber;
-				$general["remaining"] = 9 - $general["used"];
+				/* it's a FUP meter... */
+				$this->_ISP = "telenet_fup";
+				$returnValue["reset_date"] = date("d/m/Y", strtotime($result->FUP->Period->Till));
+				$general["used"] = $result->FUP->Usage->TotalUsage * 1024;
+				$general["remaining"] = $result->FUP->Usage->MaxUsageRemaining * 1024 ;
 			}
-				
+
+			$returnValue["days_left"] = calculateDaysLeft($returnValue["reset_date"]);
+
 			$returnValue["general"] = $general;
 			$returnValue["isp"] = $this->_ISP;
 		}
