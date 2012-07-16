@@ -33,6 +33,8 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 
 	var $months;
 
+	var $fup = false;
+
 	function telemeterParser_telemeter_web()
 	{
 		/* call parent constructor */
@@ -86,12 +88,7 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug,"REFRESH URL: " . $this->url["cookie"] . "\n");
 		
 		/* cookie monster! */
-		$log = $this->doCurl($this->url["cookie"], FALSE);
-		if ($this->checkForError($log) !== false)
-			return (false);
-
-		/* get the data */
-		$data = $this->doCurl($this->url["telemeter"], FALSE);
+		$data = $this->doCurl($this->url["cookie"], FALSE);
 		if ($this->checkForError($data) !== false)
 			return (false);
 
@@ -102,6 +99,15 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 
 		/* clean out the data a bit */
 		$data = str_replace("&nbsp;", " ", trim(strip_tags($data)));
+
+		/* fup counter? */
+		if (stristr($data, "grootverbruiker") !== false)
+		{
+			$this->fup = true;
+			$this->_ISP = "telenet_fup";
+		}
+
+		/* explode! carnage! */
 		$data = explode("\n", $data);
 
 		for ($i = 0; $i < count($data); $i++)
@@ -116,13 +122,25 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		/* determine positions */
 		for ($i = 0; $i < count($data); $i++)
 		{
-			if (stristr($data[$i], "Herinneringen instellen") !== false)
-				$pos["daterange"] = $i + 1;
-			elseif (stristr($data[$i], "Je verbruikte volume wordt op 0 gezet op") !== false)
+			if ($this->fup)
 			{
-				$pos["trafficused"] = $i - 3;
-				$pos["trafficleft"] = $i - 2;
-				$pos["trafficdetail"] = $i + 49;
+				if (stristr($data[$i], "Telemeter-info over aanrekeningsperiode") !== false)
+				{
+					$pos["daterange"] = $i;
+					$pos["trafficused"] = $i + 2;
+					$pos["trafficleft"] = $i + 5;
+				}
+			}
+			else
+			{
+				if (stristr($data[$i], "Herinneringen instellen") !== false)
+					$pos["daterange"] = $i + 1;
+				elseif (stristr($data[$i], "Je verbruikte volume wordt op 0 gezet op") !== false)
+				{
+					$pos["trafficused"] = $i - 3;
+					$pos["trafficleft"] = $i - 2;
+					$pos["trafficdetail"] = $i + 49;
+				}
 			}
 		}
 
@@ -131,41 +149,52 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		dumpDebugInfo($this->debug,"DATA:\n");
 		dumpDebugInfo($this->debug,$data);
 
-		/* traffic - total */
-		$downCorrection = 0;
-
-		$used      = removeDots(substr($data[$pos["trafficused"]],0,-3));
-		$remaining = removeDotS(substr($data[$pos["trafficleft"]],0,-3));
-
-		$generalMatches["used"] = $used;
-		$generalMatches["remaining"] = $remaining;
-
-		/* determine the date range */
-		$dateRange = explode(" ", $data[$pos["daterange"]]);
-		dumpDebugInfo($this->debug, "DATERANGE:");
-		dumpDebugInfo($this->debug, $dateRange);
-
-		/* seems / in dates is interpreted als US dates, - is EU dates... go figure */
-		$start = strtotime(str_replace("/","-",$dateRange[0]));
-		$end   = strtotime(str_replace("/","-",$dateRange[4]));
-
-		$days = intval(($end - $start) / 86400) + 1;
-
-		dumpDebugInfo($this->debug,
-			"start: ". $start. " (". date("Y-m-d", $start). ") -- " .
-			"end: ". $end. " (". date("Y-m-d", $end). ") -- " .
-			"days: ". $days);
-
-		/* now do the magic for getting the values of the days */
-		for ($i = 1; $i <= $days; $i++)
+		if ($this->fup)
 		{
-			$dailyMatches[] = date("d/m/y", $start + (($i - 1) * 86400));
-			$dailyMatches[] = substr(removeDots($data[$pos["trafficdetail"]]),16,-2) + substr(removeDots($data[$pos["trafficdetail"]++ + 30]),16,-2);
+			preg_match('"(\d+),(\d+)"', $data[$pos["trafficused"]], $used);
+			$used = $used[1] + ($used[2]/1024);
+			var_dump($used);
+			exit;
+			//$remaining = removeDots(substr([$pos["trafficleft"]],));
+			
 		}
-
-		$endDate = $dailyMatches[count($dailyMatches) - 2];
-		$resetDate = date("d/m/Y", $end + 86400);
-
+		else
+		{
+			/* traffic - total */
+			$downCorrection = 0;
+	
+			$used      = removeDots(substr($data[$pos["trafficused"]],0,-3));
+			$remaining = removeDotS(substr($data[$pos["trafficleft"]],0,-3));
+	
+			$generalMatches["used"] = $used;
+			$generalMatches["remaining"] = $remaining;
+	
+			/* determine the date range */
+			$dateRange = explode(" ", $data[$pos["daterange"]]);
+			dumpDebugInfo($this->debug, "DATERANGE:");
+			dumpDebugInfo($this->debug, $dateRange);
+	
+			/* seems / in dates is interpreted als US dates, - is EU dates... go figure */
+			$start = strtotime(str_replace("/","-",$dateRange[0]));
+			$end   = strtotime(str_replace("/","-",$dateRange[4]));
+	
+			$days = intval(($end - $start) / 86400) + 1;
+	
+			dumpDebugInfo($this->debug,
+				"start: ". $start. " (". date("Y-m-d", $start). ") -- " .
+				"end: ". $end. " (". date("Y-m-d", $end). ") -- " .
+				"days: ". $days);
+	
+			/* now do the magic for getting the values of the days */
+			for ($i = 1; $i <= $days; $i++)
+			{
+				$dailyMatches[] = date("d/m/y", $start + (($i - 1) * 86400));
+				$dailyMatches[] = substr(removeDots($data[$pos["trafficdetail"]]),16,-2) + substr(removeDots($data[$pos["trafficdetail"]++ + 30]),16,-2);
+			}
+	
+			$endDate = $dailyMatches[count($dailyMatches) - 2];
+			$resetDate = date("d/m/Y", $end + 86400);
+		}
 
 		$returnValue["general"] = $generalMatches;
 		$returnValue["daily"] = $dailyMatches;
