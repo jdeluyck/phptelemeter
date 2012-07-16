@@ -152,11 +152,9 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		if ($this->fup)
 		{
 			preg_match('"(\d+),(\d+)"', $data[$pos["trafficused"]], $used);
-			$used = $used[1] + ($used[2]/1024);
-			var_dump($used);
-			exit;
-			//$remaining = removeDots(substr([$pos["trafficleft"]],));
-			
+			$used = ($used[1] + ($used[2]/1024)) * 1024;
+			preg_match_all('"(\d+),(\d+)"', $data[$pos["trafficleft"]], $remaining);
+			$remaining = (($remaining[1][1] + ($remaining[2][1]/1024)) * 1024) - $used;
 		}
 		else
 		{
@@ -165,9 +163,6 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 	
 			$used      = removeDots(substr($data[$pos["trafficused"]],0,-3));
 			$remaining = removeDotS(substr($data[$pos["trafficleft"]],0,-3));
-	
-			$generalMatches["used"] = $used;
-			$generalMatches["remaining"] = $remaining;
 	
 			/* determine the date range */
 			$dateRange = explode(" ", $data[$pos["daterange"]]);
@@ -195,6 +190,9 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 			$endDate = $dailyMatches[count($dailyMatches) - 2];
 			$resetDate = date("d/m/Y", $end + 86400);
 		}
+
+		$generalMatches["used"] = $used;
+		$generalMatches["remaining"] = $remaining;
 
 		$returnValue["general"] = $generalMatches;
 		$returnValue["daily"] = $dailyMatches;
