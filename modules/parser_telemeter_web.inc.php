@@ -2,7 +2,7 @@
 
 if (! defined("_phptelemeter")) exit();
 
-define("_phptelemeter_parser_telemeter_web", "25");
+define("_phptelemeter_parser_telemeter_web", "26");
 /*
 
 phpTelemeter - a php script to read out and display ISP's usage-meter stats.
@@ -44,8 +44,6 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 		$this->_postFields = array("goto" => "https://www.telenet.be/mijntelenet/telemeter.do");
 		$this->url["login"] = "https://www.telenet.be/sso/ext/signon.do";
 		$this->url["telemeter"] = "https://www.telenet.be/mijntelenet/telemeter/telemeter.do?identifier="; 
-/*		$this->url["telemeter_fup"] = "https://www.telenet.be/mijntelenet/telemeter/showFupUsage.do?identifier=";
-		$this->url["telemeter_volume"] = "https://www.telenet.be/mijntelenet/telemeter/showUsage.do?identifier=";*/
 		$this->url["cookie"] = false;
 		$this->url["logout"] = "https://www.telenet.be/sso/ext/signoff.do";
 
