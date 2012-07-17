@@ -151,10 +151,21 @@ class telemeterParser_telemeter_web extends telemeterParser_web_shared
 
 		if ($this->fup)
 		{
+			/* traffic crap */
 			preg_match('"(\d+),(\d+)"', $data[$pos["trafficused"]], $used);
 			$used = ($used[1] + ($used[2]/1024)) * 1024;
 			preg_match_all('"(\d+),(\d+)"', $data[$pos["trafficleft"]], $remaining);
 			$remaining = (($remaining[1][1] + ($remaining[2][1]/1024)) * 1024) - $used;
+			
+			/* daterange crap */
+			$dateRange = explode(" ", $data[$pos["daterange"]]);
+			dumpDebugInfo($this->debug, "DATERANGE:");
+			dumpDebugInfo($this->debug, $dateRange);
+
+			/* seems / in dates is interpreted als US dates, - is EU dates... go figure */
+			$resetDate = date("d/m/Y", strtotime(str_replace("/","-",$dateRange[6])) + 86400);
+			
+			$dailyMatches = "";
 		}
 		else
 		{
