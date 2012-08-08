@@ -52,7 +52,7 @@ class telemeterParser_mobilevikings_api extends telemeterParser_web_shared
 		$log = @file_get_contents($this->protocol . "://" . $userName . ":" . $password . "@" . $this->url["sim_balance"] . ($subaccount != ""?"?msisdn=" . $subaccount:""));
   
 		/* check that we haven't been throttled */
-		if ($this->checkForError($http_response_header[0]) !== false)
+		if (isset($http_response_header[0]) && $this->checkForError($http_response_header[0]) !== false)
 			return (false);
 
 		if ($this->checkForError($log) !== false)
